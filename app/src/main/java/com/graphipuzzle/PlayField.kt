@@ -1,6 +1,6 @@
 package com.graphipuzzle
 
-class PlayField(val fieldValues: Array<IntArray>)
+class PlayField(private val fieldValues: Array<IntArray>)
 {
 	private val fieldColumns: Array<IntArray> =
 		Array(this.fieldValues.size) { IntArray(this.fieldValues[0].size) }
@@ -9,10 +9,15 @@ class PlayField(val fieldValues: Array<IntArray>)
 
 	init
 	{
-		load()
+		loadValues()
 	}
 
-	fun load()
+	public fun getFieldValues(): Array<IntArray>
+	{
+		return this.fieldValues
+	}
+
+	private fun loadValues()
 	{
 		var rowCount = 0
 		var colCount = IntArray(this.fieldValues[0].size)
