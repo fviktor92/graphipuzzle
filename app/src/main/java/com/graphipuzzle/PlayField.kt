@@ -1,39 +1,55 @@
 package com.graphipuzzle
 
-class PlayField(private val fieldValues: Array<IntArray>)
+import kotlin.math.ceil
+
+
+class PlayField(private val fieldValues: MutableList<MutableList<Int>>)
 {
-	private val fieldColumns: Array<IntArray> =
-		Array(this.fieldValues.size) { IntArray(this.fieldValues[0].size) }
-	private val fieldRows: Array<IntArray> =
-		Array(this.fieldValues.size) { IntArray(this.fieldValues[0].size) }
+	private val fieldSize = this.fieldValues[0].size
+	private val maxGroups = ceil(fieldSize / 2.0).toInt()
+	private val fieldColumns: MutableList<MutableList<Int>> = ArrayList(maxGroups)
+	private val fieldRows: MutableList<MutableList<Int>> = ArrayList(maxGroups)
 
 	init
 	{
 		loadValues()
 	}
 
-	public fun getFieldValues(): Array<IntArray>
+	fun getFieldValues(): MutableList<MutableList<Int>>
 	{
 		return this.fieldValues
+	}
+
+	fun getFieldColumns(): MutableList<MutableList<Int>>
+	{
+		return this.fieldColumns
+	}
+
+	fun getFieldRows(): MutableList<MutableList<Int>>
+	{
+		return this.fieldRows
 	}
 
 	private fun loadValues()
 	{
 		var rowCount = 0
-		var colCount = IntArray(this.fieldValues[0].size)
+		var colCount = IntArray(fieldSize)
 		var rowPrev = 0
-		var colPrev = IntArray(this.fieldValues[0].size)
+		var colPrev = IntArray(fieldSize)
 
 		for (i in this.fieldValues[0].indices)
 		{
 			colCount[i] = 0
 			colPrev[i] = 0
+			this.fieldColumns.add(ArrayList(maxGroups))
 		}
 
-		for (row in this.fieldValues.indices)
+		for (row in 0 until this.fieldSize)
 		{
 			rowPrev = 0
-			for (col in this.fieldValues[row].indices)
+			this.fieldRows.add(ArrayList(maxGroups))
+
+			for (col in 0 until this.fieldSize)
 			{
 				if (this.fieldValues[row][col] == 1)
 				{
@@ -43,12 +59,12 @@ class PlayField(private val fieldValues: Array<IntArray>)
 				{
 					if (rowPrev == 1)
 					{
-						this.fieldRows[row][0] = rowCount
+						this.fieldRows[row].add(rowCount)
 						rowCount = 0
 					}
 					if (colPrev[col] == 1)
 					{
-						this.fieldColumns[col][0] = colCount[col]
+						this.fieldColumns[col].add(colCount[col])
 						colCount[col] = 0
 					}
 				}
@@ -56,14 +72,14 @@ class PlayField(private val fieldValues: Array<IntArray>)
 				rowPrev = this.fieldValues[row][col]
 				colPrev[col] = this.fieldValues[row][col]
 
-				if ((col == this.fieldValues[row].size - 1) && (this.fieldValues[row][col] == 1))
+				if ((col == fieldSize - 1) && (this.fieldValues[row][col] == 1))
 				{
-					this.fieldRows[row][0] = rowCount
+					this.fieldRows[row].add(rowCount)
 					rowCount = 0
 				}
-				if ((row == this.fieldValues.size - 1) && (this.fieldValues[row][col] == 1))
+				if ((row == fieldSize - 1) && (this.fieldValues[row][col] == 1))
 				{
-					this.fieldColumns[col][0] = colCount[col]
+					this.fieldColumns[col].add(colCount[col])
 					colCount[col] = 0
 				}
 			}
