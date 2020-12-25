@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PlayFieldActivity"
-    android:orientation="horizontal">
 
-    <TableLayout
-        android:id="@+id/play_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        android:background="@drawable/table_border">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    </TableLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        tools:context=".PlayFieldActivity">
 
-    <TextView
-        android:id="@+id/play_field_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Init" />
-</LinearLayout>
+        <TableLayout
+            android:id="@+id/play_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp"
+            android:background="@drawable/table_border">
+
+        </TableLayout>
+
+        <TextView
+            android:id="@+id/play_field_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Init" />
+    </LinearLayout>
+</layout>
