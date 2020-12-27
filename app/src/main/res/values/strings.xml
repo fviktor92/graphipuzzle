@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">graphipuzzle</string>
     <string name="start_game">Start Game</string>
+    <string name="file_provider_authority" translatable="false">com.graphipuzzle.fileprovider</string>
 </resources>

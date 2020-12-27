@@ -2,6 +2,8 @@ package com.graphipuzzle
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import com.graphipuzzle.read.PlayFieldSize
+import com.graphipuzzle.read.ReadPlayField
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -16,12 +18,8 @@ class ReadPlayFieldTest
 	fun getPlayFieldDataIsCorrect()
 	{
 		// Given a 10x10 play field
-		val readPlayField = ReadPlayField(context, "level_1")
-
-		// When the play field data is returned
+		val readPlayField = ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json")
 		val playFieldData = readPlayField.getPlayFieldData()
-
-		// Then the size should be 100
-		assertEquals(100, playFieldData.fieldValues.size)
+		assertEquals("Play field size did not match", 10, playFieldData.fieldValues.size)
 	}
 }
