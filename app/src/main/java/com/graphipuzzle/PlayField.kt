@@ -1,11 +1,14 @@
 package com.graphipuzzle
 
+import com.graphipuzzle.data.FieldData
+import com.graphipuzzle.data.PlayFieldData
 import kotlin.math.ceil
 
 
-class PlayField(private val fieldValues: MutableList<MutableList<Int>>)
+class PlayField(private val playFieldData: PlayFieldData)
 {
-	private val fieldSize = this.fieldValues[0].size
+	private val fieldValues: MutableList<MutableList<FieldData>> = this.playFieldData.fieldValues
+	private val fieldSize = this.fieldValues.size
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
 	private val fieldColumns: MutableList<MutableList<Int>> = ArrayList(maxGroups)
 	private val fieldRows: MutableList<MutableList<Int>> = ArrayList(maxGroups)
@@ -15,7 +18,7 @@ class PlayField(private val fieldValues: MutableList<MutableList<Int>>)
 		loadValues()
 	}
 
-	fun getFieldValues(): MutableList<MutableList<Int>>
+	fun getFieldValues(): MutableList<MutableList<FieldData>>
 	{
 		return this.fieldValues
 	}
@@ -51,7 +54,8 @@ class PlayField(private val fieldValues: MutableList<MutableList<Int>>)
 
 			for (col in 0 until this.fieldSize)
 			{
-				if (this.fieldValues[row][col] == 1)
+				val currentFieldValue = this.fieldValues[row][col].isPaintable
+				if (currentFieldValue)
 				{
 					rowCount++
 					colCount[col]++
@@ -69,15 +73,15 @@ class PlayField(private val fieldValues: MutableList<MutableList<Int>>)
 					}
 				}
 
-				rowPrev = this.fieldValues[row][col]
-				colPrev[col] = this.fieldValues[row][col]
+				rowPrev = if (currentFieldValue) 1 else 0
+				colPrev[col] = if (currentFieldValue) 1 else 0
 
-				if ((col == fieldSize - 1) && (this.fieldValues[row][col] == 1))
+				if ((col == fieldSize - 1) && (currentFieldValue))
 				{
 					this.fieldRows[row].add(rowCount)
 					rowCount = 0
 				}
-				if ((row == fieldSize - 1) && (this.fieldValues[row][col] == 1))
+				if ((row == fieldSize - 1) && (currentFieldValue))
 				{
 					this.fieldColumns[col].add(colCount[col])
 					colCount[col] = 0

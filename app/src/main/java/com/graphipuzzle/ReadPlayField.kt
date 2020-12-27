@@ -1,46 +1,45 @@
 package com.graphipuzzle;
 
 import android.content.Context
+import android.content.res.Resources
 import android.util.Log
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
+import com.graphipuzzle.data.PlayFieldData
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
+/**
+ *
+ * @param ctx The context where the resources are acquired from.
+ * @param fileName The name of the JSON raw resource file, without the extension. See [PlayFieldData] for data representation.
+ */
 class ReadPlayField(ctx: Context, fileName: String)
 {
-	private val fieldValues: MutableList<MutableList<Int>>
+	private val playFieldData: PlayFieldData
 
 	init
 	{
-		fieldValues = readFile(ctx, fileName)
+		playFieldData = readFile(ctx, fileName)
 	}
 
-	fun getFile(): MutableList<MutableList<Int>>
+	fun getPlayFieldData(): PlayFieldData
 	{
-		return this.fieldValues
+		return this.playFieldData
 	}
 
-	private fun readFile(ctx: Context, fileName: String): MutableList<MutableList<Int>>
+	fun readFile(ctx: Context, fileName: String): PlayFieldData
 	{
-		Log.d(this.toString(), "Reading play field...")
+		Log.d(this.toString(), "Reading play field data...")
 		val resId: Int = ctx.resources.getIdentifier(fileName, "raw", ctx.packageName)
-		val inputStream: InputStream = ctx.resources.openRawResource(resId)
-		val inputReader = InputStreamReader(inputStream)
-		val bufferedReader = BufferedReader(inputReader)
-		val lines: List<String> = bufferedReader.readLines();
-		val size = lines.size
-		var playField: MutableList<MutableList<Int>> = ArrayList(size)
-
-		for ((row, line) in lines.withIndex())
+		try
 		{
-			var values = line.trim().split(',')
-			for (col in lines.indices)
-			{
-				playField.add(ArrayList(size))
-				playField[row].add(Integer.parseInt(values[col]))
-			}
+			val bufferedReader = ctx.resources.openRawResource(resId).bufferedReader()
+			val resourceContent: String = bufferedReader.readText()
+			bufferedReader.close()
+			return Json.decodeFromString(resourceContent)
+		} catch (nfe: Resources.NotFoundException)
+		{
+			Log.e(this.toString(), "Could not find a raw resource with filename: '$fileName'")
+			throw nfe;
 		}
-
-		return playField;
 	}
 }
