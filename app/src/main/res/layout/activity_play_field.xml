@@ -11,12 +11,11 @@
         tools:context=".PlayFieldActivity">
 
         <TableLayout
-            android:id="@+id/play_field_table_row_values"
+            android:id="@+id/play_field_row_values_table"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginLeft="8dp"
             android:background="@drawable/table_border"
-            android:stretchColumns="*"
             app:layout_constraintBottom_toBottomOf="@+id/play_field_table"
             app:layout_constraintEnd_toStartOf="@+id/play_field_table"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,11 +24,10 @@
         </TableLayout>
 
         <TableLayout
-            android:id="@+id/play_field_table_column_values"
+            android:id="@+id/play_field_column_values_table"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/table_border"
-            android:stretchColumns="*"
             app:layout_constraintBottom_toTopOf="@+id/play_field_table"
             app:layout_constraintEnd_toEndOf="@+id/play_field_table"
             app:layout_constraintStart_toStartOf="@+id/play_field_table">
@@ -40,11 +38,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:background="@drawable/table_border"
-            android:stretchColumns="*"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/play_field_table_row_values"
+            app:layout_constraintStart_toEndOf="@id/play_field_row_values_table"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.7">
 
@@ -52,12 +48,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/table_border"
-                    android:text="1"
-                    android:textAlignment="center" />
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintDimensionRatio="1:1"
+                    style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintDimensionRatio="1:1"
+                    style="@style/field_painted" />
             </TableRow>
 
         </TableLayout>
