@@ -1,13 +1,12 @@
 package com.graphipuzzle
 
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import com.graphipuzzle.databinding.ActivityPlayFieldBinding
 import com.graphipuzzle.read.PlayFieldSize
@@ -38,37 +37,66 @@ class PlayFieldActivity : AppCompatActivity()
 		initializePlayFieldTable(binding, playField)
 	}
 
-	private fun initializePlayFieldColumnValuesTable(binding: ActivityPlayFieldBinding, playField: PlayField)
+	private fun initializePlayFieldColumnValuesTable(
+		binding: ActivityPlayFieldBinding,
+		playField: PlayField
+	)
 	{
 		val playFieldColumnValuesTable: TableLayout = binding.playFieldColumnValuesTable
 		val fieldColumns = playField.getFieldColumns()
-		var rowCounter = -1
+		val longestColumnSize = fieldColumns.stream().map { c -> c.size }.max(Int::compareTo).get()
+
+		for (j in 0..longestColumnSize)
+		{
+			val newRow = TableRow(this)
+			newRow.layoutParams = TableLayout.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT)
+			playFieldColumnValuesTable.addView(newRow)
+		}
 
 		for (i in fieldColumns.indices)
 		{
 			val column: MutableList<Int> = fieldColumns[i]
-			for (j in column.indices)
+			for (j in 0 until longestColumnSize)
 			{
-				if (rowCounter < j)
+				if (j < column.size)
 				{
-					val newRow = TableRow(this)
-					newRow.layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT)
-					playFieldColumnValuesTable.addView(newRow)
-					rowCounter++
+					addValueTextView(
+						playFieldColumnValuesTable,
+						longestColumnSize - j - 1,
+						column[j].toString()
+					)
+				} else
+				{
+					addValueTextView(playFieldColumnValuesTable, longestColumnSize - j - 1, "")
 				}
-
-				val row = playFieldColumnValuesTable.getChildAt(j) as TableRow
-				val columnValueText = TextView(this)
-				columnValueText.layoutParams = ConstraintLayout.LayoutParams(0, ConstraintLayout.LayoutParams.MATCH_PARENT)
-				columnValueText.background = resources.getDrawable(R.drawable.table_border)
-				columnValueText.text = column[j].toString()
-				columnValueText.setTextColor(Color.BLACK)
-				row.addView(columnValueText)
 			}
 		}
 	}
 
-	private fun initializePlayFieldRowValuesTable(binding: ActivityPlayFieldBinding, playField: PlayField)
+	private fun addValueTextView(
+		playFieldColumnValuesTable: TableLayout,
+		j: Int,
+		value: String
+	)
+	{
+		val row = playFieldColumnValuesTable.getChildAt(j) as TableRow
+		val columnValueText = TextView(this)
+		columnValueText.layoutParams = TableRow.LayoutParams(
+			TableRow.LayoutParams.WRAP_CONTENT,
+			TableRow.LayoutParams.MATCH_PARENT,
+			1.0f
+		)
+		columnValueText.background = resources.getDrawable(R.drawable.table_border)
+		columnValueText.text = value
+		columnValueText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+		columnValueText.setTextColor(Color.BLACK)
+		row.addView(columnValueText)
+	}
+
+	private fun initializePlayFieldRowValuesTable(
+		binding: ActivityPlayFieldBinding,
+		playField: PlayField
+	)
 	{
 		val playFieldRowValuesTable: TableLayout = binding.playFieldRowValuesTable
 	}
