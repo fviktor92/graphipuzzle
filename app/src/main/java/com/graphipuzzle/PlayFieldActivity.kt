@@ -2,6 +2,7 @@ package com.graphipuzzle
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -62,7 +63,8 @@ class PlayFieldActivity : AppCompatActivity()
 		for (columnIndex in fieldColumns.indices)
 		{
 			val columnValues: MutableList<Int> = fieldColumns[columnIndex]
-			for (rowIndex in 0 until longestColumnSize)
+			columnValues.reverse() // FIXME: Reversing the list to display it the correct order. Could calculate the tableRowIndex differently?
+			for (rowIndex in longestColumnSize - 1 downTo 0)
 			{
 				val tableRowIndex = longestColumnSize - rowIndex - 1
 				if (rowIndex < columnValues.size)
@@ -106,20 +108,23 @@ class PlayFieldActivity : AppCompatActivity()
 		for (rowIndex in fieldRows.indices)
 		{
 			val rowValues: MutableList<Int> = fieldRows[rowIndex]
-			for (columnIndex in 0 until longestRowSize)
+			rowValues.reverse() // FIXME: Reversing the list to display it the correct order. Could calculate the tableRowIndex differently?
+			var columnCounter = 0
+			for (columnIndex in longestRowSize - 1 downTo 0)
 			{
 				if (columnIndex < rowValues.size)
 				{
 					addValueTextView(
 						playFieldRowValuesTable,
 						rowIndex,
-						columnIndex,
+						columnCounter,
 						rowValues[columnIndex].toString()
 					)
 				} else
 				{
-					addValueTextView(playFieldRowValuesTable, rowIndex, columnIndex, "")
+					addValueTextView(playFieldRowValuesTable, rowIndex, columnCounter, "")
 				}
+				columnCounter++
 			}
 		}
 	}
@@ -148,9 +153,10 @@ class PlayFieldActivity : AppCompatActivity()
 				val fieldButton = MaterialButton(themeWrapper)
 				fieldButton.layoutParams = TableRow.LayoutParams(
 					TableRow.LayoutParams.WRAP_CONTENT,
-					TableRow.LayoutParams.MATCH_PARENT,
+					TableRow.LayoutParams.WRAP_CONTENT,
 					1.0f
 				)
+
 				newTableRow.addView(fieldButton)
 			}
 		}
@@ -179,7 +185,7 @@ class PlayFieldActivity : AppCompatActivity()
 		)
 		columnValueText.background = resources.getDrawable(R.drawable.table_border)
 		columnValueText.text = value
-		columnValueText.textAlignment = View.TEXT_ALIGNMENT_CENTER
+		columnValueText.gravity = Gravity.CENTER
 		columnValueText.setTextColor(Color.BLACK)
 		row.addView(columnValueText, textViewIndex)
 	}
