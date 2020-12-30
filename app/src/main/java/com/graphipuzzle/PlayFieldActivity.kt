@@ -29,11 +29,13 @@ class PlayFieldActivity : AppCompatActivity()
 			PlayField(ReadPlayField(this, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData())
 
 		binding.apply {
-			initalizePlayfield(binding, playField)
+		//	initalizePlayfield(binding, playField)
 			invalidateAll() // Refresh the UI with the new data, invalidating all binding expressions so that they get recreated with the correct data
 		}
 	}
 
+// TODO: MIGHT NOT NEED THESE.
+/*
 	private fun initalizePlayfield(binding: ActivityPlayFieldBinding, playField: PlayField)
 	{
 		initializePlayFieldRowValuesTable(binding, playField)
@@ -183,10 +185,9 @@ class PlayFieldActivity : AppCompatActivity()
 			TableRow.LayoutParams.MATCH_PARENT,
 			1.0f
 		)
-		columnValueText.background = resources.getDrawable(R.drawable.table_border)
 		columnValueText.text = value
 		columnValueText.gravity = Gravity.CENTER
 		columnValueText.setTextColor(Color.BLACK)
 		row.addView(columnValueText, textViewIndex)
-	}
+	}*/
 }
