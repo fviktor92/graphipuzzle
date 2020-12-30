@@ -44,19 +44,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.7">
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton
-                    app:layout_constraintDimensionRatio="1:1"
-                    style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton
-                    app:layout_constraintDimensionRatio="1:1"
-                    style="@style/field_painted" />
-            </TableRow>
-
         </TableLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
