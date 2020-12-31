@@ -16,309 +16,144 @@
 
         <TableLayout
             android:id="@+id/play_field_row_values_table"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginLeft="8dp"
             app:layout_constraintBottom_toBottomOf="@+id/play_field_table"
             app:layout_constraintEnd_toStartOf="@+id/play_field_table"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/play_field_table">
+            app:layout_constraintTop_toTopOf="@+id/play_field_table"
+            style="@style/row_values_table_style">
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="1 1"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_1"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="3 3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_2"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="3 3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_3"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="1 1"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_4"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="3 4"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_5"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="3 4"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_6"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="1 1"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_7"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="3 3 2"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_8"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="9"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_9"
+                    style="@style/row_value_text_style" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <TableRow style="@style/row_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="end|center_vertical"
-                    android:text="7"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    android:id="@+id/row_value_text_10"
+                    style="@style/row_value_text_style" />
             </TableRow>
         </TableLayout>
 
         <TableLayout
             android:id="@+id/play_field_column_values_table"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/play_field_table"
             app:layout_constraintEnd_toEndOf="@+id/play_field_table"
-            app:layout_constraintStart_toStartOf="@+id/play_field_table">
+            app:layout_constraintStart_toStartOf="@+id/play_field_table"
+            style="@style/column_values_table_style">
 
-            <TableRow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/column_values_table_row_style">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="1"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n2"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n\2\n3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="7\n2"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n2\n3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="7\n2"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2\n2\n3"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal|bottom"
                     android:text="2"
-                    android:textAlignment="gravity"
-                    android:textColor="@color/black" />
+                    style="@style/column_value_text_style" />
             </TableRow>
         </TableLayout>
 
         <TableLayout
             android:id="@+id/play_field_table"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/play_field_row_values_table"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.7">
+            app:layout_constraintVertical_bias="0.7"
+            style="@style/play_field_table_style">
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-
-                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -341,9 +176,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -366,9 +199,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -391,9 +222,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -416,9 +245,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -441,9 +268,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -466,9 +291,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -491,9 +314,7 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -516,9 +337,30 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableRow style="@style/play_field_table_row_style">
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+
+                <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
+            </TableRow>
+
+            <TableRow style="@style/play_field_table_row_style">
 
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
 
@@ -541,5 +383,11 @@
                 <com.google.android.material.button.MaterialButton style="@style/field_unpainted" />
             </TableRow>
         </TableLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp"
+            style="@style/play_field_table_row_style" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
