@@ -3,7 +3,6 @@ package com.graphipuzzle
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
-import android.view.View
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
@@ -13,45 +12,41 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.FieldData
 import com.graphipuzzle.databinding.ActivityPlayFieldBinding
+import com.graphipuzzle.databinding.FragmentPlayFieldSmallBinding
 import com.graphipuzzle.read.PlayFieldSize
 import com.graphipuzzle.read.ReadPlayField
 
 class PlayFieldActivity : AppCompatActivity()
 {
-	private lateinit var binding: ActivityPlayFieldBinding
+	private lateinit var activityPlayFieldBinding: ActivityPlayFieldBinding
+	private lateinit var fragmentPlayFieldSmallBinding: FragmentPlayFieldSmallBinding
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
-		binding = DataBindingUtil.setContentView(this, R.layout.activity_play_field)
+		activityPlayFieldBinding =
+			DataBindingUtil.setContentView(this, R.layout.activity_play_field)
+		fragmentPlayFieldSmallBinding =
+			DataBindingUtil.setContentView(this, R.layout.fragment_play_field_small)
 
 		val playField =
 			PlayField(ReadPlayField(this, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData())
 
-		binding.apply {
-		//	initalizePlayfield(binding, playField)
+		activityPlayFieldBinding.apply {
 			invalidateAll() // Refresh the UI with the new data, invalidating all binding expressions so that they get recreated with the correct data
 		}
 	}
 
-// TODO: MIGHT NOT NEED THESE.
-/*
-	private fun initalizePlayfield(binding: ActivityPlayFieldBinding, playField: PlayField)
-	{
-		initializePlayFieldRowValuesTable(binding, playField)
-		initializePlayFieldColumnValuesTable(binding, playField)
-		initializePlayFieldTable(binding, playField)
-	}
 
 	/**
 	 * Initializes the top [TableLayout] that is supposed to contain the column group values.
 	 */
 	private fun initializePlayFieldColumnValuesTable(
-		binding: ActivityPlayFieldBinding,
-		playField: PlayField
+		playField: PlayField,
+		columnValuesTableLayout: TableLayout
 	)
 	{
-		val playFieldColumnValuesTable: TableLayout = binding.playFieldColumnValuesTable
+		val playFieldColumnValuesTable: TableLayout = columnValuesTableLayout
 		val fieldColumns = playField.getFieldColumns()
 		val longestColumnSize = fieldColumns.stream().map { c -> c.size }.max(Int::compareTo).get()
 
@@ -89,11 +84,11 @@ class PlayFieldActivity : AppCompatActivity()
 	 * Initializes the left [TableLayout] that is supposed to contain the row group values.
 	 */
 	private fun initializePlayFieldRowValuesTable(
-		binding: ActivityPlayFieldBinding,
-		playField: PlayField
+		playField: PlayField,
+		rowValuesTableLayout: TableLayout
 	)
 	{
-		val playFieldRowValuesTable: TableLayout = binding.playFieldRowValuesTable
+		val playFieldRowValuesTable: TableLayout = rowValuesTableLayout
 		val fieldRows = playField.getFieldRows()
 		val longestRowSize = fieldRows.stream().map { r -> r.size }.max(Int::compareTo).get()
 
@@ -134,9 +129,12 @@ class PlayFieldActivity : AppCompatActivity()
 	/**
 	 * Initializes tha center [TableLayout] that is supposed to contain the play field buttons.
 	 */
-	private fun initializePlayFieldTable(binding: ActivityPlayFieldBinding, playField: PlayField)
+	private fun initializePlayFieldTable(
+		playField: PlayField,
+		playFieldTableLayout: TableLayout
+	)
 	{
-		val playFieldTable: TableLayout = binding.playFieldTable
+		val playFieldTable: TableLayout = playFieldTableLayout
 		val fieldValues = playField.getFieldValues()
 
 		for (rowIndex in fieldValues.indices)
@@ -189,5 +187,5 @@ class PlayFieldActivity : AppCompatActivity()
 		columnValueText.gravity = Gravity.CENTER
 		columnValueText.setTextColor(Color.BLACK)
 		row.addView(columnValueText, textViewIndex)
-	}*/
+	}
 }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        tools:context=".PlayFieldActivity">
+        tools:context=".playfields.PlayFieldSmallFragment">
 
         <TableLayout
             android:id="@+id/play_field_row_values_table"
@@ -103,43 +107,43 @@
             <TableRow style="@style/column_values_table_row_style">
 
                 <TextView
-                    android:text="1"
+                    android:id="@+id/column_value_text_1"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2\n2"
+                    android:id="@+id/column_value_text_2"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2\n\2\n3"
+                    android:id="@+id/column_value_text_3"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="7\n2"
+                    android:id="@+id/column_value_text_4"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2\n3"
+                    android:id="@+id/column_value_text_5"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2\n3"
+                    android:id="@+id/column_value_text_6"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2\n2\n3"
+                    android:id="@+id/column_value_text_7"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="7\n2"
+                    android:id="@+id/column_value_text_8"
                     style="@style/column_value_text_style"/>
 
                 <TextView
-                    android:text="2\n2\n3"
+                    android:id="@+id/column_value_text_9"
                     style="@style/column_value_text_style" />
 
                 <TextView
-                    android:text="2"
+                    android:id="@+id/column_value_text_10"
                     style="@style/column_value_text_style" />
             </TableRow>
         </TableLayout>
@@ -384,10 +388,6 @@
             </TableRow>
         </TableLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="20dp"
-            style="@style/play_field_table_row_style" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
+</layout>
