@@ -2,9 +2,10 @@ package com.graphipuzzle
 
 import com.graphipuzzle.data.FieldData
 import com.graphipuzzle.data.PlayFieldData
+import kotlinx.serialization.Serializable
 import kotlin.math.ceil
 
-
+@Serializable
 class PlayField(private val playFieldData: PlayFieldData)
 {
 	private val fieldValues: MutableList<MutableList<FieldData>> = this.playFieldData.fieldValues

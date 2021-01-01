@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:id="@+id/play_field_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".playfieldfragments.PlayFieldFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TableLayout
+                android:id="@+id/play_field_row_values_table"
+                style="@style/row_values_table_style"
+                app:layout_constraintBottom_toBottomOf="@+id/play_field_table"
+                app:layout_constraintEnd_toStartOf="@+id/play_field_table"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/play_field_table"></TableLayout>
+
+            <TableLayout
+                android:id="@+id/play_field_column_values_table"
+                style="@style/column_values_table_style"
+                app:layout_constraintBottom_toTopOf="@+id/play_field_table"
+                app:layout_constraintEnd_toEndOf="@+id/play_field_table"
+                app:layout_constraintStart_toStartOf="@+id/play_field_table"></TableLayout>
+
+            <TableLayout
+                android:id="@+id/play_field_table"
+                style="@style/play_field_table_style"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/play_field_row_values_table"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintVertical_bias="0.7"></TableLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</layout>

@@ -3,40 +3,63 @@ package com.graphipuzzle
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.FieldData
 import com.graphipuzzle.databinding.ActivityPlayFieldBinding
-import com.graphipuzzle.databinding.FragmentPlayFieldSmallBinding
+import com.graphipuzzle.databinding.FragmentPlayFieldBinding
+import com.graphipuzzle.playfieldfragments.PlayFieldFragment
 import com.graphipuzzle.read.PlayFieldSize
 import com.graphipuzzle.read.ReadPlayField
 
 class PlayFieldActivity : AppCompatActivity()
 {
 	private lateinit var activityPlayFieldBinding: ActivityPlayFieldBinding
-	private lateinit var fragmentPlayFieldSmallBinding: FragmentPlayFieldSmallBinding
+	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
 		activityPlayFieldBinding =
 			DataBindingUtil.setContentView(this, R.layout.activity_play_field)
-		fragmentPlayFieldSmallBinding =
-			DataBindingUtil.setContentView(this, R.layout.fragment_play_field_small)
+		fragmentPlayFieldBinding =
+			DataBindingUtil.setContentView(this, R.layout.fragment_play_field)
 
 		val playField =
-			PlayField(ReadPlayField(this, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData())
+			PlayField(ReadPlayField(this, PlayFieldSize.BIG, "level_1.json").getPlayFieldData())
+
+		val playFieldFragment =
+			PlayFieldFragment.newInstance(playField, R.id.play_field_fragment)
+		supportFragmentManager.beginTransaction()
+			.add(activityPlayFieldBinding.playFieldFragmentContainerView.id, playFieldFragment)
 
 		activityPlayFieldBinding.apply {
+			initializePlayFieldTables(playField, fragmentPlayFieldBinding)
 			invalidateAll() // Refresh the UI with the new data, invalidating all binding expressions so that they get recreated with the correct data
 		}
 	}
 
+	private fun initializePlayFieldTables(
+		playField: PlayField,
+		fragmentPlayFieldBinding: FragmentPlayFieldBinding
+	)
+	{
+		initializePlayFieldColumnValuesTable(
+			playField,
+			fragmentPlayFieldBinding.playFieldColumnValuesTable
+		)
+		initializePlayFieldRowValuesTable(
+			playField,
+			fragmentPlayFieldBinding.playFieldRowValuesTable
+		)
+		initializePlayFieldTable(playField, fragmentPlayFieldBinding.playFieldTable)
+	}
 
 	/**
 	 * Initializes the top [TableLayout] that is supposed to contain the column group values.
@@ -48,37 +71,28 @@ class PlayFieldActivity : AppCompatActivity()
 	{
 		val playFieldColumnValuesTable: TableLayout = columnValuesTableLayout
 		val fieldColumns = playField.getFieldColumns()
-		val longestColumnSize = fieldColumns.stream().map { c -> c.size }.max(Int::compareTo).get()
-
-		for (j in 0..longestColumnSize)
-		{
-			val newRow = TableRow(this)
-			newRow.layoutParams = TableLayout.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT)
-			playFieldColumnValuesTable.addView(newRow)
-		}
+		val row = TableRow(this)
+		row.layoutParams = TableLayout.LayoutParams(0, TableLayout.LayoutParams.WRAP_CONTENT)
 
 		for (columnIndex in fieldColumns.indices)
 		{
 			val columnValues: MutableList<Int> = fieldColumns[columnIndex]
-			columnValues.reverse() // FIXME: Reversing the list to display it the correct order. Could calculate the tableRowIndex differently?
-			for (rowIndex in longestColumnSize - 1 downTo 0)
-			{
-				val tableRowIndex = longestColumnSize - rowIndex - 1
-				if (rowIndex < columnValues.size)
-				{
-					addValueTextView(
-						playFieldColumnValuesTable,
-						tableRowIndex,
-						columnIndex,
-						columnValues[rowIndex].toString()
-					)
-				} else
-				{
-					addValueTextView(playFieldColumnValuesTable, tableRowIndex, columnIndex, "")
-				}
-			}
+			val columnValueText = TextView(this)
+			columnValueText.layoutParams = TableRow.LayoutParams(
+				TableRow.LayoutParams.WRAP_CONTENT,
+				TableRow.LayoutParams.MATCH_PARENT, 1.0f
+			)
+			columnValueText.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+			columnValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
+			columnValueText.setTextColor(Color.BLACK)
+			columnValueText.textSize = 10.0f
+			columnValueText.text = columnValues.joinToString(separator = System.lineSeparator())
+			row.addView(columnValueText)
 		}
+
+		playFieldColumnValuesTable.addView(row)
 	}
+
 
 	/**
 	 * Initializes the left [TableLayout] that is supposed to contain the row group values.
@@ -90,41 +104,32 @@ class PlayFieldActivity : AppCompatActivity()
 	{
 		val playFieldRowValuesTable: TableLayout = rowValuesTableLayout
 		val fieldRows = playField.getFieldRows()
-		val longestRowSize = fieldRows.stream().map { r -> r.size }.max(Int::compareTo).get()
-
-		repeat(fieldRows.size) {
-			val newRow = TableRow(this)
-			newRow.layoutParams = TableLayout.LayoutParams(
-				TableLayout.LayoutParams.WRAP_CONTENT,
-				TableLayout.LayoutParams.MATCH_PARENT,
-				1.0f
-			)
-			playFieldRowValuesTable.addView(newRow)
-		}
 
 		for (rowIndex in fieldRows.indices)
 		{
 			val rowValues: MutableList<Int> = fieldRows[rowIndex]
-			rowValues.reverse() // FIXME: Reversing the list to display it the correct order. Could calculate the tableRowIndex differently?
-			var columnCounter = 0
-			for (columnIndex in longestRowSize - 1 downTo 0)
-			{
-				if (columnIndex < rowValues.size)
-				{
-					addValueTextView(
-						playFieldRowValuesTable,
-						rowIndex,
-						columnCounter,
-						rowValues[columnIndex].toString()
-					)
-				} else
-				{
-					addValueTextView(playFieldRowValuesTable, rowIndex, columnCounter, "")
-				}
-				columnCounter++
-			}
+			val row = TableRow(this)
+			row.layoutParams = TableLayout.LayoutParams(
+				0,
+				TableLayout.LayoutParams.WRAP_CONTENT,
+				1.0f
+			)
+
+			val rowValueText = TextView(this)
+			rowValueText.layoutParams = TableRow.LayoutParams(
+				TableRow.LayoutParams.WRAP_CONTENT,
+				TableRow.LayoutParams.MATCH_PARENT, 1.0f
+			)
+			rowValueText.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+			rowValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
+			rowValueText.setTextColor(Color.BLACK)
+			rowValueText.textSize = 10.0f
+			rowValueText.text = rowValues.joinToString(separator = " ")
+			row.addView(rowValueText)
+			playFieldRowValuesTable.addView(row)
 		}
 	}
+
 
 	/**
 	 * Initializes tha center [TableLayout] that is supposed to contain the play field buttons.
@@ -139,53 +144,32 @@ class PlayFieldActivity : AppCompatActivity()
 
 		for (rowIndex in fieldValues.indices)
 		{
-			val newTableRow = TableRow(this)
-			newTableRow.layoutParams = TableLayout.LayoutParams(
+			val row = TableRow(this)
+			row.layoutParams = TableLayout.LayoutParams(
 				TableLayout.LayoutParams.WRAP_CONTENT,
-				TableLayout.LayoutParams.MATCH_PARENT
+				TableLayout.LayoutParams.WRAP_CONTENT,
+				1.0f
 			)
-			playFieldTable.addView(newTableRow)
+			playFieldTable.addView(row)
 
 			val rowValues: MutableList<FieldData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
 			{
-				val themeWrapper = ContextThemeWrapper(this, R.style.field_unpainted)
-				val fieldButton = MaterialButton(themeWrapper)
-				fieldButton.layoutParams = TableRow.LayoutParams(
+				val fieldButton = MaterialButton(this, null, R.attr.materialButtonOutlinedStyle)
+				val layoutParams = TableRow.LayoutParams(
 					TableRow.LayoutParams.WRAP_CONTENT,
-					TableRow.LayoutParams.WRAP_CONTENT,
-					1.0f
+					TableRow.LayoutParams.WRAP_CONTENT, 1.0f
 				)
-
-				newTableRow.addView(fieldButton)
+				layoutParams.setMargins(0)
+				fieldButton.layoutParams = layoutParams
+				fieldButton.setPadding(0, 0, 0, 0)
+				fieldButton.insetTop = 0
+				fieldButton.insetBottom = 0
+				fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+				fieldButton.setBackgroundColor(Color.WHITE)
+				fieldButton.cornerRadius = 0
+				row.addView(fieldButton)
 			}
 		}
-	}
-
-	/**
-	 * Adds a text view with a given text to a table layout's table row by the index of the row.
-	 * @param playFieldColumnValuesTable The [TableLayout] that will contain the text view
-	 * @param tableRowIndex The index of the [TableRow] that will contain the text view
-	 * @param textViewIndex The index of the [TextView] (column)
-	 * @param value The text of the text view. Should be either a group value or an empty string
-	 */
-	private fun addValueTextView(
-		playFieldColumnValuesTable: TableLayout,
-		tableRowIndex: Int,
-		textViewIndex: Int,
-		value: String
-	)
-	{
-		val row = playFieldColumnValuesTable.getChildAt(tableRowIndex) as TableRow
-		val columnValueText = TextView(this)
-		columnValueText.layoutParams = TableRow.LayoutParams(
-			TableRow.LayoutParams.WRAP_CONTENT,
-			TableRow.LayoutParams.MATCH_PARENT,
-			1.0f
-		)
-		columnValueText.text = value
-		columnValueText.gravity = Gravity.CENTER
-		columnValueText.setTextColor(Color.BLACK)
-		row.addView(columnValueText, textViewIndex)
 	}
 }

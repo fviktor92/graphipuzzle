@@ -12,8 +12,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/play_field_fragment_container_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.graphipuzzle.playfields.PlayFieldSmallFragment">
+        android:layout_height="match_parent">
 
     </androidx.fragment.app.FragmentContainerView>
     </LinearLayout>
