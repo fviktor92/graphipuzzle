@@ -3,6 +3,7 @@ package com.graphipuzzle
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.widget.Button
 import android.widget.TableLayout
 import android.widget.TableRow
@@ -142,6 +143,8 @@ class PlayFieldActivity : AppCompatActivity()
 		val playFieldTable: TableLayout = playFieldTableLayout
 		val fieldValues = playField.getFieldValues()
 
+		addBorderInTable(playFieldTable)
+
 		for (rowIndex in fieldValues.indices)
 		{
 			val row = TableRow(this)
@@ -151,6 +154,12 @@ class PlayFieldActivity : AppCompatActivity()
 				1.0f
 			)
 			playFieldTable.addView(row)
+			addBorderInRow(row)
+
+			if ((rowIndex + 1) % 5 == 0)
+			{
+				addBorderInTable(playFieldTable)
+			}
 
 			val rowValues: MutableList<FieldData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
@@ -168,8 +177,34 @@ class PlayFieldActivity : AppCompatActivity()
 				fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
 				fieldButton.setBackgroundColor(Color.WHITE)
 				fieldButton.cornerRadius = 0
+
 				row.addView(fieldButton)
+
+				if ((columnIndex + 1) % 5 == 0)
+				{
+					addBorderInRow(row)
+				}
 			}
 		}
+	}
+
+	private fun addBorderInRow(row: TableRow)
+	{
+		val border = View(this)
+		val borderLayoutParams =
+			TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)
+		border.layoutParams = borderLayoutParams
+		border.setBackgroundColor(Color.GRAY)
+		row.addView(border)
+	}
+
+	private fun addBorderInTable(tableLayout: TableLayout)
+	{
+		val border = View(this)
+		val borderLayoutParams =
+			TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 2)
+		border.layoutParams = borderLayoutParams
+		border.setBackgroundColor(Color.GRAY)
+		tableLayout.addView(border)
 	}
 }
