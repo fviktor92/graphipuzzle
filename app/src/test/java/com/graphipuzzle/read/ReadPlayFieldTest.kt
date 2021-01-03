@@ -1,10 +1,8 @@
-package com.graphipuzzle
+package com.graphipuzzle.read
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.graphipuzzle.read.PlayFieldSize
-import com.graphipuzzle.read.ReadPlayField
-import org.junit.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -20,6 +18,6 @@ class ReadPlayFieldTest
 		// Given a 10x10 play field
 		val readPlayField = ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json")
 		val playFieldData = readPlayField.getPlayFieldData()
-		assertEquals("Play field size did not match", 10, playFieldData.fieldValues.size)
+		Assert.assertEquals("Play field size did not match", 10, playFieldData.fieldValues.size)
 	}
 }
