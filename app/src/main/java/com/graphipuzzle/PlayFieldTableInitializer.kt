@@ -52,20 +52,26 @@ class PlayFieldTableInitializer(
 		for (columnIndex in fieldColumns.indices)
 		{
 			val columnValues: MutableList<Int> = fieldColumns[columnIndex]
-			val columnValueText = TextView(this.ctx)
-			columnValueText.layoutParams = TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.MATCH_PARENT, 1.0f
-			)
-			columnValueText.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-			columnValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
-			columnValueText.setTextColor(Color.BLACK)
-			columnValueText.textSize = 10.0f
-			columnValueText.text = columnValues.joinToString(separator = System.lineSeparator())
+			val columnValueText = createColumnValueTextView(columnValues)
 			row.addView(columnValueText)
 		}
 
 		playFieldColumnValuesTable.addView(row)
+	}
+
+	private fun createColumnValueTextView(columnValues: MutableList<Int>): TextView
+	{
+		val columnValueText = TextView(this.ctx)
+		columnValueText.layoutParams = TableRow.LayoutParams(
+			TableRow.LayoutParams.WRAP_CONTENT,
+			TableRow.LayoutParams.MATCH_PARENT, 1.0f
+		)
+		columnValueText.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+		columnValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
+		columnValueText.setTextColor(Color.BLACK)
+		columnValueText.textSize = 10.0f
+		columnValueText.text = columnValues.joinToString(separator = System.lineSeparator())
+		return columnValueText
 	}
 
 
@@ -88,19 +94,25 @@ class PlayFieldTableInitializer(
 				1.0f
 			)
 
-			val rowValueText = TextView(this.ctx)
-			rowValueText.layoutParams = TableRow.LayoutParams(
-				TableRow.LayoutParams.WRAP_CONTENT,
-				TableRow.LayoutParams.MATCH_PARENT, 1.0f
-			)
-			rowValueText.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-			rowValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
-			rowValueText.setTextColor(Color.BLACK)
-			rowValueText.textSize = 10.0f
-			rowValueText.text = rowValues.joinToString(separator = " ")
+			val rowValueText = createRowValueTextView(rowValues)
 			row.addView(rowValueText)
 			playFieldRowValuesTable.addView(row)
 		}
+	}
+
+	private fun createRowValueTextView(rowValues: MutableList<Int>): TextView
+	{
+		val rowValueText = TextView(this.ctx)
+		rowValueText.layoutParams = TableRow.LayoutParams(
+			TableRow.LayoutParams.WRAP_CONTENT,
+			TableRow.LayoutParams.MATCH_PARENT, 1.0f
+		)
+		rowValueText.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+		rowValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
+		rowValueText.setTextColor(Color.BLACK)
+		rowValueText.textSize = 10.0f
+		rowValueText.text = rowValues.joinToString(separator = " ")
+		return rowValueText
 	}
 
 
@@ -116,12 +128,7 @@ class PlayFieldTableInitializer(
 
 		for (rowIndex in fieldValues.indices)
 		{
-			val row = TableRow(this.ctx)
-			row.layoutParams = TableLayout.LayoutParams(
-				TableLayout.LayoutParams.WRAP_CONTENT,
-				TableLayout.LayoutParams.WRAP_CONTENT,
-				1.0f
-			)
+			val row = createPlayFieldTableRow()
 			playFieldTable.addView(row)
 			addBorderInRow(row)
 
@@ -133,19 +140,7 @@ class PlayFieldTableInitializer(
 			val rowValues: MutableList<FieldData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
 			{
-				val fieldButton = MaterialButton(this.ctx, null, R.attr.materialButtonOutlinedStyle)
-				val layoutParams = TableRow.LayoutParams(
-					TableRow.LayoutParams.WRAP_CONTENT,
-					TableRow.LayoutParams.WRAP_CONTENT, 1.0f
-				)
-				layoutParams.setMargins(0)
-				fieldButton.layoutParams = layoutParams
-				fieldButton.setPadding(0, 0, 0, 0)
-				fieldButton.insetTop = 0
-				fieldButton.insetBottom = 0
-				fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-				fieldButton.setBackgroundColor(Color.WHITE)
-				fieldButton.cornerRadius = 0
+				val fieldButton = createPlayFieldButton()
 
 				row.addView(fieldButton)
 
@@ -155,6 +150,40 @@ class PlayFieldTableInitializer(
 				}
 			}
 		}
+	}
+
+	private fun createPlayFieldTableRow(): TableRow
+	{
+		val row = TableRow(this.ctx)
+		row.layoutParams = TableLayout.LayoutParams(
+			TableLayout.LayoutParams.WRAP_CONTENT,
+			TableLayout.LayoutParams.WRAP_CONTENT,
+			1.0f
+		)
+		return row
+	}
+
+	private fun createPlayFieldButton(): MaterialButton
+	{
+		val fieldButton = MaterialButton(this.ctx, null, R.attr.materialButtonOutlinedStyle)
+		val layoutParams = TableRow.LayoutParams(
+			TableRow.LayoutParams.WRAP_CONTENT,
+			TableRow.LayoutParams.WRAP_CONTENT, 1.0f
+		)
+		layoutParams.setMargins(0)
+		fieldButton.layoutParams = layoutParams
+		fieldButton.setPadding(0, 0, 0, 0)
+		fieldButton.insetTop = 0
+		fieldButton.insetBottom = 0
+		fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+		fieldButton.setBackgroundColor(Color.WHITE)
+		fieldButton.cornerRadius = 0
+
+		fieldButton.setOnClickListener {
+			fieldButton.setBackgroundColor(Color.BLACK)
+		}
+
+		return fieldButton
 	}
 
 	private fun addBorderInRow(row: TableRow)
