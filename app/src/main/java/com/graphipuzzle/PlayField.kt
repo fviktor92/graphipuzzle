@@ -14,8 +14,8 @@ class PlayField(private val playFieldData: PlayFieldData)
 	private val fieldValues: MutableList<MutableList<FieldData>> = this.playFieldData.fieldValues
 	private val fieldSize = this.fieldValues.size
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
-	private val fieldColumns: MutableList<MutableList<Int>> = ArrayList(maxGroups)
-	private val fieldRows: MutableList<MutableList<Int>> = ArrayList(maxGroups)
+	private lateinit var fieldColumns: MutableList<MutableList<Int>>
+	private lateinit var fieldRows: MutableList<MutableList<Int>>
 
 	init
 	{
@@ -39,6 +39,8 @@ class PlayField(private val playFieldData: PlayFieldData)
 
 	private fun loadValues()
 	{
+		fieldColumns = ArrayList(maxGroups)
+		fieldRows = ArrayList(maxGroups)
 		var rowCount = 0
 		var colCount = IntArray(fieldSize)
 		var rowPrev = 0

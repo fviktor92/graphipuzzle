@@ -1,16 +1,16 @@
 package com.graphipuzzle
 
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import com.graphipuzzle.read.PlayFieldSize
+import com.graphipuzzle.read.ReadPlayField
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
-const val EXTRA_MESSAGE = "com.graphipuzzle.MainActivity"
+const val PLAY_FIELD_MESSAGE = "com.graphipuzzle.MainActivity.PlayField"
 
 class MainActivity : AppCompatActivity()
 {
@@ -20,16 +20,25 @@ class MainActivity : AppCompatActivity()
 	{
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
-
-		val startGame: Button = findViewById(R.id.start_game)
-		startGame.setOnClickListener { startPlayFieldActivity() }
+		val startSmallGame: Button = findViewById(R.id.start_small_game)
+		val startBigGame: Button = findViewById(R.id.start_big_game)
+		startSmallGame.setOnClickListener {
+			playField =
+				PlayField(ReadPlayField(this, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData())
+			startPlayFieldActivity(playField)
+		}
+		startBigGame.setOnClickListener {
+			playField =
+				PlayField(ReadPlayField(this, PlayFieldSize.BIG, "level_1.json").getPlayFieldData())
+			startPlayFieldActivity(playField)
+		}
 	}
 
-	private fun startPlayFieldActivity()
+	private fun startPlayFieldActivity(playField: PlayField)
 	{
 		Log.d(this.toString(), "Starting play field activity...")
 		val playFieldIntent = Intent(this, PlayFieldActivity::class.java).apply {
-			putExtra(EXTRA_MESSAGE, this.toString())
+			putExtra(PLAY_FIELD_MESSAGE, Json.encodeToString(playField))
 		}
 		startActivity(playFieldIntent)
 	}

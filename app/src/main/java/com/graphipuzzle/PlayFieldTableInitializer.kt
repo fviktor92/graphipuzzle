@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.view.setMargins
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.FieldData
-import com.graphipuzzle.databinding.ActivityPlayFieldBinding
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 
 /**
@@ -32,7 +31,7 @@ class PlayFieldTableInitializer(
 	private val playField: PlayField = playField
 	private val fragmentPlayFieldBinding: FragmentPlayFieldBinding = fragmentPlayFieldBinding
 
-	public fun initializePlayFieldTables()
+	fun initializePlayFieldTables()
 	{
 		initializePlayFieldColumnValuesTable()
 		initializePlayFieldRowValuesTable()

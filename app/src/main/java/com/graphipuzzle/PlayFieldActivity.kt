@@ -8,6 +8,8 @@ import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import com.graphipuzzle.playfieldfragments.PlayFieldFragment
 import com.graphipuzzle.read.PlayFieldSize
 import com.graphipuzzle.read.ReadPlayField
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class PlayFieldActivity : AppCompatActivity()
 {
@@ -23,7 +25,7 @@ class PlayFieldActivity : AppCompatActivity()
 			DataBindingUtil.setContentView(this, R.layout.fragment_play_field)
 
 		val playField =
-			PlayField(ReadPlayField(this, PlayFieldSize.BIG, "level_1.json").getPlayFieldData())
+			Json.decodeFromString<PlayField>(intent.getStringExtra(PLAY_FIELD_MESSAGE)!!)
 
 		val playFieldFragment =
 			PlayFieldFragment.newInstance(playField, R.id.play_field_fragment)
