@@ -5,6 +5,9 @@ import com.graphipuzzle.data.PlayFieldData
 import kotlinx.serialization.Serializable
 import kotlin.math.ceil
 
+/**
+ * Responsible for the logic of the play field. Initializes the field values, row values, column values
+ */
 @Serializable
 class PlayField(private val playFieldData: PlayFieldData)
 {
