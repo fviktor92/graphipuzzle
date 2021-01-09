@@ -8,6 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertFailsWith
 
 @RunWith(RobolectricTestRunner::class)
 class PlayFieldTest
@@ -115,6 +116,60 @@ class PlayFieldTest
 			"Big field rows values did not match",
 			expectedBigFieldRows,
 			actualBigFieldRows
+		)
+	}
+
+	@Test
+	fun setTileStateIsCorrect()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+
+		playField.setTileState(1, 1, 1)
+		assertEquals(1, playField.getTileState(1, 1))
+
+		playField.setTileState(2, 2, 2)
+		assertEquals(2, playField.getTileState(2, 2))
+
+		assertEquals(0, playField.getTileState(9, 9))
+	}
+
+	@Test
+	fun setTileStateHandlesInvalidValues()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+
+		var expectedException = assertFailsWith(IllegalArgumentException::class) {
+			playField.setTileState(0, 0, 0)
+		}
+
+		assertEquals("The tile value must be either 1 or 2! It was: 0", expectedException.message)
+
+		expectedException = assertFailsWith(IllegalArgumentException::class) {
+			playField.setTileState(3, 0, 0)
+		}
+
+		assertEquals("The tile value must be either 1 or 2! It was: 3", expectedException.message)
+
+		expectedException = assertFailsWith(IllegalArgumentException::class) {
+			playField.setTileState(1, 100, 0)
+		}
+
+		assertEquals(
+			"The row must be greater than 0 or lower than 10. It was 100",
+			expectedException.message
+		)
+
+		expectedException = assertFailsWith(IllegalArgumentException::class) {
+			playField.setTileState(2, 9, -1)
+		}
+
+		assertEquals(
+			"The col must be greater than 0 or lower than 10. It was -1",
+			expectedException.message
 		)
 	}
 }
