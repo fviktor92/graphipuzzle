@@ -18,6 +18,6 @@ class ReadPlayFieldTest
 		// Given a 10x10 play field
 		val readPlayField = ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json")
 		val playFieldData = readPlayField.getPlayFieldData()
-		Assert.assertEquals("Play field size did not match", 10, playFieldData.fieldValues.size)
+		Assert.assertEquals("Play field size did not match", 10, playFieldData.tileValues.size)
 	}
 }

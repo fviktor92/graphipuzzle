@@ -105,4 +105,9 @@
         <item name="android:textAlignment">gravity</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="tile_switch_style">
+        <item name="colorSurface">#888888</item>
+        <item name="colorControlActivated">@color/black</item>
+    </style>
 </resources>

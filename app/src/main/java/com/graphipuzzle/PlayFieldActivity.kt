@@ -6,8 +6,6 @@ import androidx.databinding.DataBindingUtil
 import com.graphipuzzle.databinding.ActivityPlayFieldBinding
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import com.graphipuzzle.playfieldfragments.PlayFieldFragment
-import com.graphipuzzle.read.PlayFieldSize
-import com.graphipuzzle.read.ReadPlayField
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
@@ -33,7 +31,7 @@ class PlayFieldActivity : AppCompatActivity()
 			.add(activityPlayFieldBinding.playFieldFragmentContainerView.id, playFieldFragment)
 
 		val playFieldTableInitializer =
-			PlayFieldTableInitializer(this, playField, fragmentPlayFieldBinding)
+			PlayFieldFragmentInitializer(this, playField, fragmentPlayFieldBinding)
 
 		activityPlayFieldBinding.apply {
 			playFieldTableInitializer.initializePlayFieldTables()

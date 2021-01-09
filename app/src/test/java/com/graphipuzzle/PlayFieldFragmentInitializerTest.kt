@@ -1,7 +1,6 @@
 package com.graphipuzzle
 
 import android.content.Context
-import androidx.databinding.DataBindingUtil
 import androidx.test.core.app.ApplicationProvider
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import com.graphipuzzle.read.PlayFieldSize
@@ -15,10 +14,10 @@ import org.robolectric.RobolectricTestRunner
  * FIXME: Finish this with PowerMockito?
  */
 @RunWith(RobolectricTestRunner::class)
-class PlayFieldTableInitializerTest
+class PlayFieldFragmentInitializerTest
 {
 	val context = ApplicationProvider.getApplicationContext<Context>()
-	lateinit var playFieldTableInitializer: PlayFieldTableInitializer
+	lateinit var playFieldFragmentInitializer: PlayFieldFragmentInitializer
 	lateinit var playField: PlayField
 	lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 

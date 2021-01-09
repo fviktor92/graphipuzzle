@@ -3,6 +3,7 @@ package com.graphipuzzle
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
 import android.widget.TableLayout
@@ -10,7 +11,7 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.core.view.setMargins
 import com.google.android.material.button.MaterialButton
-import com.graphipuzzle.data.FieldData
+import com.graphipuzzle.data.TileData
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 
 /**
@@ -21,15 +22,12 @@ import com.graphipuzzle.databinding.FragmentPlayFieldBinding
  * - The style of the play field
  * - The listeners
  */
-class PlayFieldTableInitializer(
-	ctx: Context,
-	playField: PlayField,
-	fragmentPlayFieldBinding: FragmentPlayFieldBinding
+class PlayFieldFragmentInitializer(
+	private val ctx: Context,
+	private val playField: PlayField,
+	private val fragmentPlayFieldBinding: FragmentPlayFieldBinding
 )
 {
-	private val ctx: Context = ctx
-	private val playField: PlayField = playField
-	private val fragmentPlayFieldBinding: FragmentPlayFieldBinding = fragmentPlayFieldBinding
 
 	fun initializePlayFieldTables()
 	{
@@ -122,7 +120,7 @@ class PlayFieldTableInitializer(
 	private fun initializePlayFieldTable()
 	{
 		val playFieldTable: TableLayout = this.fragmentPlayFieldBinding.playFieldTable
-		val fieldValues = this.playField.getFieldValues()
+		val fieldValues = this.playField.getTileValues()
 
 		addBorderInTable(playFieldTable)
 
@@ -137,10 +135,10 @@ class PlayFieldTableInitializer(
 				addBorderInTable(playFieldTable)
 			}
 
-			val rowValues: MutableList<FieldData> = fieldValues[rowIndex]
+			val rowValues: MutableList<TileData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
 			{
-				val fieldButton = createPlayFieldButton()
+				val fieldButton = createPlayFieldButton(rowIndex, columnIndex)
 
 				row.addView(fieldButton)
 
@@ -163,7 +161,7 @@ class PlayFieldTableInitializer(
 		return row
 	}
 
-	private fun createPlayFieldButton(): MaterialButton
+	private fun createPlayFieldButton(rowIndex: Int, columnIndex: Int): MaterialButton
 	{
 		val fieldButton = MaterialButton(this.ctx, null, R.attr.materialButtonOutlinedStyle)
 		val layoutParams = TableRow.LayoutParams(
@@ -179,8 +177,25 @@ class PlayFieldTableInitializer(
 		fieldButton.setBackgroundColor(Color.WHITE)
 		fieldButton.cornerRadius = 0
 
-		fieldButton.setOnClickListener {
-			fieldButton.setBackgroundColor(Color.BLACK)
+		fieldButton.setOnTouchListener { v, event ->
+			when (event?.action)
+			{
+				MotionEvent.ACTION_DOWN ->
+				{
+					if (fragmentPlayFieldBinding.tileColorSwitch.isChecked)
+					{
+						v?.setBackgroundColor(Color.BLACK)
+						this.playField.setTileState(1, rowIndex, columnIndex)
+					} else
+					{
+						v?.setBackgroundColor(Color.GRAY)
+						this.playField.setTileState(2, rowIndex, columnIndex)
+					}
+
+				}
+			}
+
+			v?.onTouchEvent(event) ?: true
 		}
 
 		return fieldButton
