@@ -189,7 +189,7 @@ class PlayFieldFragmentInitializer(
 					} else
 					{
 						v?.setBackgroundColor(Color.GRAY)
-						this.playField.setTileState(2, rowIndex, columnIndex)
+						this.playField.setTileState(0, rowIndex, columnIndex)
 					}
 
 				}

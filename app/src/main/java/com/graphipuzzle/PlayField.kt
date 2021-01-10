@@ -12,12 +12,20 @@ import kotlin.math.ceil
 @Serializable
 class PlayField(private val playFieldData: PlayFieldData)
 {
+	/**
+	 * This is the expected result of the game
+	 */
 	private val tileValues: MutableList<MutableList<TileData>> = this.playFieldData.tileValues
 	private val fieldSize = this.tileValues.size
-	private val tileStates = Array(fieldSize) { IntArray(fieldSize) }
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
 	private lateinit var fieldColumns: MutableList<MutableList<Int>>
 	private lateinit var fieldRows: MutableList<MutableList<Int>>
+
+	/**
+	 * This is the actual state of the play field, modified by the user
+	 */
+	private val tileStates = Array(fieldSize) { IntArray(fieldSize) }
+
 
 	init
 	{
@@ -40,19 +48,19 @@ class PlayField(private val playFieldData: PlayFieldData)
 
 	/**
 	 * Sets the tile value at the given position.
-	 * The tile value can be either 1: BLACK, or 2: GRAY.
-	 * @throws IllegalArgumentException If the tileValue is not 1 or 2.
+	 * The tile value can be either 0: GRAY, or 1: BLACK.
+	 * @throws IllegalArgumentException If the tileValue is not 0 or 1.
 	 * @throws IllegalArgumentException If the row or col is negative or greater than the field size.
 	 */
 	fun setTileState(tileValue: Int, row: Int, col: Int)
 	{
-		if (tileValue < 1 || tileValue > 2)
+		if (!IntRange(0, 1).contains(tileValue))
 		{
-			throw IllegalArgumentException("The tile value must be either 1 or 2! It was: $tileValue")
-		} else if (col < 0 || col >= fieldSize)
+			throw IllegalArgumentException("The tile value must be either 0 or 1! It was: $tileValue")
+		} else if (!IntRange(0, this.fieldSize).contains(col))
 		{
 			throw IllegalArgumentException("The col must be greater than 0 or lower than $fieldSize. It was $col")
-		} else if (row < 0 || row >= fieldSize)
+		} else if (!IntRange(0, this.fieldSize).contains(row))
 		{
 			throw IllegalArgumentException("The row must be greater than 0 or lower than $fieldSize. It was $row")
 		}
