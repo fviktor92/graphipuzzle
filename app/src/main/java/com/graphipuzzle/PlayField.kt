@@ -15,11 +15,11 @@ class PlayField(private val playFieldData: PlayFieldData)
 	/**
 	 * This is the expected result of the game
 	 */
-	private val tileValues: MutableList<MutableList<TileData>> = this.playFieldData.tileValues
+	private val tileValues: ArrayList<ArrayList<TileData>> = this.playFieldData.tileValues
 	private val fieldSize = this.tileValues.size
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
-	private lateinit var fieldColumns: MutableList<MutableList<Int>>
-	private lateinit var fieldRows: MutableList<MutableList<Int>>
+	private lateinit var fieldColumns: ArrayList<ArrayList<Int>>
+	private lateinit var fieldRows: ArrayList<ArrayList<Int>>
 
 	/**
 	 * This is the actual state of the play field, modified by the user
@@ -32,7 +32,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 		loadValues()
 	}
 
-	fun getTileValues(): MutableList<MutableList<TileData>>
+	fun getTileValues(): ArrayList<ArrayList<TileData>>
 	{
 		return this.tileValues
 	}
@@ -69,14 +69,40 @@ class PlayField(private val playFieldData: PlayFieldData)
 		Log.d("PlayField", "Set tile state at row $row and col $col to $tileValue")
 	}
 
-	fun getFieldColumns(): MutableList<MutableList<Int>>
+	/**
+	 * @return Values for every group in a column.
+	 */
+	fun getFieldColumns(): ArrayList<ArrayList<Int>>
 	{
 		return this.fieldColumns
 	}
 
-	fun getFieldRows(): MutableList<MutableList<Int>>
+	/**
+	 * @return Values for every group in a row
+	 */
+	fun getFieldRows(): ArrayList<ArrayList<Int>>
 	{
 		return this.fieldRows
+	}
+
+	/**
+	 * @return Whether the current state of the play field is the same as the expected result or not.
+	 */
+	fun validate(): Boolean
+	{
+		for (row in 0 until this.fieldSize)
+		{
+			for (col in 0 until this.fieldSize)
+			{
+				val paintable = this.tileValues[row][col].isPaintable
+				val painted = this.tileStates[row][col] == 1
+				if ((paintable && !painted) || (!paintable && painted))
+				{
+					return false
+				}
+			}
+		}
+		return true
 	}
 
 	private fun loadValues()
@@ -136,10 +162,5 @@ class PlayField(private val playFieldData: PlayFieldData)
 				}
 			}
 		}
-	}
-
-	fun validate()
-	{
-
 	}
 }

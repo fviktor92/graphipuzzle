@@ -26,7 +26,7 @@ class PlayFieldActivity : AppCompatActivity()
 			Json.decodeFromString<PlayField>(intent.getStringExtra(PLAY_FIELD_MESSAGE)!!)
 
 		val playFieldFragment =
-			PlayFieldFragment.newInstance(playField, R.id.play_field_fragment)
+			PlayFieldFragment.newInstance(R.id.play_field_fragment)
 		supportFragmentManager.beginTransaction()
 			.add(activityPlayFieldBinding.playFieldFragmentContainerView.id, playFieldFragment)
 
@@ -34,7 +34,7 @@ class PlayFieldActivity : AppCompatActivity()
 			PlayFieldFragmentInitializer(this, playField, fragmentPlayFieldBinding)
 
 		activityPlayFieldBinding.apply {
-			playFieldTableInitializer.initializePlayFieldTables()
+			playFieldTableInitializer.initializePlayFieldFragment()
 			invalidateAll() // Refresh the UI with the new data, invalidating all binding expressions so that they get recreated with the correct data
 		}
 	}

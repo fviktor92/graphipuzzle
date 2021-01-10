@@ -2,22 +2,20 @@ package com.graphipuzzle
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Button
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import androidx.core.view.setMargins
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 
 /**
- * Responsible for initializing the Play field table. Including:
- * - The column values
- * - The row values
+ * Responsible for initializing the Play field Fragment. Including:
+ * - The column values for the play field table
+ * - The row values for the play field table
  * - The table buttons
  * - The style of the play field
  * - The listeners
@@ -29,11 +27,12 @@ class PlayFieldFragmentInitializer(
 )
 {
 
-	fun initializePlayFieldTables()
+	fun initializePlayFieldFragment()
 	{
 		initializePlayFieldColumnValuesTable()
 		initializePlayFieldRowValuesTable()
 		initializePlayFieldTable()
+		setCompleteButtonOnTouchListenerForValidation()
 	}
 
 	/**
@@ -49,7 +48,7 @@ class PlayFieldFragmentInitializer(
 
 		for (columnIndex in fieldColumns.indices)
 		{
-			val columnValues: MutableList<Int> = fieldColumns[columnIndex]
+			val columnValues: ArrayList<Int> = fieldColumns[columnIndex]
 			val columnValueText = createColumnValueTextView(columnValues)
 			row.addView(columnValueText)
 		}
@@ -57,7 +56,7 @@ class PlayFieldFragmentInitializer(
 		playFieldColumnValuesTable.addView(row)
 	}
 
-	private fun createColumnValueTextView(columnValues: MutableList<Int>): TextView
+	private fun createColumnValueTextView(columnValues: ArrayList<Int>): TextView
 	{
 		val columnValueText = TextView(this.ctx)
 		columnValueText.layoutParams = TableRow.LayoutParams(
@@ -84,7 +83,7 @@ class PlayFieldFragmentInitializer(
 
 		for (rowIndex in fieldRows.indices)
 		{
-			val rowValues: MutableList<Int> = fieldRows[rowIndex]
+			val rowValues: ArrayList<Int> = fieldRows[rowIndex]
 			val row = TableRow(this.ctx)
 			row.layoutParams = TableLayout.LayoutParams(
 				0,
@@ -98,7 +97,7 @@ class PlayFieldFragmentInitializer(
 		}
 	}
 
-	private fun createRowValueTextView(rowValues: MutableList<Int>): TextView
+	private fun createRowValueTextView(rowValues: ArrayList<Int>): TextView
 	{
 		val rowValueText = TextView(this.ctx)
 		rowValueText.layoutParams = TableRow.LayoutParams(
@@ -135,7 +134,7 @@ class PlayFieldFragmentInitializer(
 				addBorderInTable(playFieldTable)
 			}
 
-			val rowValues: MutableList<TileData> = fieldValues[rowIndex]
+			val rowValues: ArrayList<TileData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
 			{
 				val fieldButton = createPlayFieldButton(rowIndex, columnIndex)
@@ -219,5 +218,21 @@ class PlayFieldFragmentInitializer(
 		border.layoutParams = borderLayoutParams
 		border.setBackgroundColor(Color.GRAY)
 		tableLayout.addView(border)
+	}
+
+	private fun setCompleteButtonOnTouchListenerForValidation()
+	{
+		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
+
+			if (this.playField.validate())
+			{
+				Toast.makeText(ctx.applicationContext, "Congrats!", Toast.LENGTH_SHORT).show()
+			} else
+			{
+				Toast.makeText(ctx.applicationContext, "Not yet complete! Keep trying!", Toast.LENGTH_SHORT).show()
+			}
+
+			v?.onTouchEvent(event) ?: true
+		}
 	}
 }

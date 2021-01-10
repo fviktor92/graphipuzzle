@@ -9,6 +9,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 @RunWith(RobolectricTestRunner::class)
 class PlayFieldTest
@@ -21,32 +23,32 @@ class PlayFieldTest
 		val smallPlayFieldData =
 			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
 		val smallPlayField = PlayField(smallPlayFieldData)
-		val actualSmallFieldColumns: MutableList<MutableList<Int>> =
+		val actualSmallFieldColumns: ArrayList<ArrayList<Int>> =
 			smallPlayField.getFieldColumns()
-		val actualSmallFieldRows: MutableList<MutableList<Int>> = smallPlayField.getFieldRows()
-		val expectedSmallFieldColumns = mutableListOf(
-			mutableListOf(1),
-			mutableListOf(2, 2),
-			mutableListOf(2, 2, 3),
-			mutableListOf(7, 2),
-			mutableListOf(2, 3),
-			mutableListOf(2, 3),
-			mutableListOf(2, 2, 3),
-			mutableListOf(7, 2),
-			mutableListOf(2, 2, 3),
-			mutableListOf(2)
+		val actualSmallFieldRows: ArrayList<ArrayList<Int>> = smallPlayField.getFieldRows()
+		val expectedSmallFieldColumns = arrayListOf(
+			arrayListOf(1),
+			arrayListOf(2, 2),
+			arrayListOf(2, 2, 3),
+			arrayListOf(7, 2),
+			arrayListOf(2, 3),
+			arrayListOf(2, 3),
+			arrayListOf(2, 2, 3),
+			arrayListOf(7, 2),
+			arrayListOf(2, 2, 3),
+			arrayListOf(2)
 		)
-		val expectedSmallFieldRows = mutableListOf(
-			mutableListOf(1, 1),
-			mutableListOf(3, 3),
-			mutableListOf(3, 3),
-			mutableListOf(1, 1),
-			mutableListOf(3, 4),
-			mutableListOf(3, 4),
-			mutableListOf(1, 1),
-			mutableListOf(3, 3, 2),
-			mutableListOf(9),
-			mutableListOf(7)
+		val expectedSmallFieldRows = arrayListOf(
+			arrayListOf(1, 1),
+			arrayListOf(3, 3),
+			arrayListOf(3, 3),
+			arrayListOf(1, 1),
+			arrayListOf(3, 4),
+			arrayListOf(3, 4),
+			arrayListOf(1, 1),
+			arrayListOf(3, 3, 2),
+			arrayListOf(9),
+			arrayListOf(7)
 		)
 
 		assertEquals(
@@ -68,42 +70,42 @@ class PlayFieldTest
 		val bigPlayFieldData =
 			ReadPlayField(context, PlayFieldSize.BIG, "level_1.json").getPlayFieldData()
 		val bigPlayField = PlayField(bigPlayFieldData)
-		val actualBigFieldColumns: MutableList<MutableList<Int>> =
+		val actualBigFieldColumns: ArrayList<ArrayList<Int>> =
 			bigPlayField.getFieldColumns()
-		val actualBigFieldRows: MutableList<MutableList<Int>> = bigPlayField.getFieldRows()
-		val expectedBigFieldColumns = mutableListOf(
-			mutableListOf(1, 2),
-			mutableListOf(1, 3),
-			mutableListOf(7, 1),
-			mutableListOf(7),
-			mutableListOf(2, 2, 3),
-			mutableListOf(4, 1),
-			mutableListOf(4, 1, 1),
-			mutableListOf(2, 1, 4),
-			mutableListOf(1, 1, 5),
-			mutableListOf(3, 1, 8),
-			mutableListOf(1, 2, 1, 3),
-			mutableListOf(2, 1, 1, 4),
-			mutableListOf(5, 5),
-			mutableListOf(2, 4, 3),
-			mutableListOf(3)
+		val actualBigFieldRows: ArrayList<ArrayList<Int>> = bigPlayField.getFieldRows()
+		val expectedBigFieldColumns = arrayListOf(
+			arrayListOf(1, 2),
+			arrayListOf(1, 3),
+			arrayListOf(7, 1),
+			arrayListOf(7),
+			arrayListOf(2, 2, 3),
+			arrayListOf(4, 1),
+			arrayListOf(4, 1, 1),
+			arrayListOf(2, 1, 4),
+			arrayListOf(1, 1, 5),
+			arrayListOf(3, 1, 8),
+			arrayListOf(1, 2, 1, 3),
+			arrayListOf(2, 1, 1, 4),
+			arrayListOf(5, 5),
+			arrayListOf(2, 4, 3),
+			arrayListOf(3)
 		)
-		val expectedBigFieldRows = mutableListOf(
-			mutableListOf(2, 4),
-			mutableListOf(4, 1, 3),
-			mutableListOf(4, 1, 2),
-			mutableListOf(2, 1, 1, 1),
-			mutableListOf(1, 4),
-			mutableListOf(2, 1, 1),
-			mutableListOf(1, 3, 3, 1),
-			mutableListOf(3, 1, 1),
-			mutableListOf(4, 1, 1),
-			mutableListOf(3, 1, 4),
-			mutableListOf(1, 3, 5),
-			mutableListOf(1, 2, 7),
-			mutableListOf(2, 3, 4),
-			mutableListOf(1, 3, 3),
-			mutableListOf(2, 3, 1)
+		val expectedBigFieldRows = arrayListOf(
+			arrayListOf(2, 4),
+			arrayListOf(4, 1, 3),
+			arrayListOf(4, 1, 2),
+			arrayListOf(2, 1, 1, 1),
+			arrayListOf(1, 4),
+			arrayListOf(2, 1, 1),
+			arrayListOf(1, 3, 3, 1),
+			arrayListOf(3, 1, 1),
+			arrayListOf(4, 1, 1),
+			arrayListOf(3, 1, 4),
+			arrayListOf(1, 3, 5),
+			arrayListOf(1, 2, 7),
+			arrayListOf(2, 3, 4),
+			arrayListOf(1, 3, 3),
+			arrayListOf(2, 3, 1)
 		)
 
 		assertEquals(
@@ -171,5 +173,85 @@ class PlayFieldTest
 			"The col must be greater than 0 or lower than 10. It was -1",
 			expectedException.message
 		)
+	}
+
+	@Test
+	fun validateIsCorrect()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+
+		// Initial state
+		assertFalse(playField.validate())
+
+		// Complete the play field by last tile still missing
+		playField.setTileState(1, 0, 3)
+		playField.setTileState(1, 0, 7)
+		playField.setTileState(1, 1, 2)
+		playField.setTileState(1, 1, 3)
+		playField.setTileState(1, 1, 4)
+		playField.setTileState(1, 1, 6)
+		playField.setTileState(1, 1, 7)
+		playField.setTileState(1, 1, 8)
+		playField.setTileState(1, 1, 2)
+		playField.setTileState(1, 2, 2)
+		playField.setTileState(1, 2, 3)
+		playField.setTileState(1, 2, 4)
+		playField.setTileState(1, 2, 6)
+		playField.setTileState(1, 2, 7)
+		playField.setTileState(1, 2, 8)
+		playField.setTileState(1, 2, 2)
+		playField.setTileState(1, 3, 3)
+		playField.setTileState(1, 3, 7)
+		playField.setTileState(1, 4, 1)
+		playField.setTileState(1, 4, 2)
+		playField.setTileState(1, 4, 3)
+		playField.setTileState(1, 4, 5)
+		playField.setTileState(1, 4, 6)
+		playField.setTileState(1, 4, 7)
+		playField.setTileState(1, 4, 8)
+		playField.setTileState(1, 5, 1)
+		playField.setTileState(1, 5, 2)
+		playField.setTileState(1, 5, 3)
+		playField.setTileState(1, 5, 5)
+		playField.setTileState(1, 5, 6)
+		playField.setTileState(1, 5, 7)
+		playField.setTileState(1, 5, 8)
+		playField.setTileState(1, 6, 3)
+		playField.setTileState(1, 6, 7)
+		playField.setTileState(1, 7, 0)
+		playField.setTileState(1, 7, 1)
+		playField.setTileState(1, 7, 2)
+		playField.setTileState(1, 7, 4)
+		playField.setTileState(1, 7, 5)
+		playField.setTileState(1, 7, 6)
+		playField.setTileState(1, 7, 8)
+		playField.setTileState(1, 7, 9)
+		playField.setTileState(1, 8, 1)
+		playField.setTileState(1, 8, 2)
+		playField.setTileState(1, 8, 3)
+		playField.setTileState(1, 8, 4)
+		playField.setTileState(1, 8, 5)
+		playField.setTileState(1, 8, 6)
+		playField.setTileState(1, 8, 7)
+		playField.setTileState(1, 8, 8)
+		playField.setTileState(1, 8, 9)
+		playField.setTileState(1, 9, 2)
+		playField.setTileState(1, 9, 3)
+		playField.setTileState(1, 9, 4)
+		playField.setTileState(1, 9, 5)
+		playField.setTileState(1, 9, 6)
+		playField.setTileState(1, 9, 7)
+
+		assertFalse(playField.validate())
+
+		// Set the last tile, the playfield should be completed
+		playField.setTileState(1, 9, 8)
+		assertTrue(playField.validate())
+
+		// Set a tile that should not be painted to painted
+		playField.setTileState(1, 0, 0)
+		assertFalse(playField.validate())
 	}
 }

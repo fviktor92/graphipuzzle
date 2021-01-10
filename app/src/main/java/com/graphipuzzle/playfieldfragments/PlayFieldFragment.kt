@@ -50,7 +50,7 @@ class PlayFieldFragment : Fragment()
 		 * @return A new instance of fragment PlayFieldSmall.
 		 */
 		@JvmStatic
-		fun newInstance(playField: PlayField, playFieldFragmentId: Int) =
+		fun newInstance(playFieldFragmentId: Int) =
 			PlayFieldFragment().apply {
 				arguments = Bundle().apply {
 					putInt(PLAY_FIELD_FRAGMENT_ID, playFieldFragmentId)
