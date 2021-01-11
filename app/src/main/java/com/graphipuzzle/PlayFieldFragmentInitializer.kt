@@ -2,11 +2,12 @@ package com.graphipuzzle
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
+import android.text.Html
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.core.view.get
 import androidx.core.view.setMargins
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.TileData
@@ -26,6 +27,8 @@ class PlayFieldFragmentInitializer(
 	private val fragmentPlayFieldBinding: FragmentPlayFieldBinding
 )
 {
+	private val ROW_TAG_PREFIX = "row_"
+	private val COLUMN_TAG_PREFIX = "column_"
 
 	fun initializePlayFieldFragment()
 	{
@@ -33,6 +36,7 @@ class PlayFieldFragmentInitializer(
 		initializePlayFieldRowValuesTable()
 		initializePlayFieldTable()
 		setCompleteButtonOnTouchListenerForValidation()
+		setHelpButtonOnTouchListener()
 	}
 
 	/**
@@ -125,7 +129,7 @@ class PlayFieldFragmentInitializer(
 
 		for (rowIndex in fieldValues.indices)
 		{
-			val row = createPlayFieldTableRow()
+			val row = createPlayFieldTableRow(rowIndex)
 			playFieldTable.addView(row)
 			addBorderInRow(row)
 
@@ -149,9 +153,10 @@ class PlayFieldFragmentInitializer(
 		}
 	}
 
-	private fun createPlayFieldTableRow(): TableRow
+	private fun createPlayFieldTableRow(rowIndex: Int): TableRow
 	{
 		val row = TableRow(this.ctx)
+		row.tag = "$ROW_TAG_PREFIX$rowIndex"
 		row.layoutParams = TableLayout.LayoutParams(
 			TableLayout.LayoutParams.WRAP_CONTENT,
 			TableLayout.LayoutParams.WRAP_CONTENT,
@@ -168,6 +173,7 @@ class PlayFieldFragmentInitializer(
 			TableRow.LayoutParams.WRAP_CONTENT, 1.0f
 		)
 		layoutParams.setMargins(0)
+		fieldButton.tag = "$COLUMN_TAG_PREFIX$columnIndex"
 		fieldButton.layoutParams = layoutParams
 		fieldButton.setPadding(0, 0, 0, 0)
 		fieldButton.insetTop = 0
@@ -192,12 +198,69 @@ class PlayFieldFragmentInitializer(
 					}
 
 				}
+				MotionEvent.ACTION_UP ->
+				{
+					colorColumnTextView(columnIndex)
+					colorRowTextView(rowIndex)
+				}
 			}
 
 			v?.onTouchEvent(event) ?: true
 		}
 
 		return fieldButton
+	}
+
+	private fun colorColumnTextView(columnIndex: Int)
+	{
+		val columnGroupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
+		val tableRow = this.fragmentPlayFieldBinding.playFieldColumnValuesTable[0] as TableRow
+		val textView = tableRow[columnIndex] as TextView
+		var columnValues: Array<String> = textView.text.split(Regex("\n")).toTypedArray()
+
+		for (i in columnValues.indices)
+		{
+			val columnGroupState = columnGroupStates[i]
+			if (columnGroupState != 0 && columnGroupState == columnValues[i].toInt())
+			{
+				var recoloredGroup = "<font color=#888888>" + columnValues[i] + "</font>"
+				columnValues[i] = recoloredGroup
+				var newText = columnValues.joinToString("<br>")
+				textView.text = Html.fromHtml(newText)
+			} else if (columnGroupState != 0 && columnGroupState != columnValues[i].toInt())
+			{
+				var recoloredGroup = "<font color=#000000>" + columnValues[i] + "</font>"
+				columnValues[i] = recoloredGroup
+				var newText = columnValues.joinToString("<br>")
+				textView.text = Html.fromHtml(newText)
+			}
+		}
+	}
+
+	private fun colorRowTextView(rowIndex: Int)
+	{
+		val rowGroupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
+		val tableRow = this.fragmentPlayFieldBinding.playFieldRowValuesTable[rowIndex] as TableRow
+		val textView = tableRow[0] as TextView
+		var rowValues: Array<String> = textView.text.split(Regex(" ")).toTypedArray()
+
+		for (i in rowValues.indices)
+		{
+			val rowGroupState = rowGroupStates[i]
+			if (rowGroupState != 0 && rowGroupState == rowValues[i].toInt())
+			{
+				var recoloredGroup = "<font color=#888888>" + rowValues[i] + "</font>"
+				rowValues[i] = recoloredGroup
+				var newText = rowValues.joinToString(" ")
+				textView.text = Html.fromHtml(newText)
+			} else if (rowGroupState != 0 && rowGroupState != rowValues[i].toInt())
+			{
+				var recoloredGroup = "<font color=#000000>" + rowValues[i] + "</font>"
+				rowValues[i] = recoloredGroup
+				var newText = rowValues.joinToString(" ")
+				textView.text = Html.fromHtml(newText)
+			}
+		}
 	}
 
 	private fun addBorderInRow(row: TableRow)
@@ -224,12 +287,40 @@ class PlayFieldFragmentInitializer(
 	{
 		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
 
-			if (this.playField.validate())
+			if (event.action == MotionEvent.ACTION_DOWN)
 			{
-				Toast.makeText(ctx.applicationContext, "Congrats!", Toast.LENGTH_SHORT).show()
-			} else
+				if (this.playField.validate())
+				{
+					Toast.makeText(ctx.applicationContext, "Congrats!", Toast.LENGTH_SHORT).show()
+				} else
+				{
+					Toast.makeText(
+						ctx.applicationContext,
+						"Not yet complete! Keep trying!",
+						Toast.LENGTH_SHORT
+					).show()
+				}
+			}
+			v?.onTouchEvent(event) ?: true
+		}
+	}
+
+	private fun setHelpButtonOnTouchListener()
+	{
+		this.fragmentPlayFieldBinding.helpButton.setOnTouchListener { v, event ->
+			val paintableIndices = this.playField.help()
+			if (event.action == MotionEvent.ACTION_DOWN)
 			{
-				Toast.makeText(ctx.applicationContext, "Not yet complete! Keep trying!", Toast.LENGTH_SHORT).show()
+				if (paintableIndices != Pair(-1, -1))
+				{
+					this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
+						ROW_TAG_PREFIX + paintableIndices.first
+					).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second)
+						.setBackgroundColor(Color.BLACK)
+					this.playField.setTileState(1, paintableIndices.first, paintableIndices.second)
+					colorColumnTextView(paintableIndices.second)
+					colorRowTextView(paintableIndices.first)
+				}
 			}
 
 			v?.onTouchEvent(event) ?: true
