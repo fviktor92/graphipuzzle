@@ -37,6 +37,21 @@ class PlayField(private val playFieldData: PlayFieldData)
 		return this.tileValues
 	}
 
+	fun getFieldSize(): Int
+	{
+		return this.fieldSize
+	}
+
+	fun getMaxGroups(): Int
+	{
+		return this.maxGroups
+	}
+
+	fun getTileStates(): Array<IntArray>
+	{
+		return this.tileStates
+	}
+
 	/**
 	 * @throws IllegalArgumentException If the row or col is negative or greater than the field size.
 	 * @return the value of the tile at the given position. The tile value can be either 0: WHITE, 1: BLACK, or 2: GRAY.
@@ -103,6 +118,131 @@ class PlayField(private val playFieldData: PlayFieldData)
 			}
 		}
 		return true
+	}
+
+	/**
+	 * @return the (row, column) indices of a paintable tile, that is not yet painted. If all the required fields are painted, returns (-1,-1)
+	 */
+	fun help(): Pair<Int, Int>
+	{
+		var notPaintedTiles: ArrayList<Pair<Int, Int>> = ArrayList()
+
+		for (row in 0 until this.fieldSize)
+		{
+			for (col in 0 until this.fieldSize)
+			{
+				if (this.tileValues[row][col].isPaintable && this.tileStates[row][col] != 1)
+				{
+					notPaintedTiles.add(Pair(row, col))
+				}
+			}
+		}
+
+		return if (notPaintedTiles.isEmpty()) Pair(-1, -1) else notPaintedTiles.random()
+	}
+
+	/**
+	 * @return the column group sizes currently according to the tile states. Could be used for coloring the column texts.
+	 */
+	fun getColumnGroupStates(): Array<IntArray>
+	{
+		var groups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
+		var groupSize: Int
+		var colIndex: Int
+		var isGroup: Boolean
+		var arrayColumn: IntArray
+
+		for (col in 0 until this.fieldSize)
+		{
+			groupSize = 0
+			colIndex = -1
+			isGroup = false
+			arrayColumn = IntArray(this.maxGroups)
+			for (row in 0 until this.fieldSize)
+			{
+				if (this.tileStates[row][col] == 1 && !isGroup)
+				{
+					groupSize++
+					colIndex++
+					isGroup = true
+					if (row + 1 == this.fieldSize)
+					{
+						arrayColumn[colIndex] = groupSize
+						groupSize = 0
+						isGroup = false
+					}
+				} else if (this.tileStates[row][col] == 1 && isGroup)
+				{
+					groupSize++
+					if (row + 1 == this.fieldSize)
+					{
+						arrayColumn[colIndex] = groupSize
+						groupSize = 0
+						isGroup = false
+					}
+				} else if (this.tileStates[row][col] != 1 && isGroup)
+				{
+					arrayColumn[colIndex] = groupSize
+					groupSize = 0
+					isGroup = false
+				}
+			}
+			groups[col] = arrayColumn
+		}
+
+		return groups
+	}
+
+	/**
+	 * @return the row group sizes currently according to the tile states. Could be used for coloring the column texts.
+	 */
+	fun getRowGroupStates(): Array<IntArray>
+	{
+		var groups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
+		var groupSize: Int
+		var rowIndex: Int
+		var isGroup: Boolean
+		var arrayRow: IntArray
+
+		for (row in 0 until this.fieldSize)
+		{
+			groupSize = 0
+			rowIndex = -1
+			isGroup = false
+			arrayRow = IntArray(this.maxGroups)
+			for (col in 0 until this.fieldSize)
+			{
+				if (this.tileStates[row][col] == 1 && !isGroup)
+				{
+					groupSize++
+					rowIndex++
+					isGroup = true
+					if (col + 1 == this.fieldSize)
+					{
+						arrayRow[rowIndex] = groupSize
+						groupSize = 0
+						isGroup = false
+					}
+				} else if (this.tileStates[row][col] == 1 && isGroup)
+				{
+					groupSize++
+					if (col + 1 == this.fieldSize)
+					{
+						arrayRow[rowIndex] = groupSize
+						groupSize = 0
+						isGroup = false
+					}
+				} else if (this.tileStates[row][col] != 1 && isGroup)
+				{
+					arrayRow[rowIndex] = groupSize
+					groupSize = 0
+					isGroup = false
+				}
+			}
+			groups[row] = arrayRow
+		}
+
+		return groups
 	}
 
 	private fun loadValues()

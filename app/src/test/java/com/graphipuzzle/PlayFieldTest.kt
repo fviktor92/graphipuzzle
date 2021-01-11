@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.graphipuzzle.read.PlayFieldSize
 import com.graphipuzzle.read.ReadPlayField
-import org.junit.Assert.assertEquals
+import org.junit.Assert.assertArrayEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -52,15 +53,15 @@ class PlayFieldTest
 		)
 
 		assertEquals(
-			"Small field column values did not match",
 			expectedSmallFieldColumns,
-			actualSmallFieldColumns
+			actualSmallFieldColumns,
+			"Small field column values did not match"
 		)
 
 		assertEquals(
-			"Small field rows values did not match",
 			expectedSmallFieldRows,
-			actualSmallFieldRows
+			actualSmallFieldRows,
+			"Small field rows values did not match"
 		)
 	}
 
@@ -109,15 +110,15 @@ class PlayFieldTest
 		)
 
 		assertEquals(
-			"Big field column values did not match",
 			expectedBigFieldColumns,
-			actualBigFieldColumns
+			actualBigFieldColumns,
+			"Big field column values did not match"
 		)
 
 		assertEquals(
-			"Big field rows values did not match",
 			expectedBigFieldRows,
-			actualBigFieldRows
+			actualBigFieldRows,
+			"Big field rows values did not match"
 		)
 	}
 
@@ -253,5 +254,162 @@ class PlayFieldTest
 		// Set a tile that should not be painted to painted
 		playField.setTileState(1, 0, 0)
 		assertFalse(playField.validate())
+	}
+
+	@Test
+	fun helpTest()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+
+		val paintableTile = playField.help()
+
+		assertTrue(playField.getTileValues()[paintableTile.first][paintableTile.second].isPaintable)
+
+		// Complete the play field so no help can be given
+		playField.setTileState(1, 0, 3)
+		playField.setTileState(1, 0, 7)
+		playField.setTileState(1, 1, 2)
+		playField.setTileState(1, 1, 3)
+		playField.setTileState(1, 1, 4)
+		playField.setTileState(1, 1, 6)
+		playField.setTileState(1, 1, 7)
+		playField.setTileState(1, 1, 8)
+		playField.setTileState(1, 1, 2)
+		playField.setTileState(1, 2, 2)
+		playField.setTileState(1, 2, 3)
+		playField.setTileState(1, 2, 4)
+		playField.setTileState(1, 2, 6)
+		playField.setTileState(1, 2, 7)
+		playField.setTileState(1, 2, 8)
+		playField.setTileState(1, 2, 2)
+		playField.setTileState(1, 3, 3)
+		playField.setTileState(1, 3, 7)
+		playField.setTileState(1, 4, 1)
+		playField.setTileState(1, 4, 2)
+		playField.setTileState(1, 4, 3)
+		playField.setTileState(1, 4, 5)
+		playField.setTileState(1, 4, 6)
+		playField.setTileState(1, 4, 7)
+		playField.setTileState(1, 4, 8)
+		playField.setTileState(1, 5, 1)
+		playField.setTileState(1, 5, 2)
+		playField.setTileState(1, 5, 3)
+		playField.setTileState(1, 5, 5)
+		playField.setTileState(1, 5, 6)
+		playField.setTileState(1, 5, 7)
+		playField.setTileState(1, 5, 8)
+		playField.setTileState(1, 6, 3)
+		playField.setTileState(1, 6, 7)
+		playField.setTileState(1, 7, 0)
+		playField.setTileState(1, 7, 1)
+		playField.setTileState(1, 7, 2)
+		playField.setTileState(1, 7, 4)
+		playField.setTileState(1, 7, 5)
+		playField.setTileState(1, 7, 6)
+		playField.setTileState(1, 7, 8)
+		playField.setTileState(1, 7, 9)
+		playField.setTileState(1, 8, 1)
+		playField.setTileState(1, 8, 2)
+		playField.setTileState(1, 8, 3)
+		playField.setTileState(1, 8, 4)
+		playField.setTileState(1, 8, 5)
+		playField.setTileState(1, 8, 6)
+		playField.setTileState(1, 8, 7)
+		playField.setTileState(1, 8, 8)
+		playField.setTileState(1, 8, 9)
+		playField.setTileState(1, 9, 2)
+		playField.setTileState(1, 9, 3)
+		playField.setTileState(1, 9, 4)
+		playField.setTileState(1, 9, 5)
+		playField.setTileState(1, 9, 6)
+		playField.setTileState(1, 9, 7)
+		playField.setTileState(1, 9, 8)
+
+		assertEquals(Pair(-1, -1), playField.help())
+	}
+
+	@Test
+	fun getColumnGroupStatesTest()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
+			IntArray(playField.getMaxGroups())
+		}
+
+		// Calling the method for initial play field should return initial array with all 0 values
+		assertArrayEquals(initialMatchingGroups, playField.getColumnGroupStates())
+
+		// Complete the first column that only has 1 group
+		playField.setTileState(1, 7, 0)
+
+		assertEquals(1, playField.getColumnGroupStates()[0][0])
+
+		// Complete the third column that has 3 groups with play field ending
+		playField.setTileState(1, 1, 2)
+		playField.setTileState(1, 2, 2)
+		playField.setTileState(1, 4, 2)
+		playField.setTileState(1, 5, 2)
+		playField.setTileState(1, 7, 2)
+		playField.setTileState(1, 8, 2)
+		playField.setTileState(1, 9, 2)
+
+		assertArrayEquals(intArrayOf(2, 2, 3, 0, 0), playField.getColumnGroupStates()[2])
+
+		// Uncomplete the third column
+		playField.setTileState(0, 9, 2)
+		assertArrayEquals(intArrayOf(2, 2, 2, 0, 0), playField.getColumnGroupStates()[2])
+
+		// Set a single tile at field ending
+		playField.setTileState(1, 9, 9)
+		assertArrayEquals(intArrayOf(1, 0, 0, 0, 0), playField.getColumnGroupStates()[9])
+	}
+
+	@Test
+	fun getRowGroupStatesTest()
+	{
+		val playFieldData =
+			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+		val playField = PlayField(playFieldData)
+		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
+			IntArray(playField.getMaxGroups())
+		}
+
+		// Calling the method for initial play field should return initial array with all 0 values
+		assertArrayEquals(initialMatchingGroups, playField.getRowGroupStates())
+
+		// Complete the last row that only has 1 group
+		playField.setTileState(1, 9, 2)
+		playField.setTileState(1, 9, 3)
+		playField.setTileState(1, 9, 4)
+		playField.setTileState(1, 9, 5)
+		playField.setTileState(1, 9, 6)
+		playField.setTileState(1, 9, 7)
+		playField.setTileState(1, 9, 8)
+
+		assertEquals(7, playField.getRowGroupStates()[9][0])
+
+		// Complete the eighth row that has 3 groups with play field ending
+		playField.setTileState(1, 7, 0)
+		playField.setTileState(1, 7, 1)
+		playField.setTileState(1, 7, 2)
+		playField.setTileState(1, 7, 4)
+		playField.setTileState(1, 7, 5)
+		playField.setTileState(1, 7, 6)
+		playField.setTileState(1, 7, 8)
+		playField.setTileState(1, 7, 9)
+
+		assertArrayEquals(intArrayOf(3, 3, 2, 0, 0), playField.getRowGroupStates()[7])
+
+		// Uncomplete the eighth row
+		playField.setTileState(0, 7, 9)
+		assertArrayEquals(intArrayOf(3, 3, 1, 0, 0), playField.getRowGroupStates()[7])
+
+		// Set a single tile at field ending
+		playField.setTileState(1, 0, 9)
+		assertArrayEquals(intArrayOf(1, 0, 0, 0, 0), playField.getRowGroupStates()[0])
 	}
 }
