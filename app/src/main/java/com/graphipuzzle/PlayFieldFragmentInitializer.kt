@@ -223,7 +223,7 @@ class PlayFieldFragmentInitializer(
 			val columnGroupState = columnGroupStates[i]
 			if (columnGroupState != 0 && columnGroupState == columnValues[i].toInt())
 			{
-				var recoloredGroup = "<font color=#888888>" + columnValues[i] + "</font>"
+				var recoloredGroup = "<font color=#D3D3D3>" + columnValues[i] + "</font>"
 				columnValues[i] = recoloredGroup
 				var newText = columnValues.joinToString("<br>")
 				textView.text = Html.fromHtml(newText)
@@ -249,7 +249,7 @@ class PlayFieldFragmentInitializer(
 			val rowGroupState = rowGroupStates[i]
 			if (rowGroupState != 0 && rowGroupState == rowValues[i].toInt())
 			{
-				var recoloredGroup = "<font color=#888888>" + rowValues[i] + "</font>"
+				var recoloredGroup = "<font color=#D3D3D3>" + rowValues[i] + "</font>"
 				rowValues[i] = recoloredGroup
 				var newText = rowValues.joinToString(" ")
 				textView.text = Html.fromHtml(newText)
