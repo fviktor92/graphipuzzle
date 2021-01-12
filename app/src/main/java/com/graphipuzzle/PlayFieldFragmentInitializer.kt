@@ -1,17 +1,22 @@
 package com.graphipuzzle
 
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Html
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.setMargins
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
+
 
 /**
  * Responsible for initializing the Play field Fragment. Including:
@@ -35,7 +40,7 @@ class PlayFieldFragmentInitializer(
 		initializePlayFieldColumnValuesTable()
 		initializePlayFieldRowValuesTable()
 		initializePlayFieldTable()
-		setCompleteButtonOnTouchListenerForValidation()
+		setCompleteButtonOnTouchListener()
 		setHelpButtonOnTouchListener()
 	}
 
@@ -189,11 +194,13 @@ class PlayFieldFragmentInitializer(
 				{
 					if (fragmentPlayFieldBinding.tileColorSwitch.isChecked)
 					{
-						v?.setBackgroundColor(Color.BLACK)
+						v?.backgroundTintList =
+							ColorStateList.valueOf(ContextCompat.getColor(this.ctx, R.color.black))
 						this.playField.setTileState(1, rowIndex, columnIndex)
 					} else
 					{
-						v?.setBackgroundColor(Color.GRAY)
+						v?.backgroundTintList =
+							ColorStateList.valueOf(ContextCompat.getColor(this.ctx, R.color.gray))
 						this.playField.setTileState(0, rowIndex, columnIndex)
 					}
 
@@ -283,7 +290,7 @@ class PlayFieldFragmentInitializer(
 		tableLayout.addView(border)
 	}
 
-	private fun setCompleteButtonOnTouchListenerForValidation()
+	private fun setCompleteButtonOnTouchListener()
 	{
 		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
 
@@ -292,6 +299,7 @@ class PlayFieldFragmentInitializer(
 				if (this.playField.validate())
 				{
 					Toast.makeText(ctx.applicationContext, "Congrats!", Toast.LENGTH_SHORT).show()
+					colorPlayFieldTiles()
 				} else
 				{
 					Toast.makeText(
@@ -302,6 +310,36 @@ class PlayFieldFragmentInitializer(
 				}
 			}
 			v?.onTouchEvent(event) ?: true
+		}
+	}
+
+	private fun colorPlayFieldTiles()
+	{
+		for (row in 0 until this.playField.getFieldSize())
+		{
+			val tableRow = this.fragmentPlayFieldBinding.playFieldTable
+				.findViewWithTag<TableRow>(ROW_TAG_PREFIX + row)
+			for (col in 0 until this.playField.getFieldSize())
+			{
+				val materialButton =
+					tableRow.findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + col)
+				var originalColor = materialButton.backgroundTintList!!.getColorForState(
+					intArrayOf(android.R.attr.state_enabled),
+					0
+				)
+
+				val newColor =
+					Color.parseColor(this.playField.getTileValues()[row][col].hexColorCode)
+				val colorAnimation =
+					ValueAnimator.ofObject(ArgbEvaluator(), originalColor, newColor)
+				colorAnimation.duration = 1000L
+
+				colorAnimation.addUpdateListener { animator ->
+					materialButton
+						.setBackgroundColor(animator.animatedValue as Int)
+				}
+				colorAnimation.start()
+			}
 		}
 	}
 
@@ -316,7 +354,8 @@ class PlayFieldFragmentInitializer(
 					this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
 						ROW_TAG_PREFIX + paintableIndices.first
 					).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second)
-						.setBackgroundColor(Color.BLACK)
+						.backgroundTintList =
+						ColorStateList.valueOf(ContextCompat.getColor(this.ctx, R.color.black))
 					this.playField.setTileState(1, paintableIndices.first, paintableIndices.second)
 					colorColumnTextView(paintableIndices.second)
 					colorRowTextView(paintableIndices.first)
