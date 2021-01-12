@@ -228,13 +228,19 @@ class PlayFieldFragmentInitializer(
 		for (i in columnValues.indices)
 		{
 			val columnGroupState = columnGroupStates[i]
-			if (columnGroupState != 0 && columnGroupState == columnValues[i].toInt())
+			if (columnValues.size < columnGroupStates.toList().count { groupState -> groupState != 0 })
+			{
+				var newText = columnValues.joinToString("\n")
+				textView.text = newText
+				break
+			}
+			else if (columnGroupState == columnValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + columnValues[i] + "</font>"
 				columnValues[i] = recoloredGroup
 				var newText = columnValues.joinToString("<br>")
 				textView.text = Html.fromHtml(newText)
-			} else if (columnGroupState != 0 && columnGroupState != columnValues[i].toInt())
+			} else if (columnGroupState != columnValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#000000>" + columnValues[i] + "</font>"
 				columnValues[i] = recoloredGroup
@@ -254,13 +260,19 @@ class PlayFieldFragmentInitializer(
 		for (i in rowValues.indices)
 		{
 			val rowGroupState = rowGroupStates[i]
-			if (rowGroupState != 0 && rowGroupState == rowValues[i].toInt())
+			if (rowValues.size < rowGroupStates.toList().count { groupState -> groupState != 0 })
+			{
+				var newText = rowValues.joinToString(" ")
+				textView.text = newText
+				break
+			}
+			else if (rowGroupState == rowValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + rowValues[i] + "</font>"
 				rowValues[i] = recoloredGroup
 				var newText = rowValues.joinToString(" ")
 				textView.text = Html.fromHtml(newText)
-			} else if (rowGroupState != 0 && rowGroupState != rowValues[i].toInt())
+			} else if (rowGroupState != rowValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#000000>" + rowValues[i] + "</font>"
 				rowValues[i] = recoloredGroup
