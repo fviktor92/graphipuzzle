@@ -6,12 +6,8 @@ import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
 import com.graphipuzzle.databinding.ActivityPlayFieldBinding
-import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import com.graphipuzzle.playfieldfragments.PLAY_FIELD
 import com.graphipuzzle.playfieldfragments.PlayFieldFragment
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class PlayFieldActivity : AppCompatActivity(R.layout.activity_play_field)
 {

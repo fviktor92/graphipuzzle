@@ -8,11 +8,11 @@ import android.os.Bundle
 import android.text.Html
 import android.view.*
 import android.widget.*
-import androidx.fragment.app.Fragment
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
@@ -21,8 +21,9 @@ import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.math.abs
 
-public const val PLAY_FIELD = "playField"
+const val PLAY_FIELD = "playField"
 
 /**
  * A simple [Fragment] subclass.
@@ -37,8 +38,10 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private val COLUMN_TAG_PREFIX = "column_"
 
 	private lateinit var playField: PlayField
-
 	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
+
+	private lateinit var gestureDetector: GestureDetector
+	private lateinit var gestureListener: View.OnTouchListener
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -46,7 +49,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		arguments?.let {
 			playField = Json.decodeFromString(it.getString(PLAY_FIELD)!!)
 		}
-
 	}
 
 	override fun onCreateView(
@@ -57,14 +59,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
 
-		fragmentPlayFieldBinding.apply {
 			initializePlayFieldColumnValuesTable()
 			initializePlayFieldRowValuesTable()
 			initializePlayFieldTable()
 			setHelpButtonOnTouchListener()
 			setCompleteButtonOnTouchListener()
-			invalidateAll()
-		}
+
+			val minSwipeLength = fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
+				ROW_TAG_PREFIX + 0).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + 0).height
+
+			gestureDetector = GestureDetector(this@PlayFieldFragment.context, MyGestureDetector(minSwipeLength))
+			gestureListener = View.OnTouchListener { v, event ->
+				gestureDetector.onTouchEvent(event)
+			}
+
 
 		// Inflate the layout for this fragment
 		return fragmentPlayFieldBinding.root
@@ -210,7 +218,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	private fun createPlayFieldButton(rowIndex: Int, columnIndex: Int): MaterialButton
 	{
-		val fieldButton = MaterialButton(this.requireContext(), null, R.attr.materialButtonOutlinedStyle)
+		val fieldButton =
+			MaterialButton(this.requireContext(), null, R.attr.materialButtonOutlinedStyle)
 		val layoutParams = TableRow.LayoutParams(
 			TableRow.LayoutParams.WRAP_CONTENT,
 			TableRow.LayoutParams.WRAP_CONTENT, 1.0f
@@ -226,34 +235,49 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.cornerRadius = 0
 
 		fieldButton.setOnTouchListener { v, event ->
+			gestureListener.onTouch(v, event)
 			when (event?.action)
 			{
 				MotionEvent.ACTION_DOWN ->
 				{
-					if (fragmentPlayFieldBinding.tileColorSwitch.isChecked)
-					{
-						v?.backgroundTintList =
-							ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.black))
-						this.playField.setTileState(1, rowIndex, columnIndex)
-					} else
-					{
-						v?.backgroundTintList =
-							ColorStateList.valueOf(ContextCompat.getColor(this.requireContext(), R.color.gray))
-						this.playField.setTileState(0, rowIndex, columnIndex)
-					}
-
+					colorTileBlackOrGray(v, rowIndex, columnIndex)
 				}
+
 				MotionEvent.ACTION_UP ->
 				{
 					colorColumnTextView(columnIndex)
 					colorRowTextView(rowIndex)
 				}
 			}
-
 			v?.onTouchEvent(event) ?: true
 		}
 
 		return fieldButton
+	}
+
+	private fun colorTileBlackOrGray(v: View, rowIndex: Int, columnIndex: Int)
+	{
+		if (fragmentPlayFieldBinding.tileColorSwitch.isChecked)
+		{
+			v?.backgroundTintList =
+				ColorStateList.valueOf(
+					ContextCompat.getColor(
+						requireContext(),
+						R.color.black
+					)
+				)
+			playField.setTileState(1, rowIndex, columnIndex)
+		} else
+		{
+			v?.backgroundTintList =
+				ColorStateList.valueOf(
+					ContextCompat.getColor(
+						requireContext(),
+						R.color.gray
+					)
+				)
+			playField.setTileState(0, rowIndex, columnIndex)
+		}
 	}
 
 	private fun colorColumnTextView(columnIndex: Int)
@@ -261,18 +285,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val columnGroupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldColumnValuesTable[0] as TableRow
 		val textView = tableRow[columnIndex] as TextView
-		var columnValues: Array<String> = textView.text.split(Regex(COLUMN_VALUE_NUMBER_SEPARATOR)).toTypedArray()
+		var columnValues: Array<String> =
+			textView.text.split(Regex(COLUMN_VALUE_NUMBER_SEPARATOR)).toTypedArray()
 
 		for (i in columnValues.indices)
 		{
 			val columnGroupState = columnGroupStates[i]
-			if (columnValues.size < columnGroupStates.toList().count { groupState -> groupState != 0 })
+			if (columnValues.size < columnGroupStates.toList()
+					.count { groupState -> groupState != 0 }
+			)
 			{
 				var newText = columnValues.joinToString(COLUMN_VALUE_NUMBER_SEPARATOR)
 				textView.text = newText
 				break
-			}
-			else if (columnGroupState == columnValues[i].toInt())
+			} else if (columnGroupState == columnValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + columnValues[i] + "</font>"
 				columnValues[i] = recoloredGroup
@@ -293,7 +319,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val rowGroupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldRowValuesTable[rowIndex] as TableRow
 		val textView = tableRow[0] as TextView
-		var rowValues: Array<String> = textView.text.split(Regex(ROW_VALUE_NUMBER_SEPARATOR)).toTypedArray()
+		var rowValues: Array<String> =
+			textView.text.split(Regex(ROW_VALUE_NUMBER_SEPARATOR)).toTypedArray()
 
 		for (i in rowValues.indices)
 		{
@@ -303,8 +330,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				var newText = rowValues.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
 				textView.text = newText
 				break
-			}
-			else if (rowGroupState == rowValues[i].toInt())
+			} else if (rowGroupState == rowValues[i].toInt())
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + rowValues[i] + "</font>"
 				rowValues[i] = recoloredGroup
@@ -422,6 +448,78 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				}
 				colorAnimation.start()
 			}
+		}
+	}
+
+	inner class MyGestureDetector(var minSwipeLength: Int) : GestureDetector.SimpleOnGestureListener()
+	{
+		override fun onFling(
+			e1: MotionEvent?,
+			e2: MotionEvent?,
+			velocityX: Float,
+			velocityY: Float
+		): Boolean
+		{
+			val deltaX = e1!!.x - e2!!.x
+			val deltaY = e1!!.y - e2!!.y
+
+			// Swipe horizontal
+			if (abs(deltaX) > abs(deltaY))
+			{
+				if (abs(deltaX) >= 95)
+				{
+					// Right Swipe
+					if (deltaX < 0)
+					{
+						Toast.makeText(
+							this@PlayFieldFragment.context,
+							"Right Swipe $minSwipeLength",
+							Toast.LENGTH_SHORT
+						).show()
+					}
+					// Left Swipe
+					if (deltaX > 0)
+					{
+						Toast.makeText(
+							this@PlayFieldFragment.context,
+							"Left Swipe",
+							Toast.LENGTH_SHORT
+						).show()
+					}
+				}
+			}
+			// Swipe vertical
+			else
+			{
+				if (abs(deltaY) >= 95)
+				{
+					// Down swipe
+					if (deltaY < 0)
+					{
+						Toast.makeText(
+							this@PlayFieldFragment.context,
+							"Down Swipe",
+							Toast.LENGTH_SHORT
+						).show()
+					}
+					// Up swipe
+					if (deltaY > 0)
+					{
+						Toast.makeText(
+							this@PlayFieldFragment.context,
+							"Up Swipe",
+							Toast.LENGTH_SHORT
+						).show()
+					}
+				}
+			}
+
+			return false
+		}
+
+		override fun onDown(e: MotionEvent?): Boolean
+		{
+			return true
 		}
 	}
 }
