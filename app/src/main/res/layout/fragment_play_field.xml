@@ -51,21 +51,20 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/tile_color_switch"
+                style="@style/color_switch_style"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/play_field_table"
-                style="@style/color_switch_style" />
-r
+                app:layout_constraintTop_toBottomOf="@id/play_field_table" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/complete_button"
                 style="@style/complete_button_style"
-                app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintBottom_toBottomOf="@id/tile_color_switch"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintStart_toEndOf="@id/tile_color_switch"
                 app:layout_constraintTop_toTopOf="@id/tile_color_switch" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </layout>
