@@ -278,7 +278,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				val deltaY = downY - moveY
 
 				// Swipe horizontal
-				if (abs(deltaX) > abs(deltaY))
+				if (abs(deltaX) > abs(deltaY) && currentRow == rowIndex)
 				{
 					if (abs(deltaX) >= minHorizontalSwipeLength)
 					{
@@ -318,7 +318,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				// Swipe vertical
 				else
 				{
-					if (abs(deltaY) >= minVerticalSwipeLength)
+					if (abs(deltaY) >= minVerticalSwipeLength && currentColumn == columnIndex)
 					{
 						minVerticalSwipeLength += v.height
 						// Down swipe
