@@ -80,8 +80,11 @@ class PlayField(private val playFieldData: PlayFieldData)
 			throw IllegalArgumentException("The row must be greater than 0 or lower than $fieldSize. It was $row")
 		}
 
-		this.tileStates[row][col] = tileValue
-		Log.d("PlayField", "Set tile state at row $row and col $col to $tileValue")
+		if (this.tileStates[row][col] != tileValue)
+		{
+			this.tileStates[row][col] = tileValue
+			Log.d("PlayField", "Set tile state at row $row and col $col to $tileValue")
+		}
 	}
 
 	/**

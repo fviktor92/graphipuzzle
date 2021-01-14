@@ -4,10 +4,8 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.Rect
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -43,10 +41,15 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private lateinit var playField: PlayField
 	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 
+	// Variablies used for swiping
+	private var minHorizontalSwipeLength = 0
+	private var minVerticalSwipeLength = 0
 	private var downX: Float = 0.0f
 	private var downY: Float = 0.0f
-	private var upX: Float = 0.0f
-	private var upY: Float = 0.0f
+	private lateinit var touchedRowButtons: List<MaterialButton>
+	private lateinit var touchedColumnButtons: List<MaterialButton>
+	private var currentColumn = 0
+	private var currentRow = 0
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -231,104 +234,133 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.cornerRadius = 0
 
 		fieldButton.setOnTouchListener { v, event ->
-			val minHorizontalSwipeLength = fieldButton.width
-			val minVerticalSwipeLength = fieldButton.height
-
-			when (event?.action)
-			{
-				MotionEvent.ACTION_DOWN ->
-				{
-					downX = event.x
-					downY = event.y
-					colorTileBlackOrGray(v, rowIndex, columnIndex)
-				}
-
-				MotionEvent.ACTION_MOVE ->
-				{
-					Log.d("PlayFieldFragment", "x: " + event.x + " y " + event.y)
-					val tableRow = this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(ROW_TAG_PREFIX + rowIndex)
-					val rowChildren: List<MaterialButton> = tableRow.children.toList().filterIsInstance<MaterialButton>()
-
-
-
-					for (i in columnIndex + 1 until rowChildren.size)
-					{
-						Log.d("PlayFieldFragment", "MaterialButton index: " + i)
-						val bounds = Rect()
-						rowChildren[i].getHitRect(bounds)
-						if (bounds.contains(event.x.toInt(), downY.toInt()))
-						{
-							colorTileBlackOrGray(rowChildren[i], rowIndex, i)
-						}
-					}
-				}
-
-				MotionEvent.ACTION_UP ->
-				{
-					upX = event.x
-					upY = event.y
-					val deltaX = downX - upX
-					val deltaY = downY - upY
-
-					// Swipe horizontal
-					if (abs(deltaX) > abs(deltaY))
-					{
-						if (abs(deltaX) >= minHorizontalSwipeLength)
-						{
-							// Right Swipe
-							if (deltaX < 0)
-							{
-								Toast.makeText(
-									this@PlayFieldFragment.context,
-									"Right Swipe $minHorizontalSwipeLength",
-									Toast.LENGTH_SHORT
-								).show()
-							}
-							// Left Swipe
-							if (deltaX > 0)
-							{
-								Toast.makeText(
-									this@PlayFieldFragment.context,
-									"Left Swipe $minHorizontalSwipeLength",
-									Toast.LENGTH_SHORT
-								).show()
-							}
-						}
-					}
-					// Swipe vertical
-					else
-					{
-						if (abs(deltaY) >= minVerticalSwipeLength)
-						{
-							// Down swipe
-							if (deltaY < 0)
-							{
-								Toast.makeText(
-									this@PlayFieldFragment.context,
-									"Down Swipe $minVerticalSwipeLength",
-									Toast.LENGTH_SHORT
-								).show()
-							}
-							// Up swipe
-							if (deltaY > 0)
-							{
-								Toast.makeText(
-									this@PlayFieldFragment.context,
-									"Up Swipe $minVerticalSwipeLength",
-									Toast.LENGTH_SHORT
-								).show()
-							}
-						}
-					}
-
-					colorColumnTextView(columnIndex)
-					colorRowTextView(rowIndex)
-				}
-			}
+			setFieldButtonOnTouchListener(event, columnIndex, rowIndex, v)
 			v?.onTouchEvent(event) ?: true
 		}
 
 		return fieldButton
+	}
+
+	private fun setFieldButtonOnTouchListener(
+		event: MotionEvent,
+		columnIndex: Int,
+		rowIndex: Int,
+		v: View
+	)
+	{
+		when (event?.action)
+		{
+			MotionEvent.ACTION_DOWN ->
+			{
+				currentColumn = columnIndex
+				currentRow = rowIndex
+				downX = event.x
+				downY = event.y
+				touchedRowButtons =
+					this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
+						ROW_TAG_PREFIX + rowIndex
+					).children.toList().filterIsInstance<MaterialButton>()
+				touchedColumnButtons =
+					this.fragmentPlayFieldBinding.playFieldTable.children.toList()
+						.filterIsInstance<TableRow>()
+						.map { row -> row.findViewWithTag(COLUMN_TAG_PREFIX + columnIndex) }
+				minHorizontalSwipeLength = v.width
+				minVerticalSwipeLength = v.height
+
+				colorTileBlackOrGray(v, rowIndex, columnIndex)
+			}
+
+			MotionEvent.ACTION_MOVE ->
+			{
+				val moveX = event.x
+				val moveY = event.y
+				val deltaX = downX - moveX
+				val deltaY = downY - moveY
+
+				// Swipe horizontal
+				if (abs(deltaX) > abs(deltaY))
+				{
+					if (abs(deltaX) >= minHorizontalSwipeLength)
+					{
+						minHorizontalSwipeLength += v.width
+						// Right Swipe
+						if (deltaX < 0)
+						{
+							currentColumn += 1
+							if (currentColumn < touchedRowButtons.size)
+							{
+								colorTileBlackOrGray(
+									touchedRowButtons[currentColumn],
+									rowIndex,
+									currentColumn
+								)
+								colorColumnTextView(currentColumn)
+								colorRowTextView(rowIndex)
+							}
+						}
+						// Left Swipe
+						if (deltaX > 0)
+						{
+							currentColumn -= 1
+							if (currentColumn >= 0)
+							{
+								colorTileBlackOrGray(
+									touchedRowButtons[currentColumn],
+									rowIndex,
+									currentColumn
+								)
+								colorColumnTextView(currentColumn)
+								colorRowTextView(rowIndex)
+							}
+						}
+					}
+				}
+				// Swipe vertical
+				else
+				{
+					if (abs(deltaY) >= minVerticalSwipeLength)
+					{
+						minVerticalSwipeLength += v.height
+						// Down swipe
+						if (deltaY < 0)
+						{
+							currentRow += 1
+							if (currentRow < touchedColumnButtons.size)
+							{
+								colorTileBlackOrGray(
+									touchedColumnButtons[currentRow],
+									currentRow,
+									columnIndex
+								)
+								colorColumnTextView(columnIndex)
+								colorRowTextView(currentRow)
+							}
+						}
+						// Up swipe
+						if (deltaY > 0)
+						{
+							currentRow -= 1
+							if (currentRow >= 0)
+							{
+								colorTileBlackOrGray(
+									touchedColumnButtons[currentRow],
+									currentRow,
+									columnIndex
+								)
+								colorColumnTextView(columnIndex)
+								colorRowTextView(currentRow)
+							}
+						}
+					}
+				}
+			}
+
+			MotionEvent.ACTION_UP ->
+			{
+				colorColumnTextView(columnIndex)
+				colorRowTextView(rowIndex)
+			}
+		}
 	}
 
 	private fun colorTileBlackOrGray(v: View, rowIndex: Int, columnIndex: Int)
