@@ -4,11 +4,14 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
@@ -40,8 +43,10 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private lateinit var playField: PlayField
 	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 
-	private lateinit var gestureDetector: GestureDetector
-	private lateinit var gestureListener: View.OnTouchListener
+	private var downX: Float = 0.0f
+	private var downY: Float = 0.0f
+	private var upX: Float = 0.0f
+	private var upY: Float = 0.0f
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -59,20 +64,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
 
-			initializePlayFieldColumnValuesTable()
-			initializePlayFieldRowValuesTable()
-			initializePlayFieldTable()
-			setHelpButtonOnTouchListener()
-			setCompleteButtonOnTouchListener()
-
-			val minSwipeLength = fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
-				ROW_TAG_PREFIX + 0).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + 0).height
-
-			gestureDetector = GestureDetector(this@PlayFieldFragment.context, MyGestureDetector(minSwipeLength))
-			gestureListener = View.OnTouchListener { v, event ->
-				gestureDetector.onTouchEvent(event)
-			}
-
+		initializePlayFieldColumnValuesTable()
+		initializePlayFieldRowValuesTable()
+		initializePlayFieldTable()
+		setHelpButtonOnTouchListener()
+		setCompleteButtonOnTouchListener()
 
 		// Inflate the layout for this fragment
 		return fragmentPlayFieldBinding.root
@@ -235,16 +231,96 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.cornerRadius = 0
 
 		fieldButton.setOnTouchListener { v, event ->
-			gestureListener.onTouch(v, event)
+			val minHorizontalSwipeLength = fieldButton.width
+			val minVerticalSwipeLength = fieldButton.height
+
 			when (event?.action)
 			{
 				MotionEvent.ACTION_DOWN ->
 				{
+					downX = event.x
+					downY = event.y
 					colorTileBlackOrGray(v, rowIndex, columnIndex)
+				}
+
+				MotionEvent.ACTION_MOVE ->
+				{
+					Log.d("PlayFieldFragment", "x: " + event.x + " y " + event.y)
+					val tableRow = this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(ROW_TAG_PREFIX + rowIndex)
+					val rowChildren: List<MaterialButton> = tableRow.children.toList().filterIsInstance<MaterialButton>()
+
+
+
+					for (i in columnIndex + 1 until rowChildren.size)
+					{
+						Log.d("PlayFieldFragment", "MaterialButton index: " + i)
+						val bounds = Rect()
+						rowChildren[i].getHitRect(bounds)
+						if (bounds.contains(event.x.toInt(), downY.toInt()))
+						{
+							colorTileBlackOrGray(rowChildren[i], rowIndex, i)
+						}
+					}
 				}
 
 				MotionEvent.ACTION_UP ->
 				{
+					upX = event.x
+					upY = event.y
+					val deltaX = downX - upX
+					val deltaY = downY - upY
+
+					// Swipe horizontal
+					if (abs(deltaX) > abs(deltaY))
+					{
+						if (abs(deltaX) >= minHorizontalSwipeLength)
+						{
+							// Right Swipe
+							if (deltaX < 0)
+							{
+								Toast.makeText(
+									this@PlayFieldFragment.context,
+									"Right Swipe $minHorizontalSwipeLength",
+									Toast.LENGTH_SHORT
+								).show()
+							}
+							// Left Swipe
+							if (deltaX > 0)
+							{
+								Toast.makeText(
+									this@PlayFieldFragment.context,
+									"Left Swipe $minHorizontalSwipeLength",
+									Toast.LENGTH_SHORT
+								).show()
+							}
+						}
+					}
+					// Swipe vertical
+					else
+					{
+						if (abs(deltaY) >= minVerticalSwipeLength)
+						{
+							// Down swipe
+							if (deltaY < 0)
+							{
+								Toast.makeText(
+									this@PlayFieldFragment.context,
+									"Down Swipe $minVerticalSwipeLength",
+									Toast.LENGTH_SHORT
+								).show()
+							}
+							// Up swipe
+							if (deltaY > 0)
+							{
+								Toast.makeText(
+									this@PlayFieldFragment.context,
+									"Up Swipe $minVerticalSwipeLength",
+									Toast.LENGTH_SHORT
+								).show()
+							}
+						}
+					}
+
 					colorColumnTextView(columnIndex)
 					colorRowTextView(rowIndex)
 				}
@@ -448,78 +524,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				}
 				colorAnimation.start()
 			}
-		}
-	}
-
-	inner class MyGestureDetector(var minSwipeLength: Int) : GestureDetector.SimpleOnGestureListener()
-	{
-		override fun onFling(
-			e1: MotionEvent?,
-			e2: MotionEvent?,
-			velocityX: Float,
-			velocityY: Float
-		): Boolean
-		{
-			val deltaX = e1!!.x - e2!!.x
-			val deltaY = e1!!.y - e2!!.y
-
-			// Swipe horizontal
-			if (abs(deltaX) > abs(deltaY))
-			{
-				if (abs(deltaX) >= 95)
-				{
-					// Right Swipe
-					if (deltaX < 0)
-					{
-						Toast.makeText(
-							this@PlayFieldFragment.context,
-							"Right Swipe $minSwipeLength",
-							Toast.LENGTH_SHORT
-						).show()
-					}
-					// Left Swipe
-					if (deltaX > 0)
-					{
-						Toast.makeText(
-							this@PlayFieldFragment.context,
-							"Left Swipe",
-							Toast.LENGTH_SHORT
-						).show()
-					}
-				}
-			}
-			// Swipe vertical
-			else
-			{
-				if (abs(deltaY) >= 95)
-				{
-					// Down swipe
-					if (deltaY < 0)
-					{
-						Toast.makeText(
-							this@PlayFieldFragment.context,
-							"Down Swipe",
-							Toast.LENGTH_SHORT
-						).show()
-					}
-					// Up swipe
-					if (deltaY > 0)
-					{
-						Toast.makeText(
-							this@PlayFieldFragment.context,
-							"Up Swipe",
-							Toast.LENGTH_SHORT
-						).show()
-					}
-				}
-			}
-
-			return false
-		}
-
-		override fun onDown(e: MotionEvent?): Boolean
-		{
-			return true
 		}
 	}
 }
