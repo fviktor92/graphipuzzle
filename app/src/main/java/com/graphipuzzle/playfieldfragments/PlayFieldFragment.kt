@@ -2,6 +2,7 @@ package com.graphipuzzle.playfieldfragments
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -37,6 +38,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private val ROW_VALUE_NUMBER_SEPARATOR = " "
 	private val ROW_TAG_PREFIX = "row_"
 	private val COLUMN_TAG_PREFIX = "column_"
+	private val BORDER_TAG = "border"
 
 	private lateinit var playField: PlayField
 	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
@@ -300,7 +302,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this.minVerticalSwipeLength = v.height
 
 				// Color the first touched tile
-				colorTile(v, rowIndex, columnIndex)
+				setFieldButtonColor(v, rowIndex, columnIndex)
 				// Check if any group is completed
 				colorColumnTextView(columnIndex)
 				colorRowTextView(rowIndex)
@@ -326,7 +328,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn += 1
 							if (this.currentColumn < this.touchedRowButtons.size)
 							{
-								colorTile(
+								setFieldButtonColor(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
@@ -341,7 +343,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn -= 1
 							if (this.currentColumn >= 0)
 							{
-								colorTile(
+								setFieldButtonColor(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
@@ -364,7 +366,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow += 1
 							if (this.currentRow < this.touchedColumnButtons.size)
 							{
-								colorTile(
+								setFieldButtonColor(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
@@ -379,7 +381,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow -= 1
 							if (this.currentRow >= 0)
 							{
-								colorTile(
+								setFieldButtonColor(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
@@ -395,13 +397,13 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * Sets the color the tile to either BLACK or GRAY, depending on the state of the color switch.
+	 * Sets the color to the field button to either BLACK or GRAY, depending on the state of the color switch.
 	 * If a tile is already in the desired state/color, it resets to WHITE and 0.
 	 * @param v The view the touch event has been dispatched to.
 	 * @param columnIndex The index of the column where the button is touched.
 	 * @param rowIndex The index of the column where the button is touched.
 	 */
-	private fun colorTile(v: View, rowIndex: Int, columnIndex: Int)
+	private fun setFieldButtonColor(v: View, rowIndex: Int, columnIndex: Int)
 	{
 		if (this.fragmentPlayFieldBinding.tileColorSwitch.isChecked)
 		{
@@ -447,11 +449,15 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 						)
 					)
 			}
-
 			this.playField.setTileState(0, rowIndex, columnIndex)
 		}
 	}
 
+	/**
+	 * FIXME: The coloring algorithm could be improved.
+	 * Compares the state of the play field with the column values and colors the group value characters if necessary.
+	 * @param columnIndex The index of the column where the TextView's character have to be colored
+	 */
 	private fun colorColumnTextView(columnIndex: Int)
 	{
 		val columnGroupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
@@ -486,6 +492,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		}
 	}
 
+	/**
+	 * FIXME: The coloring algorithm could be improved.
+	 * Compares the state of the play field with the row values and colors the group value characters if necessary.
+	 * @param rowIndex The index of the row where the TextView's character have to be colored
+	 */
 	private fun colorRowTextView(rowIndex: Int)
 	{
 		val rowGroupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
@@ -518,26 +529,37 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		}
 	}
 
+	/**
+	 * Adds a simple View that is functioning as a thicker border in a TableRow.
+	 * @param row the TableRow that receives the border view.
+	 */
 	private fun addBorderInRow(row: TableRow)
 	{
 		val border = View(this.context)
 		val borderLayoutParams =
 			TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)
 		border.layoutParams = borderLayoutParams
+		border.tag = BORDER_TAG
 		border.setBackgroundColor(Color.GRAY)
 		row.addView(border)
 	}
 
+	/**
+	 * Adds a simple View that is functioning as a thicker border in a TableRow.
+	 * @param tableLayout the TableLayout that receives the border view.
+	 */
 	private fun addBorderInTable(tableLayout: TableLayout)
 	{
 		val border = View(this.context)
 		val borderLayoutParams =
 			TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 2)
 		border.layoutParams = borderLayoutParams
+		border.tag = BORDER_TAG
 		border.setBackgroundColor(Color.GRAY)
 		tableLayout.addView(border)
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	private fun setCompleteButtonOnTouchListener()
 	{
 		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
@@ -551,6 +573,13 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 						"Congrats!",
 						Toast.LENGTH_SHORT
 					).show()
+					val tableBorders =
+						this.fragmentPlayFieldBinding.playFieldTable.children.filter { view -> view.tag == BORDER_TAG }
+					val rowBorders =
+						this.fragmentPlayFieldBinding.playFieldTable.children.filterIsInstance<TableRow>()
+							.flatMap { view -> view.children }
+							.filter { view -> view.tag == BORDER_TAG }
+					(tableBorders + rowBorders).forEach { view -> view.visibility = View.GONE }
 					colorPlayFieldTiles()
 				} else
 				{
@@ -617,6 +646,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				colorAnimation.addUpdateListener { animator ->
 					materialButton
 						.setBackgroundColor(animator.animatedValue as Int)
+					materialButton.strokeColor =
+						ColorStateList.valueOf(animator.animatedValue as Int)
 				}
 				colorAnimation.start()
 			}
