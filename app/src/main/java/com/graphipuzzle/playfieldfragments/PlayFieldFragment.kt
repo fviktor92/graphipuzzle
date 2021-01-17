@@ -2,11 +2,11 @@ package com.graphipuzzle.playfieldfragments
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
+import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -40,6 +40,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private val COLUMN_TAG_PREFIX = "column_"
 	private val BORDER_TAG = "border"
 
+	private var screenWidth: Int = 0
 	private lateinit var playField: PlayField
 	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 
@@ -67,6 +68,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		savedInstanceState: Bundle?
 	): View?
 	{
+		screenWidth = getScreenWidthInPixels()
 		fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
 
@@ -118,25 +120,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * Creates a TextView that contains the group of values in a column
-	 * @return the created TextView with the values as text
-	 */
-	private fun createColumnValueTextView(columnValues: ArrayList<Int>): TextView
-	{
-		val columnValueText = TextView(this.context)
-		columnValueText.layoutParams = TableRow.LayoutParams(
-			TableRow.LayoutParams.WRAP_CONTENT,
-			TableRow.LayoutParams.MATCH_PARENT, 1.0f
-		)
-		columnValueText.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
-		columnValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
-		columnValueText.setTextColor(Color.BLACK)
-		columnValueText.textSize = 10.0f
-		columnValueText.text = columnValues.joinToString(separator = COLUMN_VALUE_NUMBER_SEPARATOR)
-		return columnValueText
-	}
-
-	/**
 	 * Initializes the left [TableLayout] that is supposed to contain the row group values.
 	 */
 	private fun initializePlayFieldRowValuesTable()
@@ -158,6 +141,25 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			this.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(row)
 		}
 	}
+	
+	/**
+	 * Creates a TextView that contains the group of values in a column
+	 * @return the created TextView with the values as text
+	 */
+	private fun createColumnValueTextView(columnValues: ArrayList<Int>): TextView
+	{
+		val columnValueText = TextView(this.context)
+		columnValueText.layoutParams = TableRow.LayoutParams(
+			TableRow.LayoutParams.WRAP_CONTENT,
+			TableRow.LayoutParams.MATCH_PARENT, 1.0f
+		)
+		columnValueText.gravity = Gravity.CENTER_HORIZONTAL or Gravity.BOTTOM
+		columnValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
+		columnValueText.setTextColor(Color.BLACK)
+		columnValueText.textSize = screenWidth * 0.011f
+		columnValueText.text = columnValues.joinToString(separator = COLUMN_VALUE_NUMBER_SEPARATOR)
+		return columnValueText
+	}
 
 	/**
 	 * Creates a TextView that contains the group of values in a row
@@ -173,7 +175,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		rowValueText.gravity = Gravity.END or Gravity.CENTER_VERTICAL
 		rowValueText.textAlignment = TextView.TEXT_ALIGNMENT_GRAVITY
 		rowValueText.setTextColor(Color.BLACK)
-		rowValueText.textSize = 10.0f
+		rowValueText.textSize = screenWidth * 0.011f
 		rowValueText.text = rowValues.joinToString(separator = ROW_VALUE_NUMBER_SEPARATOR)
 		return rowValueText
 	}
@@ -240,7 +242,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			MaterialButton(this.requireContext(), null, R.attr.materialButtonOutlinedStyle)
 		val layoutParams = TableRow.LayoutParams(
 			TableRow.LayoutParams.WRAP_CONTENT,
-			TableRow.LayoutParams.WRAP_CONTENT, 1.0f
+			TableRow.LayoutParams.MATCH_PARENT, 1.0f
 		)
 		layoutParams.setMargins(0)
 		fieldButton.tag = "$COLUMN_TAG_PREFIX$columnIndex"
@@ -463,30 +465,32 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val columnGroupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldColumnValuesTable[0] as TableRow
 		val textView = tableRow[columnIndex] as TextView
-		var columnValues: Array<String> =
+		val fieldColumn: ArrayList<Int> = this.playField.getFieldColumns()[columnIndex]
+		var columnValueTexts: Array<String> =
 			textView.text.split(Regex(COLUMN_VALUE_NUMBER_SEPARATOR)).toTypedArray()
 
-		for (i in columnValues.indices)
+		for (i in columnValueTexts.indices)
 		{
 			val columnGroupState = columnGroupStates[i]
-			if (columnValues.size < columnGroupStates.toList()
+			// If there are more painted groups than the actual number of groups, reset the text to original
+			if (fieldColumn.size < columnGroupStates.toList()
 					.count { groupState -> groupState != 0 }
 			)
 			{
-				var newText = columnValues.joinToString(COLUMN_VALUE_NUMBER_SEPARATOR)
+				var newText = columnValueTexts.joinToString(COLUMN_VALUE_NUMBER_SEPARATOR)
 				textView.text = newText
 				break
-			} else if (columnGroupState == columnValues[i].toInt())
+			} else if (columnGroupState == fieldColumn[i])
 			{
-				var recoloredGroup = "<font color=#D3D3D3>" + columnValues[i] + "</font>"
-				columnValues[i] = recoloredGroup
-				var newText = columnValues.joinToString("<br>")
+				var recoloredGroup = "<font color=#D3D3D3>" + columnValueTexts[i] + "</font>"
+				columnValueTexts[i] = recoloredGroup
+				var newText = columnValueTexts.joinToString("<br>")
 				textView.text = Html.fromHtml(newText)
-			} else if (columnGroupState != columnValues[i].toInt())
+			} else if (columnGroupState != fieldColumn[i])
 			{
-				var recoloredGroup = "<font color=#000000>" + columnValues[i] + "</font>"
-				columnValues[i] = recoloredGroup
-				var newText = columnValues.joinToString("<br>")
+				var recoloredGroup = "<font color=#000000>" + columnValueTexts[i] + "</font>"
+				columnValueTexts[i] = recoloredGroup
+				var newText = columnValueTexts.joinToString("<br>")
 				textView.text = Html.fromHtml(newText)
 			}
 		}
@@ -502,28 +506,30 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val rowGroupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldRowValuesTable[rowIndex] as TableRow
 		val textView = tableRow[0] as TextView
-		var rowValues: Array<String> =
+		val fieldRow: ArrayList<Int> = this.playField.getFieldRows()[rowIndex]
+		var rowValueTexts: Array<String> =
 			textView.text.split(Regex(ROW_VALUE_NUMBER_SEPARATOR)).toTypedArray()
 
-		for (i in rowValues.indices)
+		for (i in rowValueTexts.indices)
 		{
 			val rowGroupState = rowGroupStates[i]
-			if (rowValues.size < rowGroupStates.toList().count { groupState -> groupState != 0 })
+			// If there are more painted groups than the actual number of groups, reset the text to original
+			if (fieldRow.size < rowGroupStates.toList().count { groupState -> groupState != 0 })
 			{
-				var newText = rowValues.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
+				var newText = rowValueTexts.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
 				textView.text = newText
 				break
-			} else if (rowGroupState == rowValues[i].toInt())
+			} else if (rowGroupState == fieldRow[i])
 			{
-				var recoloredGroup = "<font color=#D3D3D3>" + rowValues[i] + "</font>"
-				rowValues[i] = recoloredGroup
-				var newText = rowValues.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
+				var recoloredGroup = "<font color=#D3D3D3>" + rowValueTexts[i] + "</font>"
+				rowValueTexts[i] = recoloredGroup
+				var newText = rowValueTexts.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
 				textView.text = Html.fromHtml(newText)
-			} else if (rowGroupState != rowValues[i].toInt())
+			} else if (rowGroupState != fieldRow[i])
 			{
-				var recoloredGroup = "<font color=#000000>" + rowValues[i] + "</font>"
-				rowValues[i] = recoloredGroup
-				var newText = rowValues.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
+				var recoloredGroup = "<font color=#000000>" + rowValueTexts[i] + "</font>"
+				rowValueTexts[i] = recoloredGroup
+				var newText = rowValueTexts.joinToString(ROW_VALUE_NUMBER_SEPARATOR)
 				textView.text = Html.fromHtml(newText)
 			}
 		}
@@ -559,7 +565,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		tableLayout.addView(border)
 	}
 
-	@SuppressLint("ClickableViewAccessibility")
 	private fun setCompleteButtonOnTouchListener()
 	{
 		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
@@ -652,5 +657,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				colorAnimation.start()
 			}
 		}
+	}
+
+	private fun getScreenWidthInPixels(): Int
+	{
+		val displayMetrics = DisplayMetrics()
+		activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
+		return displayMetrics.widthPixels
 	}
 }
