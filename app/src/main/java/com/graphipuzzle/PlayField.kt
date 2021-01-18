@@ -163,23 +163,39 @@ class PlayField(private val playFieldData: PlayFieldData)
 			arrayColumn = IntArray(this.maxGroups)
 			for (row in 0 until this.fieldSize)
 			{
+				// If it is the first painted tile in the column
+				val currentColumn = this.fieldColumns[col]
+				val currentColumnWithoutLast = currentColumn.subList(0, currentColumn.size - 1)
 				if (this.tileStates[row][col] == 1 && !isGroup)
 				{
 					groupSize++
 					colIndex++
 					isGroup = true
-					if (row + 1 == this.fieldSize)
+
+					// TODO: DO THE SAME LOGIC FOR ROW. ALSO VERIFY THE INNER GROUPS. Ki kellene számolgatni, hogy van-e már az arrayColumn-ban group, és az alapján eldönteni, hogy a végére kerüljön-e vagy ne
+
+					// If there is a group already in the column and the remaining number of tiles in the column is lesser than or equal to the size of the last group in the column
+					if (arrayColumn.count { element -> element == 1 } > 1 && (currentColumnWithoutLast.sum() + currentColumnWithoutLast.size) <= row - groupSize + 1) // FIXME: THERE IS A BUG HERE
 					{
+						colIndex = currentColumn.size - 1
 						arrayColumn[colIndex] = groupSize
+					} else if (row + 1 == this.fieldSize)
+					{
 						groupSize = 0
 						isGroup = false
 					}
-				} else if (this.tileStates[row][col] == 1 && isGroup)
+				}
+				// If the tile is painted and is in a group
+				else if (this.tileStates[row][col] == 1 && isGroup)
 				{
 					groupSize++
-					if (row + 1 == this.fieldSize)
+					// If the remaining number of tiles in the column is lesser than or equal to the size of the last group in the column
+					if ((currentColumnWithoutLast.sum() + currentColumnWithoutLast.size) <= row - groupSize + 1)
 					{
+						colIndex = currentColumn.size - 1
 						arrayColumn[colIndex] = groupSize
+					} else if (row + 1 == this.fieldSize)
+					{
 						groupSize = 0
 						isGroup = false
 					}
