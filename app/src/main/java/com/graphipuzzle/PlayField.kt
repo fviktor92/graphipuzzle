@@ -149,67 +149,61 @@ class PlayField(private val playFieldData: PlayFieldData)
 	 */
 	fun getColumnGroupStates(): Array<IntArray>
 	{
-		var groups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
-		var groupSize: Int
-		var colIndex: Int
-		var isGroup: Boolean
-		var arrayColumn: IntArray
+		var allGroups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
 
 		for (col in 0 until this.fieldSize)
 		{
-			groupSize = 0
-			colIndex = -1
-			isGroup = false
-			arrayColumn = IntArray(this.maxGroups)
+			val currentColumn = this.fieldColumns[col]
+			var isGroup = false
+			var groupIndex = 0
+			var groupStartingIndex = 0
+			var groupEndingIndex = 0
+			var groupSize = 0
+			var groupsInColumn = IntArray(this.maxGroups)
+
 			for (row in 0 until this.fieldSize)
 			{
-				// If it is the first painted tile in the column
-				val currentColumn = this.fieldColumns[col]
-				val currentColumnWithoutLast = currentColumn.subList(0, currentColumn.size - 1)
 				if (this.tileStates[row][col] == 1 && !isGroup)
 				{
-					groupSize++
-					colIndex++
 					isGroup = true
+					groupStartingIndex = row
+					groupEndingIndex = row
 
-					// TODO: DO THE SAME LOGIC FOR ROW. ALSO VERIFY THE INNER GROUPS. Ki kellene számolgatni, hogy van-e már az arrayColumn-ban group, és az alapján eldönteni, hogy a végére kerüljön-e vagy ne
-
-					// If there is a group already in the column and the remaining number of tiles in the column is lesser than or equal to the size of the last group in the column
-					if (arrayColumn.count { element -> element == 1 } > 1 && (currentColumnWithoutLast.sum() + currentColumnWithoutLast.size) <= row - groupSize + 1) // FIXME: THERE IS A BUG HERE
+					if (row + 1 == this.fieldSize)
 					{
-						colIndex = currentColumn.size - 1
-						arrayColumn[colIndex] = groupSize
-					} else if (row + 1 == this.fieldSize)
-					{
-						groupSize = 0
+						groupSize = groupEndingIndex - groupStartingIndex + 1
+						groupIndex = getGroupIndexFromArray(currentColumn, groupStartingIndex, groupEndingIndex)
+						if (groupIndex > -1 ) groupsInColumn[groupIndex] = groupSize
+						groupStartingIndex = 0
 						isGroup = false
 					}
 				}
-				// If the tile is painted and is in a group
 				else if (this.tileStates[row][col] == 1 && isGroup)
 				{
-					groupSize++
-					// If the remaining number of tiles in the column is lesser than or equal to the size of the last group in the column
-					if ((currentColumnWithoutLast.sum() + currentColumnWithoutLast.size) <= row - groupSize + 1)
+					groupEndingIndex = row
+					if (row + 1 == this.fieldSize)
 					{
-						colIndex = currentColumn.size - 1
-						arrayColumn[colIndex] = groupSize
-					} else if (row + 1 == this.fieldSize)
-					{
-						groupSize = 0
+						groupSize = groupEndingIndex - groupStartingIndex + 1
+						groupIndex = getGroupIndexFromArray(currentColumn, groupStartingIndex, groupEndingIndex)
+						if (groupIndex > -1 ) groupsInColumn[groupIndex] = groupSize
+						groupStartingIndex = 0
 						isGroup = false
 					}
 				} else if (this.tileStates[row][col] != 1 && isGroup)
 				{
-					arrayColumn[colIndex] = groupSize
-					groupSize = 0
+					groupEndingIndex = row - 1
+					groupSize = groupEndingIndex - groupStartingIndex + 1
+					groupIndex = getGroupIndexFromArray(currentColumn, groupStartingIndex, groupEndingIndex)
+
+					if (groupIndex > -1 ) groupsInColumn[groupIndex] = groupSize
+					groupStartingIndex = 0
 					isGroup = false
 				}
 			}
-			groups[col] = arrayColumn
+			allGroups[col] = groupsInColumn
 		}
 
-		return groups
+		return allGroups
 	}
 
 	/**
@@ -217,51 +211,100 @@ class PlayField(private val playFieldData: PlayFieldData)
 	 */
 	fun getRowGroupStates(): Array<IntArray>
 	{
-		var groups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
-		var groupSize: Int
-		var rowIndex: Int
-		var isGroup: Boolean
-		var arrayRow: IntArray
+		var allGroups: Array<IntArray> = Array(this.fieldSize) { IntArray(this.maxGroups) }
 
 		for (row in 0 until this.fieldSize)
 		{
-			groupSize = 0
-			rowIndex = -1
-			isGroup = false
-			arrayRow = IntArray(this.maxGroups)
+			val currentRow = this.fieldRows[row]
+			var isGroup = false
+			var groupIndex = 0
+			var groupStartingIndex = 0
+			var groupEndingIndex = 0
+			var groupSize = 0
+			var groupsInRow = IntArray(this.maxGroups)
+
 			for (col in 0 until this.fieldSize)
 			{
 				if (this.tileStates[row][col] == 1 && !isGroup)
 				{
-					groupSize++
-					rowIndex++
 					isGroup = true
+					groupStartingIndex = row
+					groupEndingIndex = row
+
 					if (col + 1 == this.fieldSize)
 					{
-						arrayRow[rowIndex] = groupSize
-						groupSize = 0
+						groupSize = groupEndingIndex - groupStartingIndex + 1
+						groupIndex = getGroupIndexFromArray(currentRow, groupStartingIndex, groupEndingIndex)
+						if (groupIndex > -1 ) groupsInRow[groupIndex] = groupSize
+						groupStartingIndex = 0
 						isGroup = false
 					}
 				} else if (this.tileStates[row][col] == 1 && isGroup)
 				{
-					groupSize++
+					groupEndingIndex = row
 					if (col + 1 == this.fieldSize)
 					{
-						arrayRow[rowIndex] = groupSize
-						groupSize = 0
+						groupSize = groupEndingIndex - groupStartingIndex + 1
+						groupIndex = getGroupIndexFromArray(currentRow, groupStartingIndex, groupEndingIndex)
+						if (groupIndex > -1 ) groupsInRow[groupIndex] = groupSize
+						groupStartingIndex = 0
 						isGroup = false
 					}
 				} else if (this.tileStates[row][col] != 1 && isGroup)
 				{
-					arrayRow[rowIndex] = groupSize
-					groupSize = 0
+					groupEndingIndex = row - 1
+					groupSize = groupEndingIndex - groupStartingIndex + 1
+					groupIndex = getGroupIndexFromArray(currentRow, groupStartingIndex, groupEndingIndex)
+
+					if (groupIndex > -1 ) groupsInRow[groupIndex] = groupSize
+					groupStartingIndex = 0
 					isGroup = false
 				}
 			}
-			groups[row] = arrayRow
+			allGroups[row] = groupsInRow
 		}
 
-		return groups
+		return allGroups
+	}
+
+	private fun getGroupIndexFromArray(currentArray: ArrayList<Int>, groupStartingIndex: Int, groupEndingIndex: Int): Int
+	{
+		val groupSize = groupEndingIndex - groupStartingIndex + 1
+		val afterGroupLength = this.fieldSize - groupEndingIndex - 1
+		var groupIndex = 0
+		loop@ for (i in 0 until currentArray.size)
+		{
+			val smallestGroup = currentArray.minOrNull()!!
+			val previousGroupsInArray = currentArray.subList(0, i)
+			val nextGroupsInArray = currentArray.subList(i + 1, currentArray.size)
+			val previousGroupsCanFit = groupStartingIndex >= (previousGroupsInArray.sum() + previousGroupsInArray.size)
+			val nextGroupsCanFit = afterGroupLength >= (nextGroupsInArray.sum() + nextGroupsInArray.size)
+
+			// FIXME: EZT KIJAVÍTANI! HA AZ SOR KEZDETEKOR KÉT AZONOS ELEMŰ CSOPORT VAN EGYMÁSHOZ KÖZEL,CSAK AZ ELSŐ CSOPORT SZÁMÁT SZÍNEZI BE. PL 2 2
+			// FIXME: HA KÉT AZONOS ELEMŰ CSOPORTNÁL 3 AZONOS CSOPORT VAN, BESZÍNEZI A 2 CSOPORTOT. PL [][] [][] [][] BESZÍNEZI 2 2-t,
+			// If it's the first group and there is enough space after the group to fit all the next groups from the array
+			if ((groupSize == currentArray[i]) && (i == 0) && nextGroupsCanFit)
+			{
+				groupIndex = i
+				break@loop
+			}
+			// If it's not the first group and there is enough space before the group to fit all the previous and next groups from the array
+			else if ((groupSize == currentArray[i]) && (i > 0) && previousGroupsCanFit && nextGroupsCanFit)
+			{
+				groupIndex = i
+				break@loop
+			}
+			// If it's the last group and there isn't enough space after the group to fit the smallest group from the array and there is enough space before the group to fit all the previous groups from the array
+			else if((groupSize == currentArray[i]) && (i == currentArray.size - 1) && (afterGroupLength <= smallestGroup + 1) && previousGroupsCanFit)
+			{
+				groupIndex = i
+				break@loop
+			} else
+			{
+				groupIndex = -1
+			}
+		}
+		return groupIndex
 	}
 
 	private fun loadValues()
