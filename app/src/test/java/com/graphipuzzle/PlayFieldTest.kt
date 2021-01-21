@@ -361,11 +361,11 @@ class PlayFieldTest
 
 		// Uncomplete the third column
 		playField.setTileState(0, 9, 2)
-		assertArrayEquals(intArrayOf(2, 2, 2, 0, 0), playField.getColumnGroupStates()[2])
+		assertArrayEquals(intArrayOf(2, 2, 0, 0, 0), playField.getColumnGroupStates()[2])
 
 		// Set a single tile at field ending
 		playField.setTileState(1, 9, 9)
-		assertArrayEquals(intArrayOf(1, 0, 0, 0, 0), playField.getColumnGroupStates()[9])
+		assertArrayEquals(intArrayOf(0, 0, 0, 0, 0), playField.getColumnGroupStates()[9])
 	}
 
 	@Test
@@ -406,10 +406,10 @@ class PlayFieldTest
 
 		// Uncomplete the eighth row
 		playField.setTileState(0, 7, 9)
-		assertArrayEquals(intArrayOf(3, 3, 1, 0, 0), playField.getRowGroupStates()[7])
+		assertArrayEquals(intArrayOf(3, 3, 0, 0, 0), playField.getRowGroupStates()[7])
 
 		// Set a single tile at field ending
 		playField.setTileState(1, 0, 9)
-		assertArrayEquals(intArrayOf(1, 0, 0, 0, 0), playField.getRowGroupStates()[0])
+		assertArrayEquals(intArrayOf(0, 1, 0, 0, 0), playField.getRowGroupStates()[0])
 	}
 }
