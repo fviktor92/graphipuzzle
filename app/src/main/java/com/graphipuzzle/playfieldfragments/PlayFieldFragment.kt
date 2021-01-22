@@ -141,7 +141,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			this.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(row)
 		}
 	}
-	
+
 	/**
 	 * Creates a TextView that contains the group of values in a column
 	 * @return the created TextView with the values as text
@@ -407,9 +407,14 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 */
 	private fun setFieldButtonColor(v: View, rowIndex: Int, columnIndex: Int)
 	{
+		val actualFieldButtonColor = v.backgroundTintList!!.getColorForState(
+			intArrayOf(android.R.attr.state_enabled),
+			0
+		)
+
 		if (this.fragmentPlayFieldBinding.tileColorSwitch.isChecked)
 		{
-			if (this.firstTouchedButtonColor != Color.BLACK)
+			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.GRAY)
 			{
 				v.backgroundTintList =
 					ColorStateList.valueOf(
@@ -419,7 +424,17 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 						)
 					)
 				this.playField.setTileState(1, rowIndex, columnIndex)
-			} else
+			} else if (this.firstTouchedButtonColor == Color.GRAY)
+			{
+				v.backgroundTintList =
+					ColorStateList.valueOf(
+						ContextCompat.getColor(
+							requireContext(),
+							R.color.black
+						)
+					)
+				this.playField.setTileState(1, rowIndex, columnIndex)
+			} else if (this.firstTouchedButtonColor == Color.BLACK && actualFieldButtonColor == Color.BLACK)
 			{
 				v.backgroundTintList =
 					ColorStateList.valueOf(
@@ -432,7 +447,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			}
 		} else
 		{
-			if (this.firstTouchedButtonColor == Color.BLACK || this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == 0)
+			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.BLACK)
 			{
 				v.backgroundTintList =
 					ColorStateList.valueOf(
@@ -441,7 +456,18 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							R.color.gray
 						)
 					)
-			} else
+				this.playField.setTileState(0, rowIndex, columnIndex)
+			} else if (this.firstTouchedButtonColor == Color.BLACK)
+			{
+				v.backgroundTintList =
+					ColorStateList.valueOf(
+						ContextCompat.getColor(
+							requireContext(),
+							R.color.gray
+						)
+					)
+				this.playField.setTileState(0, rowIndex, columnIndex)
+			} else if (this.firstTouchedButtonColor == Color.GRAY && actualFieldButtonColor == Color.GRAY)
 			{
 				v.backgroundTintList =
 					ColorStateList.valueOf(
@@ -450,8 +476,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							R.color.white
 						)
 					)
+				this.playField.setTileState(0, rowIndex, columnIndex)
 			}
-			this.playField.setTileState(0, rowIndex, columnIndex)
 		}
 	}
 
