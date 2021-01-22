@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.graphipuzzle.read.PlayFieldSize
+import com.graphipuzzle.read.PlayFieldLevel
 import com.graphipuzzle.read.ReadPlayField
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity()
 		val startBigGame: Button = findViewById(R.id.start_big_game)
 		startSmallGame.setOnClickListener {
 			playField =
-				PlayField(ReadPlayField(this, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData())
+				PlayField(ReadPlayField(this, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData())
 			startPlayFieldActivity(playField)
 		}
 		startBigGame.setOnClickListener {
 			playField =
-				PlayField(ReadPlayField(this, PlayFieldSize.BIG, "level_1.json").getPlayFieldData())
+				PlayField(ReadPlayField(this, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json").getPlayFieldData())
 			startPlayFieldActivity(playField)
 		}
 	}

@@ -3,6 +3,7 @@ package com.graphipuzzle
 import android.util.Log
 import com.graphipuzzle.data.PlayFieldData
 import com.graphipuzzle.data.TileData
+import com.graphipuzzle.read.PlayFieldLevel
 import kotlinx.serialization.Serializable
 import kotlin.math.ceil
 
@@ -12,6 +13,9 @@ import kotlin.math.ceil
 @Serializable
 class PlayField(private val playFieldData: PlayFieldData)
 {
+	private val name = this.playFieldData.name
+	private val playFieldLevel = this.playFieldData.level
+
 	/**
 	 * This is the expected result of the game
 	 */
@@ -30,6 +34,16 @@ class PlayField(private val playFieldData: PlayFieldData)
 	init
 	{
 		loadValues()
+	}
+
+	fun getName(): String
+	{
+		return this.name
+	}
+
+	fun getPlayFieldLevel(): PlayFieldLevel
+	{
+		return this.playFieldLevel
 	}
 
 	fun getTileValues(): ArrayList<ArrayList<TileData>>
@@ -172,20 +186,29 @@ class PlayField(private val playFieldData: PlayFieldData)
 					if (row + 1 == this.fieldSize)
 					{
 						groupSize = groupEndingIndex - groupStartingIndex + 1
-						groupIndex = getGroupIndexFromArray(expectedGroupsInColumn, actualGroupsInColumn, groupStartingIndex, groupEndingIndex)
-						if (groupIndex > -1 ) actualGroupsInColumn[groupIndex] = groupSize
+						groupIndex = getGroupIndexFromArray(
+							expectedGroupsInColumn,
+							actualGroupsInColumn,
+							groupStartingIndex,
+							groupEndingIndex
+						)
+						if (groupIndex > -1) actualGroupsInColumn[groupIndex] = groupSize
 						groupStartingIndex = 0
 						isGroup = false
 					}
-				}
-				else if (this.tileStates[row][col] == 1 && isGroup)
+				} else if (this.tileStates[row][col] == 1 && isGroup)
 				{
 					groupEndingIndex = row
 					if (row + 1 == this.fieldSize)
 					{
 						groupSize = groupEndingIndex - groupStartingIndex + 1
-						groupIndex = getGroupIndexFromArray(expectedGroupsInColumn, actualGroupsInColumn, groupStartingIndex, groupEndingIndex)
-						if (groupIndex > -1 ) actualGroupsInColumn[groupIndex] = groupSize
+						groupIndex = getGroupIndexFromArray(
+							expectedGroupsInColumn,
+							actualGroupsInColumn,
+							groupStartingIndex,
+							groupEndingIndex
+						)
+						if (groupIndex > -1) actualGroupsInColumn[groupIndex] = groupSize
 						groupStartingIndex = 0
 						isGroup = false
 					}
@@ -193,9 +216,14 @@ class PlayField(private val playFieldData: PlayFieldData)
 				{
 					groupEndingIndex = row - 1
 					groupSize = groupEndingIndex - groupStartingIndex + 1
-					groupIndex = getGroupIndexFromArray(expectedGroupsInColumn, actualGroupsInColumn, groupStartingIndex, groupEndingIndex)
+					groupIndex = getGroupIndexFromArray(
+						expectedGroupsInColumn,
+						actualGroupsInColumn,
+						groupStartingIndex,
+						groupEndingIndex
+					)
 
-					if (groupIndex > -1 ) actualGroupsInColumn[groupIndex] = groupSize
+					if (groupIndex > -1) actualGroupsInColumn[groupIndex] = groupSize
 					groupStartingIndex = 0
 					isGroup = false
 				}
@@ -234,8 +262,13 @@ class PlayField(private val playFieldData: PlayFieldData)
 					if (col + 1 == this.fieldSize)
 					{
 						groupSize = groupEndingIndex - groupStartingIndex + 1
-						groupIndex = getGroupIndexFromArray(expectedGroupsInRow, actualGroupsInRow, groupStartingIndex, groupEndingIndex)
-						if (groupIndex > -1 ) actualGroupsInRow[groupIndex] = groupSize
+						groupIndex = getGroupIndexFromArray(
+							expectedGroupsInRow,
+							actualGroupsInRow,
+							groupStartingIndex,
+							groupEndingIndex
+						)
+						if (groupIndex > -1) actualGroupsInRow[groupIndex] = groupSize
 						groupStartingIndex = 0
 						isGroup = false
 					}
@@ -245,8 +278,13 @@ class PlayField(private val playFieldData: PlayFieldData)
 					if (col + 1 == this.fieldSize)
 					{
 						groupSize = groupEndingIndex - groupStartingIndex + 1
-						groupIndex = getGroupIndexFromArray(expectedGroupsInRow, actualGroupsInRow, groupStartingIndex, groupEndingIndex)
-						if (groupIndex > -1 ) actualGroupsInRow[groupIndex] = groupSize
+						groupIndex = getGroupIndexFromArray(
+							expectedGroupsInRow,
+							actualGroupsInRow,
+							groupStartingIndex,
+							groupEndingIndex
+						)
+						if (groupIndex > -1) actualGroupsInRow[groupIndex] = groupSize
 						groupStartingIndex = 0
 						isGroup = false
 					}
@@ -254,9 +292,14 @@ class PlayField(private val playFieldData: PlayFieldData)
 				{
 					groupEndingIndex = col - 1
 					groupSize = groupEndingIndex - groupStartingIndex + 1
-					groupIndex = getGroupIndexFromArray(expectedGroupsInRow, actualGroupsInRow, groupStartingIndex, groupEndingIndex)
+					groupIndex = getGroupIndexFromArray(
+						expectedGroupsInRow,
+						actualGroupsInRow,
+						groupStartingIndex,
+						groupEndingIndex
+					)
 
-					if (groupIndex > -1 ) actualGroupsInRow[groupIndex] = groupSize
+					if (groupIndex > -1) actualGroupsInRow[groupIndex] = groupSize
 					groupStartingIndex = 0
 					isGroup = false
 				}
@@ -267,7 +310,12 @@ class PlayField(private val playFieldData: PlayFieldData)
 		return allGroups
 	}
 
-	private fun getGroupIndexFromArray(expectedGroupsInArray: ArrayList<Int>, actualGroupsInArray: IntArray, groupStartingIndex: Int, groupEndingIndex: Int): Int
+	private fun getGroupIndexFromArray(
+		expectedGroupsInArray: ArrayList<Int>,
+		actualGroupsInArray: IntArray,
+		groupStartingIndex: Int,
+		groupEndingIndex: Int
+	): Int
 	{
 		val groupSize = groupEndingIndex - groupStartingIndex + 1
 		val afterGroupLength = this.fieldSize - groupEndingIndex - 1
@@ -277,8 +325,10 @@ class PlayField(private val playFieldData: PlayFieldData)
 			val smallestGroup = expectedGroupsInArray.minOrNull()!!
 			val previousGroupsInArray = expectedGroupsInArray.subList(0, i)
 			val nextGroupsInArray = expectedGroupsInArray.subList(i + 1, expectedGroupsInArray.size)
-			val previousGroupsCanFit = groupStartingIndex >= (previousGroupsInArray.sum() + previousGroupsInArray.size)
-			val nextGroupsCanFit = afterGroupLength >= (nextGroupsInArray.sum() + nextGroupsInArray.size)
+			val previousGroupsCanFit =
+				groupStartingIndex >= (previousGroupsInArray.sum() + previousGroupsInArray.size)
+			val nextGroupsCanFit =
+				afterGroupLength >= (nextGroupsInArray.sum() + nextGroupsInArray.size)
 
 			// If it's the first group and there is enough space after the group to fit all the next groups from the array
 			if ((groupSize == expectedGroupsInArray[i]) && (i == 0) && actualGroupsInArray[0] == 0 && nextGroupsCanFit)
@@ -293,7 +343,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 				break@loop
 			}
 			// If it's the last group and there isn't enough space after the group to fit the smallest group from the array and there is enough space before the group to fit all the previous groups from the array
-			else if((groupSize == expectedGroupsInArray[i]) && (i == expectedGroupsInArray.size - 1) && (afterGroupLength <= smallestGroup + 1) && previousGroupsCanFit)
+			else if ((groupSize == expectedGroupsInArray[i]) && (i == expectedGroupsInArray.size - 1) && (afterGroupLength <= smallestGroup + 1) && previousGroupsCanFit)
 			{
 				groupIndex = i
 				break@loop

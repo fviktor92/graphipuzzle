@@ -16,7 +16,7 @@ class ReadPlayFieldTest
 	fun getPlayFieldDataIsCorrect()
 	{
 		// Given a 10x10 play field
-		val readPlayField = ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json")
+		val readPlayField = ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json")
 		val playFieldData = readPlayField.getPlayFieldData()
 		Assert.assertEquals("Play field size did not match", 10, playFieldData.tileValues.size)
 	}

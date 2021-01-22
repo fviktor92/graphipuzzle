@@ -2,7 +2,7 @@ package com.graphipuzzle
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.graphipuzzle.read.PlayFieldSize
+import com.graphipuzzle.read.PlayFieldLevel
 import com.graphipuzzle.read.ReadPlayField
 import org.junit.Assert.assertArrayEquals
 import org.junit.Test
@@ -22,7 +22,7 @@ class PlayFieldTest
 	fun getFieldValuesIsCorrect_SmallField()
 	{
 		val smallPlayFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val smallPlayField = PlayField(smallPlayFieldData)
 		val actualSmallFieldColumns: ArrayList<ArrayList<Int>> =
 			smallPlayField.getFieldColumns()
@@ -69,7 +69,7 @@ class PlayFieldTest
 	fun getFieldValuesIsCorrect_BigField()
 	{
 		val bigPlayFieldData =
-			ReadPlayField(context, PlayFieldSize.BIG, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json").getPlayFieldData()
 		val bigPlayField = PlayField(bigPlayFieldData)
 		val actualBigFieldColumns: ArrayList<ArrayList<Int>> =
 			bigPlayField.getFieldColumns()
@@ -126,7 +126,7 @@ class PlayFieldTest
 	fun setTileStateIsCorrect()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
 		playField.setTileState(1, 1, 1)
@@ -142,7 +142,7 @@ class PlayFieldTest
 	fun setTileStateHandlesInvalidValues()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
 		var expectedException = assertFailsWith(IllegalArgumentException::class) {
@@ -180,7 +180,7 @@ class PlayFieldTest
 	fun validateIsCorrect()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
 		// Initial state
@@ -260,7 +260,7 @@ class PlayFieldTest
 	fun helpTest()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
 		val paintableTile = playField.help()
@@ -334,7 +334,7 @@ class PlayFieldTest
 	fun getColumnGroupStatesTest()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
 			IntArray(playField.getMaxGroups())
@@ -372,7 +372,7 @@ class PlayFieldTest
 	fun getRowGroupStatesTest()
 	{
 		val playFieldData =
-			ReadPlayField(context, PlayFieldSize.SMALL, "level_1.json").getPlayFieldData()
+			ReadPlayField(context, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
 			IntArray(playField.getMaxGroups())

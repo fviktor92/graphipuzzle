@@ -9,15 +9,16 @@ import kotlinx.serialization.json.Json
 /**
  *
  * @param ctx The context where the resources are acquired from.
+ * @param playFieldLevel See [PlayFieldLevel]
  * @param fileName The name of the JSON raw resource file, with the extension. See [PlayFieldData] for data representation.
  */
-class ReadPlayField(ctx: Context, playFieldSize: PlayFieldSize, fileName: String)
+class ReadPlayField(ctx: Context, playFieldLevel: PlayFieldLevel, fileName: String)
 {
 	private val playFieldData: PlayFieldData
 
 	init
 	{
-		playFieldData = readFile(ctx, fileName, playFieldSize)
+		playFieldData = readFile(ctx, fileName, playFieldLevel)
 	}
 
 	fun getPlayFieldData(): PlayFieldData
@@ -28,14 +29,14 @@ class ReadPlayField(ctx: Context, playFieldSize: PlayFieldSize, fileName: String
 	private fun readFile(
 		ctx: Context,
 		fileName: String,
-		playFieldSize: PlayFieldSize
+		playFieldLevel: PlayFieldLevel
 	): PlayFieldData
 	{
 		Log.d(this.toString(), "Reading play field data...")
 		val assetManager = ctx.resources.assets
 		// FIXME: replace path separator
 		val bufferedReader =
-			assetManager.open(playFieldSize.fieldSizeName + "/" + fileName)
+			assetManager.open(playFieldLevel.fieldLevelName + "/" + fileName)
 				.bufferedReader()
 		val resourceContent: String = bufferedReader.readText()
 		bufferedReader.close()

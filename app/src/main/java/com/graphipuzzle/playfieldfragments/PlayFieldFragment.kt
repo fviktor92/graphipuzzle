@@ -601,7 +601,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				{
 					Toast.makeText(
 						this.context?.applicationContext,
-						"Congrats!",
+						this.playField.getName(),
 						Toast.LENGTH_SHORT
 					).show()
 					val tableBorders =
