@@ -76,7 +76,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		initializePlayFieldRowValuesTable()
 		initializePlayFieldTable()
 		setHelpButtonOnTouchListener()
-		setCompleteButtonOnTouchListener()
+		setTileCounterText()
 
 		// Inflate the layout for this fragment
 		return fragmentPlayFieldBinding.root
@@ -265,6 +265,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	/**
 	 * Handles the events that happen on an on touch event. Sets the color of the button and the state of the play field tile value.
 	 * Sets the row and column value colors according to the tile coloring.
+	 * <b>Validates that the playfield is complete if the painted and paintable tiles count is equal</b>
 	 * @param v The view the touch event has been dispatched to.
 	 * @param event The MotionEvent object containing full information about the event.
 	 * @param columnIndex The index of the column where the button is touched.
@@ -303,11 +304,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this.minHorizontalSwipeLength = v.width
 				this.minVerticalSwipeLength = v.height
 
-				// Color the first touched tile
-				setFieldButtonColor(v, rowIndex, columnIndex)
-				// Check if any group is completed
-				colorColumnTextView(columnIndex)
-				colorRowTextView(rowIndex)
+				performOnTileTouchActions(v, rowIndex, columnIndex)
 			}
 
 			// Swipe is initiated
@@ -330,13 +327,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn += 1
 							if (this.currentColumn < this.touchedRowButtons.size)
 							{
-								setFieldButtonColor(
+								performOnTileTouchActions(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
 								)
-								colorColumnTextView(this.currentColumn)
-								colorRowTextView(rowIndex)
 							}
 						}
 						// Left Swipe
@@ -345,13 +340,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn -= 1
 							if (this.currentColumn >= 0)
 							{
-								setFieldButtonColor(
+								performOnTileTouchActions(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
 								)
-								colorColumnTextView(this.currentColumn)
-								colorRowTextView(rowIndex)
 							}
 						}
 					}
@@ -368,13 +361,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow += 1
 							if (this.currentRow < this.touchedColumnButtons.size)
 							{
-								setFieldButtonColor(
+								performOnTileTouchActions(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
 								)
-								colorColumnTextView(columnIndex)
-								colorRowTextView(this.currentRow)
 							}
 						}
 						// Up swipe
@@ -383,19 +374,30 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow -= 1
 							if (this.currentRow >= 0)
 							{
-								setFieldButtonColor(
+								performOnTileTouchActions(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
 								)
-								colorColumnTextView(columnIndex)
-								colorRowTextView(this.currentRow)
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+
+	private fun performOnTileTouchActions(v: View, rowIndex: Int, columnIndex: Int)
+	{
+		// Color the first touched tile
+		setFieldButtonColor(v, rowIndex, columnIndex)
+		// Check if any group is completed
+		colorColumnTextView(columnIndex)
+		colorRowTextView(rowIndex)
+		// Increment the tile counter
+		setTileCounterText()
+		// Check if playfield is complete
+		isPlayFieldComplete()
 	}
 
 	/**
@@ -591,38 +593,49 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		tableLayout.addView(border)
 	}
 
-	private fun setCompleteButtonOnTouchListener()
+	/**
+	 * Validates that the playfield is complete, if the number of painted tiles is equal to the required
+	 * @return if the playfield is complete or not.
+	 */
+	private fun isPlayFieldComplete(): Boolean
 	{
-		this.fragmentPlayFieldBinding.completeButton.setOnTouchListener { v, event ->
-
-			if (event.action == MotionEvent.ACTION_DOWN)
+		var isComplete = false
+		if (this.playField.getPaintableTilesCount() == this.playField.getPaintedTilesCount())
+		{
+			isComplete = this.playField.validate()
+			if (isComplete)
 			{
-				if (this.playField.validate())
-				{
-					Toast.makeText(
-						this.context?.applicationContext,
-						this.playField.getName(),
-						Toast.LENGTH_SHORT
-					).show()
-					val tableBorders =
-						this.fragmentPlayFieldBinding.playFieldTable.children.filter { view -> view.tag == BORDER_TAG }
-					val rowBorders =
-						this.fragmentPlayFieldBinding.playFieldTable.children.filterIsInstance<TableRow>()
-							.flatMap { view -> view.children }
-							.filter { view -> view.tag == BORDER_TAG }
-					(tableBorders + rowBorders).forEach { view -> view.visibility = View.GONE }
-					colorPlayFieldTiles()
-				} else
-				{
-					Toast.makeText(
-						this.context?.applicationContext,
-						"Not yet complete! Keep trying!",
-						Toast.LENGTH_SHORT
-					).show()
-				}
+				Toast.makeText(
+					this.context?.applicationContext,
+					this.playField.getName(),
+					Toast.LENGTH_SHORT
+				).show()
+				val tableBorders =
+					this.fragmentPlayFieldBinding.playFieldTable.children.filter { view -> view.tag == BORDER_TAG }
+				val rowBorders =
+					this.fragmentPlayFieldBinding.playFieldTable.children.filterIsInstance<TableRow>()
+						.flatMap { view -> view.children }
+						.filter { view -> view.tag == BORDER_TAG }
+				(tableBorders + rowBorders).forEach { view -> view.visibility = View.GONE }
+				colorPlayFieldTiles()
+			} else
+			{
+				Toast.makeText(
+					this.context?.applicationContext,
+					"Not yet complete! Keep trying!",
+					Toast.LENGTH_SHORT
+				).show()
 			}
-			v?.onTouchEvent(event) ?: true
 		}
+
+		return isComplete
+	}
+
+	private fun setTileCounterText()
+	{
+		val coloredTilesCounterText = this.fragmentPlayFieldBinding.coloredTilesCounterText
+		coloredTilesCounterText.text = this.playField.getPaintedTilesCount()
+			.toString() + " / " + this.playField.getPaintableTilesCount()
 	}
 
 	private fun setHelpButtonOnTouchListener()

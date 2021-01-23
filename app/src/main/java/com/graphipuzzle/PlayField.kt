@@ -1,6 +1,5 @@
 package com.graphipuzzle
 
-import android.util.Log
 import com.graphipuzzle.data.PlayFieldData
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.read.PlayFieldLevel
@@ -24,16 +23,18 @@ class PlayField(private val playFieldData: PlayFieldData)
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
 	private lateinit var fieldColumns: ArrayList<ArrayList<Int>>
 	private lateinit var fieldRows: ArrayList<ArrayList<Int>>
+	private var paintableTilesCount: Int = 0
+	private var paintedTilesCount: Int = 0
 
 	/**
 	 * This is the actual state of the play field, modified by the user
 	 */
 	private val tileStates = Array(fieldSize) { IntArray(fieldSize) }
 
-
 	init
 	{
 		loadValues()
+		this.paintableTilesCount = countPaintableTiles()
 	}
 
 	fun getName(): String
@@ -67,6 +68,22 @@ class PlayField(private val playFieldData: PlayFieldData)
 	}
 
 	/**
+	 * @return the number of tiles which are paintable to 'BLACK' (1)
+	 */
+	fun getPaintableTilesCount(): Int
+	{
+		return this.paintableTilesCount
+	}
+
+	/**
+	 * @return the number of tiles which are currently painted to 'BLACK' (1)
+	 */
+	fun getPaintedTilesCount(): Int
+	{
+		return this.paintedTilesCount
+	}
+
+	/**
 	 * @throws IllegalArgumentException If the row or col is negative or greater than the field size.
 	 * @return the value of the tile at the given position. The tile value can be either 0: WHITE, 1: BLACK, or 2: GRAY.
 	 */
@@ -94,10 +111,17 @@ class PlayField(private val playFieldData: PlayFieldData)
 			throw IllegalArgumentException("The row must be greater than 0 or lower than $fieldSize. It was $row")
 		}
 
-		if (this.tileStates[row][col] != tileValue)
+		val tileState = this.tileStates[row][col]
+		if (tileState != tileValue)
 		{
+			if (tileValue == 0 && tileState == 1)
+			{
+				this.paintedTilesCount--
+			} else if (tileValue == 1 && tileState == 0)
+			{
+				this.paintedTilesCount++
+			}
 			this.tileStates[row][col] = tileValue
-			Log.d("PlayField", "Set tile state at row $row and col $col to $tileValue")
 		}
 	}
 
@@ -412,5 +436,11 @@ class PlayField(private val playFieldData: PlayFieldData)
 				}
 			}
 		}
+	}
+
+	private fun countPaintableTiles(): Int
+	{
+		return this.tileValues.flatMap { row -> row.toList() }
+			.count { tileData -> tileData.isPaintable }
 	}
 }
