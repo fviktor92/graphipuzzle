@@ -20,6 +20,7 @@ import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
+import kotlinx.coroutines.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -74,17 +75,39 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 		this.fragmentPlayFieldBinding.playFieldProgressIndicator.show()
 
-	/*	GlobalScope.launch {
-			// FIXME: UI ELEMEKET CREATELNI ITT
-			initializePlayFieldColumnValuesTable()
-			initializePlayFieldRowValuesTable()
-			initializePlayFieldTable()
-			setHelpButtonOnTouchListener()
-			setTileCounterText()
-			this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldProgressIndicator.hide()
-		}*/
+		val deferredColumnValuesTableRow = GlobalScope.async {
+			createPlayFieldColumnValuesTableRow()
+		}
 
-		// FIXME: SETTELNI VIEWBA ITT
+		val deferredRowValuesTableRows = GlobalScope.async {
+			createPlayFieldRowValuesTableRows()
+		}
+
+		val deferredSetHelpButtonOnTouchListener = GlobalScope.async {
+			setHelpButtonOnTouchListener()
+		}
+
+		val deferredSetTileCounterText = GlobalScope.async {
+			createTileCounterText()
+		}
+
+		GlobalScope.launch {
+			withContext(Dispatchers.Main) {
+				this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldColumnValuesTable.addView(
+					deferredColumnValuesTableRow.await()
+				)
+				deferredRowValuesTableRows.await().forEach {
+					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(
+						it
+					)
+				}
+				deferredSetHelpButtonOnTouchListener.await()
+				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text =
+					deferredSetTileCounterText.await()
+				this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldProgressIndicator.hide()
+			}
+		}
+
 		return fragmentPlayFieldBinding.root
 	}
 
@@ -107,9 +130,9 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * Initializes the top [TableLayout] that is supposed to contain the column group values.
+	 * Creates the [TableRow] for the top [TableLayout] that is supposed to contain the column group values.
 	 */
-	private fun initializePlayFieldColumnValuesTable()
+	private fun createPlayFieldColumnValuesTableRow(): TableRow
 	{
 		val fieldColumns = this.playField.getFieldColumns()
 		val row = TableRow(this.context)
@@ -121,17 +144,16 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			val columnValueText = createColumnValueTextView(columnValues)
 			row.addView(columnValueText)
 		}
-
-		this.fragmentPlayFieldBinding.playFieldColumnValuesTable.addView(row)
+		return row
 	}
 
 	/**
-	 * Initializes the left [TableLayout] that is supposed to contain the row group values.
+	 * Creates the [TableRows] for the left [TableLayout] that is supposed to contain the row group values.
 	 */
-	private fun initializePlayFieldRowValuesTable()
+	private fun createPlayFieldRowValuesTableRows(): MutableList<TableRow>
 	{
 		val fieldRows = this.playField.getFieldRows()
-
+		val tableRows = mutableListOf<TableRow>()
 		for (rowIndex in fieldRows.indices)
 		{
 			val rowValues: ArrayList<Int> = fieldRows[rowIndex]
@@ -144,8 +166,9 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 			val rowValueText = createRowValueTextView(rowValues)
 			row.addView(rowValueText)
-			this.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(row)
+			tableRows.add(row)
 		}
+		return tableRows
 	}
 
 	/**
@@ -187,6 +210,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
+	 * FIXME: REFACTOR THIS TO BE ABLE TO RUN IN COROUTINE
 	 * Initializes tha center [TableLayout] that is supposed to contain the play field buttons.
 	 */
 	private fun initializePlayFieldTable()
@@ -404,7 +428,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		colorColumnTextView(columnIndex)
 		colorRowTextView(rowIndex)
 		// Increment the tile counter
-		setTileCounterText()
+		createTileCounterText()
 		// Check if playfield is complete
 		isPlayFieldComplete()
 	}
@@ -534,7 +558,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * FIXME: The coloring algorithm could be improved.
 	 * Compares the state of the play field with the row values and colors the group value characters if necessary.
 	 * @param rowIndex The index of the row where the TextView's character have to be colored
 	 */
@@ -573,7 +596,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * Adds a simple View that is functioning as a thicker border in a TableRow.
+	 * Creates a simple View that is functioning as a thicker border in a TableLayout.
 	 * @param row the TableRow that receives the border view.
 	 */
 	private fun addBorderInRow(row: TableRow)
@@ -640,10 +663,9 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		return isComplete
 	}
 
-	private fun setTileCounterText()
+	private fun createTileCounterText(): String
 	{
-		val coloredTilesCounterText = this.fragmentPlayFieldBinding.coloredTilesCounterText
-		coloredTilesCounterText.text = this.playField.getPaintedTilesCount()
+		return this.playField.getPaintedTilesCount()
 			.toString() + " / " + this.playField.getPaintableTilesCount()
 	}
 
