@@ -1,46 +1,37 @@
 package com.graphipuzzle
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.graphipuzzle.read.PlayFieldLevel
-import com.graphipuzzle.read.ReadPlayField
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-
-const val PLAY_FIELD_MESSAGE = "com.graphipuzzle.MainActivity.PlayField"
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.commit
+import com.graphipuzzle.databinding.ActivityMainBinding
+import com.graphipuzzle.fragments.LEVEL_CHOOSER_FRAGMENT
+import com.graphipuzzle.fragments.LevelChooserFragment
 
 class MainActivity : AppCompatActivity()
 {
-	lateinit var playField: PlayField
+	private lateinit var mainBinding: ActivityMainBinding
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
-		val startSmallGame: Button = findViewById(R.id.start_small_game)
-		val startBigGame: Button = findViewById(R.id.start_big_game)
-		startSmallGame.setOnClickListener {
-			playField =
-				PlayField(ReadPlayField(this, PlayFieldLevel.EASY, "easy_10_10_sailboat.json").getPlayFieldData())
-			startPlayFieldActivity(playField)
+		this.mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+		supportFragmentManager.popBackStack(
+			LEVEL_CHOOSER_FRAGMENT,
+			FragmentManager.POP_BACK_STACK_INCLUSIVE
+		);
+		if (savedInstanceState == null)
+		{
+			supportFragmentManager.commit {
+				setReorderingAllowed(true)
+				add(
+					R.id.fragment_container_view,
+					LevelChooserFragment::class.java,
+					null
+				)
+			}
 		}
-		startBigGame.setOnClickListener {
-			playField =
-				PlayField(ReadPlayField(this, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json").getPlayFieldData())
-			startPlayFieldActivity(playField)
-		}
-	}
-
-	private fun startPlayFieldActivity(playField: PlayField)
-	{
-		Log.d(this.toString(), "Starting play field activity...")
-		val playFieldIntent = Intent(this, PlayFieldActivity::class.java).apply {
-			putExtra(PLAY_FIELD_MESSAGE, Json.encodeToString(playField))
-		}
-		startActivity(playFieldIntent)
 	}
 
 	/*private fun checkPermissions()

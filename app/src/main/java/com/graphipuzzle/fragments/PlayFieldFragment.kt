@@ -1,4 +1,4 @@
-package com.graphipuzzle.playfieldfragments
+package com.graphipuzzle.fragments
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
@@ -69,16 +69,22 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	): View?
 	{
 		screenWidth = getScreenWidthInPixels()
-		fragmentPlayFieldBinding =
+		this.fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
 
-		initializePlayFieldColumnValuesTable()
-		initializePlayFieldRowValuesTable()
-		initializePlayFieldTable()
-		setHelpButtonOnTouchListener()
-		setTileCounterText()
+		this.fragmentPlayFieldBinding.playFieldProgressIndicator.show()
 
-		// Inflate the layout for this fragment
+	/*	GlobalScope.launch {
+			// FIXME: UI ELEMEKET CREATELNI ITT
+			initializePlayFieldColumnValuesTable()
+			initializePlayFieldRowValuesTable()
+			initializePlayFieldTable()
+			setHelpButtonOnTouchListener()
+			setTileCounterText()
+			this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldProgressIndicator.hide()
+		}*/
+
+		// FIXME: SETTELNI VIEWBA ITT
 		return fragmentPlayFieldBinding.root
 	}
 
@@ -304,7 +310,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this.minHorizontalSwipeLength = v.width
 				this.minVerticalSwipeLength = v.height
 
-				performOnTileTouchActions(v, rowIndex, columnIndex)
+				setFieldButtonColor(v, rowIndex, columnIndex)
+				performOnTileTouchActions(rowIndex, columnIndex)
 			}
 
 			// Swipe is initiated
@@ -327,11 +334,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn += 1
 							if (this.currentColumn < this.touchedRowButtons.size)
 							{
-								performOnTileTouchActions(
+								setFieldButtonColor(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
 								)
+								performOnTileTouchActions(rowIndex, this.currentColumn)
 							}
 						}
 						// Left Swipe
@@ -340,11 +348,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentColumn -= 1
 							if (this.currentColumn >= 0)
 							{
-								performOnTileTouchActions(
+								setFieldButtonColor(
 									this.touchedRowButtons[this.currentColumn],
 									rowIndex,
 									this.currentColumn
 								)
+								performOnTileTouchActions(rowIndex, this.currentColumn)
 							}
 						}
 					}
@@ -361,11 +370,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow += 1
 							if (this.currentRow < this.touchedColumnButtons.size)
 							{
-								performOnTileTouchActions(
+								setFieldButtonColor(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
 								)
+								performOnTileTouchActions(this.currentRow, columnIndex)
 							}
 						}
 						// Up swipe
@@ -374,11 +384,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							this.currentRow -= 1
 							if (this.currentRow >= 0)
 							{
-								performOnTileTouchActions(
+								setFieldButtonColor(
 									this.touchedColumnButtons[this.currentRow],
 									this.currentRow,
 									columnIndex
 								)
+								performOnTileTouchActions(this.currentRow, columnIndex)
 							}
 						}
 					}
@@ -387,10 +398,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		}
 	}
 
-	private fun performOnTileTouchActions(v: View, rowIndex: Int, columnIndex: Int)
+	private fun performOnTileTouchActions(rowIndex: Int, columnIndex: Int)
 	{
-		// Color the first touched tile
-		setFieldButtonColor(v, rowIndex, columnIndex)
 		// Check if any group is completed
 		colorColumnTextView(columnIndex)
 		colorRowTextView(rowIndex)
@@ -657,8 +666,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 							)
 						)
 					this.playField.setTileState(1, paintableIndices.first, paintableIndices.second)
-					colorColumnTextView(paintableIndices.second)
-					colorRowTextView(paintableIndices.first)
+					performOnTileTouchActions(paintableIndices.first, paintableIndices.second)
 				}
 			}
 
@@ -704,4 +712,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
 		return displayMetrics.widthPixels
 	}
+
+
 }

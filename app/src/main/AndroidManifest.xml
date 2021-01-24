@@ -21,9 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".PlayFieldActivity"
-            android:screenOrientation="portrait"></activity>
         <!-- Create a file provider -->
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -38,8 +38,8 @@ class ReadPlayField(ctx: Context, playFieldLevel: PlayFieldLevel, fileName: Stri
 		val bufferedReader =
 			assetManager.open(playFieldLevel.fieldLevelName + "/" + fileName)
 				.bufferedReader()
-		val resourceContent: String = bufferedReader.readText()
+		val resource = bufferedReader.readText()
 		bufferedReader.close()
-		return Json.decodeFromString(resourceContent)
+		return Json.decodeFromString(resource)
 	}
 }
