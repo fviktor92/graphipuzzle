@@ -120,14 +120,16 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			withContext(Dispatchers.Main) {
 				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text = deferredSetTileCounterText.await()
 				deferredSetHelpButtonOnTouchListener.await()
+
+				// Initialize Play Field Table
+				deferredCreatedPlayFieldTableViews.await().forEach {
+					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldTable.addView(it)
+				}
 				this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldColumnValuesTable.addView(
 					deferredColumnValuesTableRow.await()
 				)
 				deferredRowValuesTableRows.await().forEach {
 					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(it)
-				}
-				deferredCreatedPlayFieldTableViews.await().forEach {
-					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldTable.addView(it)
 				}
 
 				// Enabling Back button
@@ -637,7 +639,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	/**
 	 * Creates a simple View that is functioning as a thicker border in a TableLayout.
-	 * @param row the TableRow that receives the border view.
+	 * @param borderLayoutParams The layout params of the border
 	 */
 	private fun createBorder(borderLayoutParams: LinearLayout.LayoutParams): View
 	{
