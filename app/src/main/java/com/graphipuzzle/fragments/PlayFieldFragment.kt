@@ -17,7 +17,6 @@ import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.findFragment
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
@@ -470,7 +469,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		colorColumnTextView(columnIndex)
 		colorRowTextView(rowIndex)
 		// Increment the tile counter
-		createTileCounterText()
+		this.fragmentPlayFieldBinding.coloredTilesCounterText.text = createTileCounterText()
 		// Check if playfield is complete
 		isPlayFieldComplete()
 	}
