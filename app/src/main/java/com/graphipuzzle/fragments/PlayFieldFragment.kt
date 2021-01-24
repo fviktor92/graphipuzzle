@@ -10,11 +10,14 @@ import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.findFragment
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
@@ -25,6 +28,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.math.abs
+
 
 const val PLAY_FIELD = "playField"
 
@@ -73,42 +77,75 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		this.fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
 
-		this.fragmentPlayFieldBinding.playFieldProgressIndicator.show()
-
-		val deferredColumnValuesTableRow = GlobalScope.async {
-			createPlayFieldColumnValuesTableRow()
+		// FIXME: Maybe this could be implemented prettier
+		// Displaying the loading fragment
+		GlobalScope.launch {
+			withContext(Dispatchers.Main) {
+				val bundle = bundleOf(LOADING_TEXT to "Loading play field...")
+				childFragmentManager.commit {
+					setReorderingAllowed(true)
+					add(R.id.loading_fragment, LoadingFragment::class.java, bundle)
+					addToBackStack(LEVEL_CHOOSER_FRAGMENT)
+				}
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.visibility = View.VISIBLE
+				// Disabling user interaction with the UI while loading
+				this@PlayFieldFragment.requireActivity().window.setFlags(
+					WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+					WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+				)
+				// Disabling back button
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.isFocusableInTouchMode = true
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.requestFocus()
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.setOnKeyListener { v, keyCode, event ->
+					if (keyCode == KeyEvent.KEYCODE_BACK)
+					{
+						return@setOnKeyListener true
+					}
+					return@setOnKeyListener false
+				}
+			}
 		}
 
-		val deferredRowValuesTableRows = GlobalScope.async {
-			createPlayFieldRowValuesTableRows()
-		}
+		// FIXME: Maybe this could be implemented prettier
+		val deferredColumnValuesTableRow = GlobalScope.async { createPlayFieldColumnValuesTableRow() }
 
-		val deferredSetHelpButtonOnTouchListener = GlobalScope.async {
-			setHelpButtonOnTouchListener()
-		}
+		val deferredRowValuesTableRows = GlobalScope.async { createPlayFieldRowValuesTableRows() }
 
-		val deferredSetTileCounterText = GlobalScope.async {
-			createTileCounterText()
-		}
+		val deferredSetHelpButtonOnTouchListener = GlobalScope.async { setHelpButtonOnTouchListener() }
+
+		val deferredSetTileCounterText = GlobalScope.async { createTileCounterText() }
+
+		val deferredCreatedPlayFieldTableViews = GlobalScope.async { createPlayFieldTableViews() }
 
 		GlobalScope.launch {
 			withContext(Dispatchers.Main) {
+				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text = deferredSetTileCounterText.await()
+				deferredSetHelpButtonOnTouchListener.await()
 				this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldColumnValuesTable.addView(
 					deferredColumnValuesTableRow.await()
 				)
 				deferredRowValuesTableRows.await().forEach {
-					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(
-						it
-					)
+					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldRowValuesTable.addView(it)
 				}
-				deferredSetHelpButtonOnTouchListener.await()
-				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text =
-					deferredSetTileCounterText.await()
-				this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldProgressIndicator.hide()
+				deferredCreatedPlayFieldTableViews.await().forEach {
+					this@PlayFieldFragment.fragmentPlayFieldBinding.playFieldTable.addView(it)
+				}
+
+				// Enabling Back button
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.setOnKeyListener { v, keyCode, event ->
+					if (keyCode == KeyEvent.KEYCODE_BACK)
+					{
+						return@setOnKeyListener false
+					}
+					return@setOnKeyListener true
+				}
+				// Enabling user interaction with the UI when loading is finished
+				this@PlayFieldFragment.requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.visibility = View.GONE
 			}
 		}
 
-		return fragmentPlayFieldBinding.root
+		return this.fragmentPlayFieldBinding.root
 	}
 
 	companion object
@@ -210,26 +247,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * FIXME: REFACTOR THIS TO BE ABLE TO RUN IN COROUTINE
-	 * Initializes tha center [TableLayout] that is supposed to contain the play field buttons.
+	 * Creates the views for the center [TableLayout] that is supposed to contain the play field buttons.
 	 */
-	private fun initializePlayFieldTable()
+	private fun createPlayFieldTableViews(): MutableList<View>
 	{
-		val playFieldTable = this.fragmentPlayFieldBinding.playFieldTable
 		val fieldValues = this.playField.getTileValues()
-
-		addBorderInTable(playFieldTable)
+		val tableViews: MutableList<View> = mutableListOf<View>()
+		// Add top border to table
+		tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2)))
 
 		for (rowIndex in fieldValues.indices)
 		{
 			val row = createPlayFieldTableRow(rowIndex)
-			playFieldTable.addView(row)
-			addBorderInRow(row)
-
-			if ((rowIndex + 1) % 5 == 0)
-			{
-				addBorderInTable(playFieldTable)
-			}
+			// Add left side border to table row
+			row.addView(createBorder(TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)))
 
 			val rowValues: ArrayList<TileData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
@@ -238,12 +269,23 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 				row.addView(fieldButton)
 
+				// Add border after every 5th button
 				if ((columnIndex + 1) % 5 == 0)
 				{
-					addBorderInRow(row)
+					row.addView(createBorder(TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)))
 				}
 			}
+
+			tableViews.add(row)
+
+			// Add border after every 5th row
+			if ((rowIndex + 1) % 5 == 0)
+			{
+				tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2)))
+			}
 		}
+
+		return tableViews
 	}
 
 	/**
@@ -517,7 +559,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	}
 
 	/**
-	 * FIXME: The coloring algorithm could be improved.
 	 * Compares the state of the play field with the column values and colors the group value characters if necessary.
 	 * @param columnIndex The index of the column where the TextView's character have to be colored
 	 */
@@ -599,30 +640,13 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 * Creates a simple View that is functioning as a thicker border in a TableLayout.
 	 * @param row the TableRow that receives the border view.
 	 */
-	private fun addBorderInRow(row: TableRow)
+	private fun createBorder(borderLayoutParams: LinearLayout.LayoutParams): View
 	{
 		val border = View(this.context)
-		val borderLayoutParams =
-			TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)
 		border.layoutParams = borderLayoutParams
 		border.tag = BORDER_TAG
 		border.setBackgroundColor(Color.GRAY)
-		row.addView(border)
-	}
-
-	/**
-	 * Adds a simple View that is functioning as a thicker border in a TableRow.
-	 * @param tableLayout the TableLayout that receives the border view.
-	 */
-	private fun addBorderInTable(tableLayout: TableLayout)
-	{
-		val border = View(this.context)
-		val borderLayoutParams =
-			TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 2)
-		border.layoutParams = borderLayoutParams
-		border.tag = BORDER_TAG
-		border.setBackgroundColor(Color.GRAY)
-		tableLayout.addView(border)
+		return border
 	}
 
 	/**
@@ -679,8 +703,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				{
 					this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
 						ROW_TAG_PREFIX + paintableIndices.first
-					).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second)
-						.backgroundTintList =
+					).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second).backgroundTintList =
 						ColorStateList.valueOf(
 							ContextCompat.getColor(
 								this.requireContext(),
@@ -734,6 +757,4 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
 		return displayMetrics.widthPixels
 	}
-
-
 }
