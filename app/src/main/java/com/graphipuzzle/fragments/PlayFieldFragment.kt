@@ -324,6 +324,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.insetTop = 0
 		fieldButton.insetBottom = 0
 		fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
+		fieldButton.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.light_gray))
 		fieldButton.setBackgroundColor(Color.WHITE)
 		fieldButton.cornerRadius = 0
 
@@ -494,66 +495,30 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		{
 			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.GRAY)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.black
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
 				this.playField.setTileState(1, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.GRAY)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.black
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
 				this.playField.setTileState(1, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.BLACK && actualFieldButtonColor == Color.BLACK)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.white
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
 				this.playField.setTileState(0, rowIndex, columnIndex)
 			}
 		} else
 		{
 			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.BLACK)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.gray
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
 				this.playField.setTileState(0, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.BLACK)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.gray
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
 				this.playField.setTileState(0, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.GRAY && actualFieldButtonColor == Color.GRAY)
 			{
-				v.backgroundTintList =
-					ColorStateList.valueOf(
-						ContextCompat.getColor(
-							requireContext(),
-							R.color.white
-						)
-					)
+				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
 				this.playField.setTileState(0, rowIndex, columnIndex)
 			}
 		}

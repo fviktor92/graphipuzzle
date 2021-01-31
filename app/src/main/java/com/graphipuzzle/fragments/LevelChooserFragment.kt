@@ -77,7 +77,7 @@ class LevelChooserFragment : Fragment()
 			parentFragmentManager.commit {
 				setReorderingAllowed(true)
 				replace(
-					R.id.fragment_container_view,
+					R.id.content_fragment_container_view,
 					PlayFieldFragment::class.java,
 					bundle
 				)

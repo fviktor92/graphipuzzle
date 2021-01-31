@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity()
 			supportFragmentManager.commit {
 				setReorderingAllowed(true)
 				add(
-					R.id.fragment_container_view,
+					R.id.content_fragment_container_view,
 					LevelChooserFragment::class.java,
 					null
 				)
