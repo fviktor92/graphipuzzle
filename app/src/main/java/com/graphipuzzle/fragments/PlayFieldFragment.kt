@@ -325,6 +325,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.insetBottom = 0
 		fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
 		fieldButton.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.light_gray))
+		fieldButton.strokeWidth = 1
 		fieldButton.setBackgroundColor(Color.WHITE)
 		fieldButton.cornerRadius = 0
 

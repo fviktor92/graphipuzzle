@@ -2,12 +2,12 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">#212121</item>
-        <item name="colorPrimaryVariant">#000000</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorPrimary">#FAFAFA</item>
+        <item name="colorPrimaryVariant">#FAFAFA</item>
+        <item name="colorOnPrimary">#121212</item>
         <item name="colorSecondary">#2962FF</item>
         <item name="colorSecondaryVariant">#0039CB</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorOnSecondary">#212121</item>
         <item name="colorError">#F44336</item>
         <item name="colorOnError">#FFFFFF</item>
         <item name="colorSurface">#FFFFFF</item>
@@ -116,6 +116,7 @@
         <item name="iconGravity">textStart</item>
         <item name="android:padding">0dp</item>
         <item name="icon">@drawable/lightbulb_24</item>
+        <item name="iconTint">@color/white</item>
         <item name="cornerRadius">3dp</item>
         <item name="android:layout_width">60dp</item>
         <item name="android:layout_height">60dp</item>
