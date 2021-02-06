@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/levelChooserFragment">
+
+    <fragment
+        android:id="@+id/levelChooserFragment"
+        android:name="com.graphipuzzle.fragments.LevelChooserFragment" >
+        <action
+            android:id="@+id/action_levelChooserFragment_to_playFieldFragment"
+            app:destination="@id/playFieldFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/playFieldFragment"
+        android:name="com.graphipuzzle.fragments.PlayFieldFragment" >
+        <argument
+            android:name="playField"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.graphipuzzle.fragments.SettingsFragment"
+        android:label="Settings" />
+
+</navigation>

@@ -9,6 +9,7 @@ import android.text.Html
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.children
@@ -17,6 +18,8 @@ import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
@@ -75,6 +78,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		screenWidth = getScreenWidthInPixels()
 		this.fragmentPlayFieldBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_play_field, container, false)
+
+		(activity as AppCompatActivity).supportActionBar?.setIcon(R.drawable.ic_baseline_arrow_back_24)
 
 		// FIXME: Maybe this could be implemented prettier
 		// Displaying the loading fragment
@@ -146,7 +151,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			}
 		}
 
+		setHasOptionsMenu(true)
+
 		return this.fragmentPlayFieldBinding.root
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater)
+		inflater?.inflate(R.menu.navigation_bar_menu, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean
+	{
+		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
 	}
 
 	companion object
@@ -324,7 +342,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		fieldButton.insetTop = 0
 		fieldButton.insetBottom = 0
 		fieldButton.textAlignment = Button.TEXT_ALIGNMENT_CENTER
-		fieldButton.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.light_gray))
+		fieldButton.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.dark_gray))
 		fieldButton.strokeWidth = 1
 		fieldButton.setBackgroundColor(Color.WHITE)
 		fieldButton.cornerRadius = 0
@@ -612,7 +630,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val border = View(this.context)
 		border.layoutParams = borderLayoutParams
 		border.tag = BORDER_TAG
-		border.setBackgroundColor(Color.GRAY)
+		border.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.dark_gray))
 		return border
 	}
 

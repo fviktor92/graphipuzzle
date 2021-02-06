@@ -1,14 +1,13 @@
 package com.graphipuzzle.fragments
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.databinding.FragmentLevelChooserBinding
@@ -29,11 +28,6 @@ class LevelChooserFragment : Fragment()
 	private lateinit var levelChooserBinding: FragmentLevelChooserBinding
 	private var playFieldJson: String = ""
 
-	override fun onCreate(savedInstanceState: Bundle?)
-	{
-		super.onCreate(savedInstanceState)
-	}
-
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
@@ -42,48 +36,46 @@ class LevelChooserFragment : Fragment()
 		levelChooserBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_level_chooser, container, false)
 
-		this.levelChooserBinding.startSmallGame.setOnClickListener {
-			this.playFieldJson = Json.encodeToString(
-				PlayField(
-					ReadPlayField(
-						requireContext(), PlayFieldLevel.EASY, "easy_10_10_sailboat.json"
-					).getPlayFieldData()
-				)
-			)
-			beginPlayFieldFragmentTransaction(savedInstanceState)
+		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
+			startLevelSetOnClickListener(view, PlayFieldLevel.EASY, "easy_10_10_sailboat.json", savedInstanceState)
 		}
-		this.levelChooserBinding.startBigGame.setOnClickListener {
-			Log.d("LevelChooserFragment", "kaka")
-			this.playFieldJson = Json.encodeToString(
-				PlayField(
-					ReadPlayField(
-						requireContext(),
-						PlayFieldLevel.HARD,
-						"hard_15_15_dog_and_boy_playing_ball.json"
-					).getPlayFieldData()
-				)
+		this.levelChooserBinding.startBigGame.setOnClickListener { view: View ->
+			startLevelSetOnClickListener(
+				view,
+				PlayFieldLevel.HARD,
+				"hard_15_15_dog_and_boy_playing_ball.json",
+				savedInstanceState
 			)
-			beginPlayFieldFragmentTransaction(savedInstanceState)
 		}
+
+		setHasOptionsMenu(true)
+
 		// Inflate the layout for this fragment
 		return levelChooserBinding.root
 	}
 
-	private fun beginPlayFieldFragmentTransaction(savedInstanceState: Bundle?)
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
 	{
-		if (savedInstanceState == null)
-		{
-			val bundle = bundleOf(PLAY_FIELD to this@LevelChooserFragment.playFieldJson)
-			parentFragmentManager.commit {
-				setReorderingAllowed(true)
-				replace(
-					R.id.content_fragment_container_view,
-					PlayFieldFragment::class.java,
-					bundle
-				)
-				addToBackStack(LEVEL_CHOOSER_FRAGMENT)
-			}
-		}
+		super.onCreateOptionsMenu(menu, inflater)
+		inflater?.inflate(R.menu.navigation_bar_menu, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean
+	{
+		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
+	}
+
+	private fun startLevelSetOnClickListener(
+		view: View,
+		playFieldLevel: PlayFieldLevel,
+		playFieldFileName: String,
+		savedInstanceState: Bundle?
+	)
+	{
+		this.playFieldJson =
+			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldLevel, playFieldFileName).getPlayFieldData()))
+		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
+		view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
 	}
 
 	companion object
