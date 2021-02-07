@@ -21,7 +21,6 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.graphipuzzle.fragments.SettingsFragment"
-        android:label="Settings" />
+        android:name="com.graphipuzzle.fragments.SettingsFragment" />
 
 </navigation>

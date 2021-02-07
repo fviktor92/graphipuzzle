@@ -47,6 +47,11 @@ class MainActivity : AppCompatActivity()
 		window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
 	}
 
+	override fun onBackPressed()
+	{
+		
+	}
+
 	/*private fun checkPermissions()
 	{
 		if (ContextCompat.checkSelfPermission(
