@@ -18,6 +18,7 @@ import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.button.MaterialButton
@@ -81,6 +82,44 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 		(activity as AppCompatActivity).supportActionBar?.setIcon(R.drawable.ic_baseline_arrow_back_24)
 
+		loadPlayField()
+
+		setHasOptionsMenu(true)
+
+		return this.fragmentPlayFieldBinding.root
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
+	{
+		super.onCreateOptionsMenu(menu, inflater)
+		inflater?.inflate(R.menu.navigation_bar_menu, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean
+	{
+		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
+	}
+
+	companion object
+	{
+		/**
+		 * Use this factory method to create a new instance of
+		 * this fragment using the provided parameters.
+		 *
+		 * @param playField The [PlayField] from which the fragment is initialized
+		 * @return A new instance of fragment PlayFieldSmall.
+		 */
+		@JvmStatic
+		fun newInstance(playField: PlayField) =
+			PlayFieldFragment().apply {
+				arguments = Bundle().apply {
+					putString(PLAY_FIELD, Json.encodeToString(playField))
+				}
+			}
+	}
+
+	private fun loadPlayField()
+	{
 		// FIXME: Maybe this could be implemented prettier
 		// Displaying the loading fragment
 		GlobalScope.launch {
@@ -150,39 +189,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.visibility = View.GONE
 			}
 		}
-
-		setHasOptionsMenu(true)
-
-		return this.fragmentPlayFieldBinding.root
-	}
-
-	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
-	{
-		super.onCreateOptionsMenu(menu, inflater)
-		inflater?.inflate(R.menu.navigation_bar_menu, menu)
-	}
-
-	override fun onOptionsItemSelected(item: MenuItem): Boolean
-	{
-		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
-	}
-
-	companion object
-	{
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-		 *
-		 * @param playField The [PlayField] from which the fragment is initialized
-		 * @return A new instance of fragment PlayFieldSmall.
-		 */
-		@JvmStatic
-		fun newInstance(playField: PlayField) =
-			PlayFieldFragment().apply {
-				arguments = Bundle().apply {
-					putString(PLAY_FIELD, Json.encodeToString(playField))
-				}
-			}
 	}
 
 	/**
@@ -273,13 +279,13 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val fieldValues = this.playField.getTileValues()
 		val tableViews: MutableList<View> = mutableListOf<View>()
 		// Add top border to table
-		tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2)))
+		tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 4)))
 
 		for (rowIndex in fieldValues.indices)
 		{
 			val row = createPlayFieldTableRow(rowIndex)
 			// Add left side border to table row
-			row.addView(createBorder(TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)))
+			row.addView(createBorder(TableRow.LayoutParams(4, TableRow.LayoutParams.MATCH_PARENT)))
 
 			val rowValues: ArrayList<TileData> = fieldValues[rowIndex]
 			for (columnIndex in rowValues.indices)
@@ -291,7 +297,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				// Add border after every 5th button
 				if ((columnIndex + 1) % 5 == 0)
 				{
-					row.addView(createBorder(TableRow.LayoutParams(2, TableRow.LayoutParams.MATCH_PARENT)))
+					row.addView(createBorder(TableRow.LayoutParams(4, TableRow.LayoutParams.MATCH_PARENT)))
 				}
 			}
 
@@ -300,7 +306,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			// Add border after every 5th row
 			if ((rowIndex + 1) % 5 == 0)
 			{
-				tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 2)))
+				tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 4)))
 			}
 		}
 
@@ -646,11 +652,14 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			isComplete = this.playField.validate()
 			if (isComplete)
 			{
+				// Display the playfield level name
 				Toast.makeText(
 					this.context?.applicationContext,
 					this.playField.getName(),
 					Toast.LENGTH_SHORT
 				).show()
+
+				// Hide the table borders
 				val tableBorders =
 					this.fragmentPlayFieldBinding.playFieldTable.children.filter { view -> view.tag == BORDER_TAG }
 				val rowBorders =
@@ -658,7 +667,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 						.flatMap { view -> view.children }
 						.filter { view -> view.tag == BORDER_TAG }
 				(tableBorders + rowBorders).forEach { view -> view.visibility = View.GONE }
+
+				// Color the tiles
 				colorPlayFieldTiles()
+
+				// Hide the game UI elements and disable playfield table interactivity
+				this.fragmentPlayFieldBinding.coloredTilesCounterText.visibility = View.INVISIBLE
+				this.fragmentPlayFieldBinding.tileColorSwitch.visibility = View.INVISIBLE
+				this.fragmentPlayFieldBinding.helpButton.visibility = View.INVISIBLE
+				this.fragmentPlayFieldBinding.nextLevelButton.visibility = View.VISIBLE
+				this.fragmentPlayFieldBinding.nextLevelButton.setOnClickListener { view: View ->
+					view.findNavController().navigate(R.id.action_playFieldFragment_to_levelChooserFragment)
+				}
+
+				setEnabledDisabledRecursively(this.fragmentPlayFieldBinding.playFieldTable, false)
 			} else
 			{
 				Toast.makeText(
@@ -741,5 +763,19 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val displayMetrics = DisplayMetrics()
 		activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
 		return displayMetrics.widthPixels
+	}
+
+	private fun setEnabledDisabledRecursively(viewGroup: ViewGroup, enabled: Boolean)
+	{
+		val childCount = viewGroup.childCount
+		for (i in 0 until childCount)
+		{
+			val child = viewGroup.getChildAt(i)
+			child.isEnabled = enabled
+			if (child is ViewGroup)
+			{
+				setEnabledDisabledRecursively(child, enabled)
+			}
+		}
 	}
 }

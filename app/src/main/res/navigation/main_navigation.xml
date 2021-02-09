@@ -18,6 +18,9 @@
         <argument
             android:name="playField"
             app:argType="string" />
+        <action
+            android:id="@+id/action_playFieldFragment_to_levelChooserFragment"
+            app:destination="@id/levelChooserFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
