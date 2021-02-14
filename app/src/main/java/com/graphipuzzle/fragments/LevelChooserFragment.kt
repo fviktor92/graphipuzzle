@@ -13,6 +13,7 @@ import com.graphipuzzle.R
 import com.graphipuzzle.databinding.FragmentLevelChooserBinding
 import com.graphipuzzle.read.PlayFieldLevel
 import com.graphipuzzle.read.ReadPlayField
+import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -72,6 +73,7 @@ class LevelChooserFragment : Fragment()
 		savedInstanceState: Bundle?
 	)
 	{
+		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
 		this.playFieldJson =
 			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldLevel, playFieldFileName).getPlayFieldData()))
 		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)

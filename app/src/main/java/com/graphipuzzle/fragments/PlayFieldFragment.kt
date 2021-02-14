@@ -26,6 +26,7 @@ import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.databinding.FragmentPlayFieldBinding
+import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.coroutines.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -137,8 +138,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 					WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 				)
 				// Disabling back button
-				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.isFocusableInTouchMode = true
-				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.requestFocus()
 				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.rootView.setOnKeyListener { v, keyCode, event ->
 					if (keyCode == KeyEvent.KEYCODE_BACK)
 					{
@@ -154,6 +153,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 		val deferredRowValuesTableRows = GlobalScope.async { createPlayFieldRowValuesTableRows() }
 
+		val deferredSetTileColorSwitchOnTouchListerner = GlobalScope.async { setTileColorSwitchOnTouchListener() }
+
 		val deferredSetHelpButtonOnTouchListener = GlobalScope.async { setHelpButtonOnTouchListener() }
 
 		val deferredSetTileCounterText = GlobalScope.async { createTileCounterText() }
@@ -164,6 +165,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			withContext(Dispatchers.Main) {
 				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text = deferredSetTileCounterText.await()
 				deferredSetHelpButtonOnTouchListener.await()
+				deferredSetTileColorSwitchOnTouchListerner.await()
 
 				// Initialize Play Field Table
 				deferredCreatedPlayFieldTableViews.await().forEach {
@@ -493,6 +495,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	private fun performOnTileTouchActions(rowIndex: Int, columnIndex: Int)
 	{
+		// Play a click sound
+		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.tile_paint_sound)
 		// Check if any group is completed
 		colorColumnTextView(columnIndex)
 		colorRowTextView(rowIndex)
@@ -677,6 +681,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this.fragmentPlayFieldBinding.helpButton.visibility = View.INVISIBLE
 				this.fragmentPlayFieldBinding.nextLevelButton.visibility = View.VISIBLE
 				this.fragmentPlayFieldBinding.nextLevelButton.setOnClickListener { view: View ->
+					SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
 					view.findNavController().navigate(R.id.action_playFieldFragment_to_levelChooserFragment)
 				}
 
@@ -702,27 +707,29 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	private fun setHelpButtonOnTouchListener()
 	{
-		this.fragmentPlayFieldBinding.helpButton.setOnTouchListener { v, event ->
+		this.fragmentPlayFieldBinding.helpButton.setOnClickListener {
 			val paintableIndices = this.playField.help()
-			if (event.action == MotionEvent.ACTION_DOWN)
+			if (paintableIndices != Pair(-1, -1))
 			{
-				if (paintableIndices != Pair(-1, -1))
-				{
-					this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
-						ROW_TAG_PREFIX + paintableIndices.first
-					).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second).backgroundTintList =
-						ColorStateList.valueOf(
-							ContextCompat.getColor(
-								this.requireContext(),
-								R.color.black
-							)
+				this.fragmentPlayFieldBinding.playFieldTable.findViewWithTag<TableRow>(
+					ROW_TAG_PREFIX + paintableIndices.first
+				).findViewWithTag<MaterialButton>(COLUMN_TAG_PREFIX + paintableIndices.second).backgroundTintList =
+					ColorStateList.valueOf(
+						ContextCompat.getColor(
+							this.requireContext(),
+							R.color.black
 						)
-					this.playField.setTileState(1, paintableIndices.first, paintableIndices.second)
-					performOnTileTouchActions(paintableIndices.first, paintableIndices.second)
-				}
+					)
+				this.playField.setTileState(1, paintableIndices.first, paintableIndices.second)
+				performOnTileTouchActions(paintableIndices.first, paintableIndices.second)
 			}
+		}
+	}
 
-			v?.onTouchEvent(event) ?: true
+	private fun setTileColorSwitchOnTouchListener()
+	{
+		this.fragmentPlayFieldBinding.tileColorSwitch.setOnClickListener {
+			SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.switch_sound)
 		}
 	}
 
