@@ -94,15 +94,15 @@ class PlayField(private val playFieldData: PlayFieldData)
 
 	/**
 	 * Sets the tile value at the given position.
-	 * The tile value can be either 0: GRAY, or 1: BLACK.
-	 * @throws IllegalArgumentException If the tileValue is not 0 or 1.
+	 * The tile value can be either 0: WHITE, 1: BLACK or 2: GRAY.
+	 * @throws IllegalArgumentException If the tileValue is not 0, 1 or 2.
 	 * @throws IllegalArgumentException If the row or col is negative or greater than the field size.
 	 */
 	fun setTileState(tileValue: Int, row: Int, col: Int)
 	{
-		if (!IntRange(0, 1).contains(tileValue))
+		if (!IntRange(0, 2).contains(tileValue))
 		{
-			throw IllegalArgumentException("The tile value must be either 0 or 1! It was: $tileValue")
+			throw IllegalArgumentException("The tile value must be either 0, 1 or 2! It was: $tileValue")
 		} else if (!IntRange(0, this.fieldSize).contains(col))
 		{
 			throw IllegalArgumentException("The col must be greater than 0 or lower than $fieldSize. It was $col")
@@ -114,10 +114,10 @@ class PlayField(private val playFieldData: PlayFieldData)
 		val tileState = this.tileStates[row][col]
 		if (tileState != tileValue)
 		{
-			if (tileValue == 0 && tileState == 1)
+			if ((tileValue == 0 || tileValue == 2) && tileState == 1)
 			{
 				this.paintedTilesCount--
-			} else if (tileValue == 1 && tileState == 0)
+			} else if (tileValue == 1 && (tileState == 0 || tileState == 2))
 			{
 				this.paintedTilesCount++
 			}

@@ -147,6 +147,9 @@ class PlayFieldTest
 		playField.setTileState(0, 2, 2)
 		assertEquals(0, playField.getTileState(2, 2))
 
+		playField.setTileState(2, 3, 3)
+		assertEquals(2, playField.getTileState(3, 3))
+
 		assertEquals(0, playField.getTileState(9, 9))
 	}
 
@@ -162,16 +165,16 @@ class PlayFieldTest
 		val playField = PlayField(playFieldData)
 
 		var expectedException = assertFailsWith(IllegalArgumentException::class) {
-			playField.setTileState(2, 0, 0)
+			playField.setTileState(3, 0, 0)
 		}
 
-		assertEquals("The tile value must be either 0 or 1! It was: 2", expectedException.message)
+		assertEquals("The tile value must be either 0, 1 or 2! It was: 3", expectedException.message)
 
 		expectedException = assertFailsWith(IllegalArgumentException::class) {
 			playField.setTileState(-1, 0, 0)
 		}
 
-		assertEquals("The tile value must be either 0 or 1! It was: -1", expectedException.message)
+		assertEquals("The tile value must be either 0, 1 or 2! It was: -1", expectedException.message)
 
 		expectedException = assertFailsWith(IllegalArgumentException::class) {
 			playField.setTileState(1, 100, 0)
@@ -479,6 +482,15 @@ class PlayFieldTest
 		assertEquals(1, playField.getPaintedTilesCount())
 
 		playField.setTileState(0, 1, 1)
+		assertEquals(0, playField.getPaintedTilesCount())
+
+		playField.setTileState(2, 1, 1)
+		assertEquals(0, playField.getPaintedTilesCount())
+
+		playField.setTileState(1, 1, 1)
+		assertEquals(1, playField.getPaintedTilesCount())
+
+		playField.setTileState(2, 1, 1)
 		assertEquals(0, playField.getPaintedTilesCount())
 	}
 }

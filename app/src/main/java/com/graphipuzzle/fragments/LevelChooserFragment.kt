@@ -38,15 +38,10 @@ class LevelChooserFragment : Fragment()
 			DataBindingUtil.inflate(inflater, R.layout.fragment_level_chooser, container, false)
 
 		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, PlayFieldLevel.EASY, "easy_10_10_sailboat.json", savedInstanceState)
+			startLevelSetOnClickListener(view, PlayFieldLevel.EASY, "easy_10_10_sailboat.json")
 		}
 		this.levelChooserBinding.startBigGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(
-				view,
-				PlayFieldLevel.HARD,
-				"hard_15_15_dog_and_boy_playing_ball.json",
-				savedInstanceState
-			)
+			startLevelSetOnClickListener(view, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json")
 		}
 
 		setHasOptionsMenu(true)
@@ -70,7 +65,6 @@ class LevelChooserFragment : Fragment()
 		view: View,
 		playFieldLevel: PlayFieldLevel,
 		playFieldFileName: String,
-		savedInstanceState: Bundle?
 	)
 	{
 		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
@@ -78,22 +72,5 @@ class LevelChooserFragment : Fragment()
 			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldLevel, playFieldFileName).getPlayFieldData()))
 		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
 		view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
-	}
-
-	companion object
-	{
-		/**
-		 * Use this factory method to create a new instance of
-		 * this fragment using the provided parameters.
-
-		 * @return A new instance of fragment LevelChooserFragment.
-		 */
-		@JvmStatic
-		fun newInstance() =
-			LevelChooserFragment().apply {
-				arguments = Bundle().apply {
-
-				}
-			}
 	}
 }
