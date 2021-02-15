@@ -344,15 +344,15 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		{
 			0 ->
 			{
-				fieldButton.setBackgroundColor(Color.WHITE)
+				fieldButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
 			}
 			1 ->
 			{
-				fieldButton.setBackgroundColor(Color.BLACK)
+				fieldButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
 			}
 			2 ->
 			{
-				fieldButton.setBackgroundColor(Color.GRAY)
+				fieldButton.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
 			}
 		}
 
