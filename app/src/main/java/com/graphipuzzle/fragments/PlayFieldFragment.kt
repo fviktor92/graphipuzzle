@@ -21,6 +21,7 @@ import androidx.fragment.app.commit
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
@@ -29,6 +30,7 @@ import com.graphipuzzle.databinding.FragmentPlayFieldBinding
 import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.coroutines.*
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlin.math.abs
 
@@ -57,6 +59,9 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private var firstTouchedButtonColor: Int = 0
 	private var currentColumn = 0
 	private var currentRow = 0
+
+	// The play field is completed or not
+	private var isComplete = false
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -92,7 +97,53 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean
 	{
-		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
+		return when (item.itemId)
+		{
+			R.id.settingsFragment ->
+			{
+				NavigationUI.onNavDestinationSelected(item!!, this.findNavController())
+				true
+			}
+			else ->
+			{
+				// Save the play field state when user navigates back
+				storePlayFieldStateInSharedPreferences(this.playField)
+				super.onOptionsItemSelected(item)
+			}
+		}
+	}
+
+	override fun onStop()
+	{
+		super.onStop()
+		// Save the play field state when the fragment is stopped, only if it is not yet completed
+		if (!this.isComplete)
+		{
+			storePlayFieldStateInSharedPreferences(this.playField)
+		}
+	}
+
+	/**
+	 * Saves the state of the play field in SharedPreferences with [PLAY_FIELD] key, to be able to continue from a previous state.
+	 * @param playField The [PlayField] object to store. Passing null for removes any existing play field object assigned to [PLAY_FIELD] key.
+	 */
+	private fun storePlayFieldStateInSharedPreferences(playField: PlayField?)
+	{
+		val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
+		if (playField != null)
+		{
+			with(sharedPreferences.edit()) {
+				putString(PLAY_FIELD, Json.encodeToString(playField))
+				apply()
+			}
+		} else
+		{
+			with(sharedPreferences.edit()) {
+				remove(PLAY_FIELD)
+				apply()
+			}
+		}
+
 	}
 
 	private fun loadPlayField()
@@ -506,7 +557,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		// Increment the tile counter
 		this.fragmentPlayFieldBinding.coloredTilesCounterText.text = createTileCounterText()
 		// Check if playfield is complete
-		isPlayFieldComplete()
+		validatePlayFieldIsComplete()
 	}
 
 	/**
@@ -643,13 +694,13 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 * Validates that the playfield is complete, if the number of painted tiles is equal to the required
 	 * @return if the playfield is complete or not.
 	 */
-	private fun isPlayFieldComplete(): Boolean
+	private fun validatePlayFieldIsComplete(): Boolean
 	{
-		var isComplete = false
+		this.isComplete = false
 		if (this.playField.getPaintableTilesCount() == this.playField.getPaintedTilesCount())
 		{
-			isComplete = this.playField.validate()
-			if (isComplete)
+			this.isComplete = this.playField.validate()
+			if (this.isComplete)
 			{
 				// Display the playfield level name
 				Toast.makeText(
@@ -681,6 +732,9 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				}
 
 				setEnabledDisabledRecursively(this.fragmentPlayFieldBinding.playFieldTable, false)
+
+				// Remove existing play field state from shared preferences to prevent continuing the already completed level
+				storePlayFieldStateInSharedPreferences(null)
 			} else
 			{
 				Toast.makeText(
@@ -691,7 +745,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			}
 		}
 
-		return isComplete
+		return this.isComplete
 	}
 
 	private fun createTileCounterText(): String

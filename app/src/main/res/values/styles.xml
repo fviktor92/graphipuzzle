@@ -2,21 +2,32 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light">
-        <item name="colorPrimary">#FAFAFA</item>
-        <item name="colorPrimaryVariant">#FAFAFA</item>
-        <item name="colorOnPrimary">#121212</item>
-        <item name="colorSecondary">#2962FF</item>
-        <item name="colorSecondaryVariant">#0039CB</item>
-        <item name="colorOnSecondary">#212121</item>
+        <item name="colorPrimary">#0d47a1</item>
+        <item name="colorPrimaryVariant">#5472d3</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#00838f</item>
+        <item name="colorSecondaryVariant">#4fb3bf</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
         <item name="colorError">#F44336</item>
         <item name="colorOnError">#FFFFFF</item>
         <item name="colorSurface">#121212</item>
-        <item name="colorOnSurface">#212121</item>
+        <item name="colorOnSurface">#fafafa</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="colorOnBackground">#212121</item>
-        <item name="android:textColorSecondary">#121212</item>
         <item name="fontFamily">@font/roboto_mono</item>
         <item name="android:fontFamily">@font/roboto_mono</item>
+    </style>
+
+    <style name="AppTheme.ButtonSecondary">
+        <item name="backgroundTint">#FAFAFA</item>
+        <item name="android:textColor">#0d47a1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.ButtonPrimary">
+        <item name="backgroundTint">#0d47a1</item>
+        <item name="android:textColor">#FAFAFA</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <color name="background">#FAFAFA</color>
@@ -140,5 +151,4 @@
         <item name="colorSurface">#888888</item>
         <item name="colorControlActivated">@color/black</item>
     </style>
-
 </resources>

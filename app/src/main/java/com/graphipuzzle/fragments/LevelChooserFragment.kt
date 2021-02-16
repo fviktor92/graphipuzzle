@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.databinding.FragmentLevelChooserBinding
@@ -19,12 +20,7 @@ import kotlinx.serialization.json.Json
 
 const val LEVEL_CHOOSER_FRAGMENT = "level_chooser_fragment"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LevelChooserFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class LevelChooserFragment : Fragment()
+class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 {
 	private lateinit var levelChooserBinding: FragmentLevelChooserBinding
 	private var playFieldJson: String = ""
@@ -37,17 +33,31 @@ class LevelChooserFragment : Fragment()
 		levelChooserBinding =
 			DataBindingUtil.inflate(inflater, R.layout.fragment_level_chooser, container, false)
 
+		setHasOptionsMenu(true)
+
+		// Inflate the layout for this fragment
+		return levelChooserBinding.root
+	}
+
+	override fun onResume()
+	{
+		super.onResume()
 		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
 			startLevelSetOnClickListener(view, PlayFieldLevel.EASY, "easy_10_10_sailboat.json")
 		}
 		this.levelChooserBinding.startBigGame.setOnClickListener { view: View ->
 			startLevelSetOnClickListener(view, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json")
 		}
-
-		setHasOptionsMenu(true)
-
-		// Inflate the layout for this fragment
-		return levelChooserBinding.root
+		val continuePlayFieldJson = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString(PLAY_FIELD, "")!!
+		if (continuePlayFieldJson != "")
+		{
+			this.playFieldJson = continuePlayFieldJson
+			val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
+			this.levelChooserBinding.continueGame.visibility = View.VISIBLE
+			this.levelChooserBinding.continueGame.setOnClickListener { view: View ->
+				view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
+			}
+		}
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater)
