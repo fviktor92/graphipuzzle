@@ -12,7 +12,7 @@ import androidx.preference.PreferenceManager
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.databinding.FragmentLevelChooserBinding
-import com.graphipuzzle.read.PlayFieldLevel
+import com.graphipuzzle.read.PlayFieldDifficulty
 import com.graphipuzzle.read.ReadPlayField
 import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.serialization.encodeToString
@@ -43,10 +43,10 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 	{
 		super.onResume()
 		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, PlayFieldLevel.EASY, "easy_10_10_sailboat.json")
+			startLevelSetOnClickListener(view, PlayFieldDifficulty.EASY, "easy_10_10_sailboat.json")
 		}
 		this.levelChooserBinding.startBigGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, PlayFieldLevel.HARD, "hard_15_15_dog_and_boy_playing_ball.json")
+			startLevelSetOnClickListener(view, PlayFieldDifficulty.HARD, "hard_15_15_dog_and_boy_playing_ball.json")
 		}
 		val continuePlayFieldJson = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString(PLAY_FIELD, "")!!
 		if (continuePlayFieldJson != "")
@@ -55,6 +55,7 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 			val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
 			this.levelChooserBinding.continueGame.visibility = View.VISIBLE
 			this.levelChooserBinding.continueGame.setOnClickListener { view: View ->
+				SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
 				view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
 			}
 		}
@@ -73,13 +74,13 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 
 	private fun startLevelSetOnClickListener(
 		view: View,
-		playFieldLevel: PlayFieldLevel,
+		playFieldDifficulty: PlayFieldDifficulty,
 		playFieldFileName: String,
 	)
 	{
 		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
 		this.playFieldJson =
-			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldLevel, playFieldFileName).getPlayFieldData()))
+			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldDifficulty, playFieldFileName).getPlayFieldData()))
 		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
 		view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
 	}

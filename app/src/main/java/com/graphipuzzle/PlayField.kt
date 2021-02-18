@@ -2,7 +2,7 @@ package com.graphipuzzle
 
 import com.graphipuzzle.data.PlayFieldData
 import com.graphipuzzle.data.TileData
-import com.graphipuzzle.read.PlayFieldLevel
+import com.graphipuzzle.read.PlayFieldDifficulty
 import kotlinx.serialization.Serializable
 import kotlin.math.ceil
 
@@ -13,13 +13,10 @@ import kotlin.math.ceil
 class PlayField(private val playFieldData: PlayFieldData)
 {
 	private val name = this.playFieldData.name
-	private val playFieldLevel = this.playFieldData.level
+	private val playFieldDifficulty = this.playFieldData.difficulty
 
-	/**
-	 * This is the expected result of the game
-	 */
-	private val tileValues: ArrayList<ArrayList<TileData>> = this.playFieldData.tileValues
-	private val fieldSize = this.tileValues.size
+	private val tileDatas: ArrayList<ArrayList<TileData>> = this.playFieldData.tileValues
+	private val fieldSize = this.tileDatas.size
 	private val maxGroups = ceil(fieldSize / 2.0).toInt()
 	private lateinit var fieldColumns: ArrayList<ArrayList<Int>>
 	private lateinit var fieldRows: ArrayList<ArrayList<Int>>
@@ -42,14 +39,17 @@ class PlayField(private val playFieldData: PlayFieldData)
 		return this.name
 	}
 
-	fun getPlayFieldLevel(): PlayFieldLevel
+	fun getPlayFieldDifficulty(): PlayFieldDifficulty
 	{
-		return this.playFieldLevel
+		return this.playFieldDifficulty
 	}
 
-	fun getTileValues(): ArrayList<ArrayList<TileData>>
+	/**
+	 * @return The expected result of the game. See [TileData]
+	 */
+	fun getTileDatas(): ArrayList<ArrayList<TileData>>
 	{
-		return this.tileValues
+		return this.tileDatas
 	}
 
 	fun getFieldSize(): Int
@@ -62,6 +62,9 @@ class PlayField(private val playFieldData: PlayFieldData)
 		return this.maxGroups
 	}
 
+	/**
+	 * @return The actual state of the tiles. A state can be either 0: Not painted, 1: Painted BLACK, or 2: Painted GRAY.
+	 */
 	fun getTileStates(): Array<IntArray>
 	{
 		return this.tileStates
@@ -150,7 +153,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 		{
 			for (col in 0 until this.fieldSize)
 			{
-				val paintable = this.tileValues[row][col].isPaintable
+				val paintable = this.tileDatas[row][col].isPaintable
 				val painted = this.tileStates[row][col] == 1
 				if ((paintable && !painted) || (!paintable && painted))
 				{
@@ -172,7 +175,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 		{
 			for (col in 0 until this.fieldSize)
 			{
-				if (this.tileValues[row][col].isPaintable && this.tileStates[row][col] != 1)
+				if (this.tileDatas[row][col].isPaintable && this.tileStates[row][col] != 1)
 				{
 					notPaintedTiles.add(Pair(row, col))
 				}
@@ -388,7 +391,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 		var rowPrev = 0
 		var colPrev = IntArray(fieldSize)
 
-		for (i in this.tileValues[0].indices)
+		for (i in this.tileDatas[0].indices)
 		{
 			colCount[i] = 0
 			colPrev[i] = 0
@@ -402,7 +405,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 
 			for (col in 0 until this.fieldSize)
 			{
-				val currentTileValue = this.tileValues[row][col].isPaintable
+				val currentTileValue = this.tileDatas[row][col].isPaintable
 				if (currentTileValue)
 				{
 					rowCount++
@@ -440,7 +443,7 @@ class PlayField(private val playFieldData: PlayFieldData)
 
 	private fun countPaintableTiles(): Int
 	{
-		return this.tileValues.flatMap { row -> row.toList() }
+		return this.tileDatas.flatMap { row -> row.toList() }
 			.count { tileData -> tileData.isPaintable }
 	}
 }

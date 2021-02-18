@@ -231,8 +231,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 		for (columnIndex in fieldColumns.indices)
 		{
-			val columnValues: ArrayList<Int> = fieldColumns[columnIndex]
-			val columnValueText = createColumnValueTextView(columnValues, columnIndex)
+			val columnValueText = createColumnValueTextView(columnIndex)
 			row.addView(columnValueText)
 		}
 		return row
@@ -247,7 +246,6 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		val tableRows = mutableListOf<TableRow>()
 		for (rowIndex in fieldRows.indices)
 		{
-			val rowValues: ArrayList<Int> = fieldRows[rowIndex]
 			val row = TableRow(this.context)
 			row.layoutParams = TableLayout.LayoutParams(
 				0,
@@ -255,7 +253,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				1.0f
 			)
 
-			val rowValueText = createRowValueTextView(rowValues, rowIndex)
+			val rowValueText = createRowValueTextView(rowIndex)
 			row.addView(rowValueText)
 			tableRows.add(row)
 		}
@@ -266,8 +264,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 * Creates a TextView that contains the group of values in a column
 	 * @return the created TextView with the values as text
 	 */
-	private fun createColumnValueTextView(columnValues: ArrayList<Int>, columnIndex: Int): TextView
+	private fun createColumnValueTextView(columnIndex: Int): TextView
 	{
+		val columnValues: ArrayList<Int> = this.playField.getFieldColumns()[columnIndex]
+		val tileStates: IntArray = this.playField.getTileStates().map { array -> array[columnIndex] }.toIntArray()
+		val groupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
 		val columnValueText = TextView(this.context)
 		columnValueText.layoutParams = TableRow.LayoutParams(
 			TableRow.LayoutParams.WRAP_CONTENT,
@@ -280,7 +281,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		columnValueText.text = createColoredText(
 			columnValues.map { it.toString() }.toTypedArray(),
 			COLUMN_VALUE_NUMBER_SEPARATOR,
-			this.playField.getColumnGroupStates()[columnIndex],
+			groupStates,
+			tileStates,
 			columnValues
 		)
 		return columnValueText
@@ -290,8 +292,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 * Creates a TextView that contains the group of values in a row
 	 * @return the created TextView with the values as text
 	 */
-	private fun createRowValueTextView(rowValues: ArrayList<Int>, rowIndex: Int): TextView
+	private fun createRowValueTextView(rowIndex: Int): TextView
 	{
+		val rowValues: ArrayList<Int> = this.playField.getFieldRows()[rowIndex]
+		val groupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
+		val tileStates: IntArray = this.playField.getTileStates()[rowIndex]
 		val rowValueText = TextView(this.context)
 		rowValueText.layoutParams = TableRow.LayoutParams(
 			TableRow.LayoutParams.WRAP_CONTENT,
@@ -304,7 +309,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		rowValueText.text = createColoredText(
 			rowValues.map { it.toString() }.toTypedArray(),
 			ROW_VALUE_NUMBER_SEPARATOR,
-			this.playField.getRowGroupStates()[rowIndex],
+			groupStates,
+			tileStates,
 			rowValues
 		)
 		return rowValueText
@@ -315,7 +321,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 */
 	private fun createPlayFieldTableViews(): MutableList<View>
 	{
-		val fieldValues = this.playField.getTileValues()
+		val fieldValues = this.playField.getTileDatas()
 		val tableViews: MutableList<View> = mutableListOf<View>()
 		// Add top border to table
 		tableViews.add(createBorder(TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, 4)))
@@ -613,12 +619,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 */
 	private fun colorColumnTextView(columnIndex: Int)
 	{
+		val columnTileStates: IntArray =
+			this.playField.getTileStates().map { array -> array[columnIndex] }.toIntArray()
 		val columnGroupStates: IntArray = this.playField.getColumnGroupStates()[columnIndex]
+		val fieldColumn: ArrayList<Int> = this.playField.getFieldColumns()[columnIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldColumnValuesTable[0] as TableRow
 		val textView = tableRow[columnIndex] as TextView
-		val fieldColumn: ArrayList<Int> = this.playField.getFieldColumns()[columnIndex]
 		val actualText: Array<String> = textView.text.split(Regex("\n")).toTypedArray()
-		textView.text = createColoredText(actualText, COLUMN_VALUE_NUMBER_SEPARATOR, columnGroupStates, fieldColumn)
+		textView.text = createColoredText(
+			actualText,
+			COLUMN_VALUE_NUMBER_SEPARATOR,
+			columnGroupStates,
+			columnTileStates,
+			fieldColumn
+		)
 	}
 
 	/**
@@ -627,20 +641,22 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 */
 	private fun colorRowTextView(rowIndex: Int)
 	{
+		val rowTileStates: IntArray = this.playField.getTileStates()[rowIndex]
 		val rowGroupStates: IntArray = this.playField.getRowGroupStates()[rowIndex]
+		val fieldRow: ArrayList<Int> = this.playField.getFieldRows()[rowIndex]
 		val tableRow = this.fragmentPlayFieldBinding.playFieldRowValuesTable[rowIndex] as TableRow
 		val textView = tableRow[0] as TextView
-		val fieldRow: ArrayList<Int> = this.playField.getFieldRows()[rowIndex]
 		val actualText: Array<String> = textView.text.split(Regex(ROW_VALUE_NUMBER_SEPARATOR)).toTypedArray()
-		textView.text = createColoredText(actualText, ROW_VALUE_NUMBER_SEPARATOR, rowGroupStates, fieldRow)
+		textView.text = createColoredText(actualText, ROW_VALUE_NUMBER_SEPARATOR, rowGroupStates, rowTileStates, fieldRow)
 
 	}
 
 	/**
 	 * Creates a colored text from the given text, based on the given groups states (either row or column group states)
-	 * @param text The text that has to be colored
+	 * @param textArray The text that has to be colored
 	 * @param separator The separator in the text. Should be either [ROW_VALUE_NUMBER_SEPARATOR] or [COLUMN_VALUE_NUMBER_SEPARATOR]
 	 * @param groupStates The actual states of groups in a given row or column.
+	 * @param tileStates The actual states of tiles in a given row or column.
 	 * @param fieldValues The expected values in the given row or column
 	 * @return A text that is colored
 	 */
@@ -648,6 +664,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		textArray: Array<String>,
 		separator: String,
 		groupStates: IntArray,
+		tileStates: IntArray,
 		fieldValues: ArrayList<Int>
 	): CharSequence
 	{
@@ -656,12 +673,11 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		for (i in textArray.indices)
 		{
 			val groupState = groupStates[i]
-			// If there are more painted groups than the actual number of groups, reset the text to original
-			if (fieldValues.size < groupStates.toList().count { groupState -> groupState != 0 }
-			)
+			// If the number of black painted tiles is more than the expected
+			if (tileStates.count { tile -> tile == 1 } > fieldValues.sum())
 			{
 				newText = textArray.joinToString(separator)
-				return Html.fromHtml(newText)
+				break
 			} else if (groupState == fieldValues[i])
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + textArray[i] + "</font>"
@@ -798,7 +814,7 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				)
 
 				val newColor =
-					Color.parseColor(this.playField.getTileValues()[row][col].hexColorCode)
+					Color.parseColor(this.playField.getTileDatas()[row][col].hexColorCode)
 				val colorAnimation =
 					ValueAnimator.ofObject(ArgbEvaluator(), originalColor, newColor)
 				colorAnimation.duration = 1000L

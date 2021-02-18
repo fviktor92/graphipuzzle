@@ -1,6 +1,6 @@
 package com.graphipuzzle.data
 
-import com.graphipuzzle.read.PlayFieldLevel
+import com.graphipuzzle.read.PlayFieldDifficulty
 import kotlinx.serialization.Serializable
 
 /**
@@ -9,6 +9,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlayFieldData(
 	val name: String,
-	val level: PlayFieldLevel,
+	val difficulty: PlayFieldDifficulty,
 	val tileValues: ArrayList<ArrayList<TileData>>
 )

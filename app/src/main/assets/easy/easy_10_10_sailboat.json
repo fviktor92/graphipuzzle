@@ -1,6 +1,6 @@
 {
   "name": "Sailboat",
-  "level": "EASY",
+  "difficulty": "EASY",
   "tileValues": [
     [
       {

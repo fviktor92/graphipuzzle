@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">#0d47a1</item>
         <item name="colorPrimaryVariant">#5472d3</item>
         <item name="colorOnPrimary">#FFFFFF</item>
@@ -14,8 +14,7 @@
         <item name="colorOnSurface">#fafafa</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="colorOnBackground">#212121</item>
-        <item name="fontFamily">@font/roboto_mono</item>
-        <item name="android:fontFamily">@font/roboto_mono</item>
+        <item name="colorControlNormal">#FFFFFF</item>
     </style>
 
     <style name="AppTheme.ButtonSecondary">

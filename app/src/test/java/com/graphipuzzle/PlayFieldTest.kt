@@ -2,7 +2,7 @@ package com.graphipuzzle
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.graphipuzzle.read.PlayFieldLevel
+import com.graphipuzzle.read.PlayFieldDifficulty
 import com.graphipuzzle.read.ReadPlayField
 import org.junit.Assert.assertArrayEquals
 import org.junit.Test
@@ -24,7 +24,7 @@ class PlayFieldTest
 		val smallPlayFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val smallPlayField = PlayField(smallPlayFieldData)
@@ -75,7 +75,7 @@ class PlayFieldTest
 		val bigPlayFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.HARD,
+				PlayFieldDifficulty.HARD,
 				"hard_15_15_dog_and_boy_playing_ball.json"
 			).getPlayFieldData()
 		val bigPlayField = PlayField(bigPlayFieldData)
@@ -136,7 +136,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -159,7 +159,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -201,7 +201,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -285,14 +285,14 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
 		val paintableTile = playField.help()
 
-		assertTrue(playField.getTileValues()[paintableTile.first][paintableTile.second].isPaintable)
+		assertTrue(playField.getTileDatas()[paintableTile.first][paintableTile.second].isPaintable)
 
 		// Complete the play field so no help can be given
 		playField.setTileState(1, 0, 3)
@@ -363,7 +363,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -405,7 +405,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -454,7 +454,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
@@ -468,7 +468,7 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldLevel.EASY,
+				PlayFieldDifficulty.EASY,
 				"easy_10_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)

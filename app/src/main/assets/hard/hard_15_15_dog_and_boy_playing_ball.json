@@ -1,6 +1,6 @@
 {
   "name": "Dog and boy playing ball",
-  "level": "HARD",
+  "difficulty": "HARD",
   "tileValues": [
     [
       {
