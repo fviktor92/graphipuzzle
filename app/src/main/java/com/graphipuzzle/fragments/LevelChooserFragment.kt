@@ -45,9 +45,6 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
 			startLevelSetOnClickListener(view, PlayFieldDifficulty.EASY, "easy_10_10_sailboat.json")
 		}
-		this.levelChooserBinding.startBigGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, PlayFieldDifficulty.HARD, "hard_15_15_dog_and_boy_playing_ball.json")
-		}
 		val continuePlayFieldJson = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString(PLAY_FIELD, "")!!
 		if (continuePlayFieldJson != "")
 		{

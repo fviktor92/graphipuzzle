@@ -182,17 +182,20 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 		val deferredRowValuesTableRows = GlobalScope.async { createPlayFieldRowValuesTableRows() }
 
-		val deferredSetTileColorSwitchOnTouchListerner = GlobalScope.async { setTileColorSwitchOnTouchListener() }
+		val deferredSetTileColorSwitchOnTouchListener = GlobalScope.async { setTileColorSwitchOnTouchListener() }
 
 		val deferredSetHelpButtonOnTouchListener = GlobalScope.async { setHelpButtonOnTouchListener() }
 
-		val deferredSetTileCounterText = GlobalScope.async { createTileCounterText() }
+		val deferredSetTileCounterText = GlobalScope.async {
+			this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.textSize = screenWidth * 0.015f
+			createTileCounterText()
+		}
 
 		GlobalScope.launch {
 			withContext(Dispatchers.Main) {
 				this@PlayFieldFragment.fragmentPlayFieldBinding.coloredTilesCounterText.text = deferredSetTileCounterText.await()
 				deferredSetHelpButtonOnTouchListener.await()
-				deferredSetTileColorSwitchOnTouchListerner.await()
+				deferredSetTileColorSwitchOnTouchListener.await()
 
 				// Initialize Play Field Table
 				deferredCreatedPlayFieldTableViews.await().forEach {

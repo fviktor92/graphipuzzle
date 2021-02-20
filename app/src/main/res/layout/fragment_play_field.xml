@@ -35,6 +35,7 @@
                 android:gravity="center"
                 android:text="0 / 0"
                 android:textColor="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/play_field_column_values_table"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
