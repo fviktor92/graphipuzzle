@@ -1,0 +1,426 @@
+{
+  "name": "",
+  "difficulty": "EASY",
+  "tileValues": [
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": "#ffffff"
+      }
+    ]
+  ]
+}

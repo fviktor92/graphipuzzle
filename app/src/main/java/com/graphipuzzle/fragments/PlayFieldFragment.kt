@@ -37,7 +37,7 @@ import kotlin.math.abs
 
 const val PLAY_FIELD = "playField"
 
-class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
+open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 {
 	private val COLUMN_VALUE_NUMBER_SEPARATOR: String = "<br>"
 	private val ROW_VALUE_NUMBER_SEPARATOR: String = " "
@@ -46,8 +46,8 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private val BORDER_TAG: String = "border"
 
 	private var screenWidth: Int = 0
-	private lateinit var playField: PlayField
-	private lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
+	protected lateinit var playField: PlayField
+	protected lateinit var fragmentPlayFieldBinding: FragmentPlayFieldBinding
 
 	// Variables used for swiping
 	private var minHorizontalSwipeLength = 0
@@ -681,12 +681,12 @@ class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 			{
 				newText = textArray.joinToString(separator)
 				break
-			} else if (groupState == fieldValues[i])
+			} else if (fieldValues.size > 0 && groupState == fieldValues[i])
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + textArray[i] + "</font>"
 				textArray[i] = recoloredGroup
 				newText = textArray.joinToString(separator)
-			} else if (groupState != fieldValues[i])
+			} else if (fieldValues.size > 0 && groupState != fieldValues[i])
 			{
 				var recoloredGroup = "<font color=#000000>" + textArray[i] + "</font>"
 				textArray[i] = recoloredGroup

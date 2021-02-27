@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@id/levelChooserFragment">
 
@@ -17,7 +18,7 @@
         android:name="com.graphipuzzle.fragments.PlayFieldFragment" >
         <argument
             android:name="playField"
-            app:argType="string" />
+            app:argType="string"/>
         <action
             android:id="@+id/action_playFieldFragment_to_levelChooserFragment"
             app:destination="@id/levelChooserFragment" />
@@ -25,5 +26,8 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.graphipuzzle.fragments.SettingsFragment" />
+    <fragment
+        android:id="@+id/playFieldCreateFragment"
+        android:name="com.graphipuzzle.fragments.PlayFieldCreateFragment"/>
 
 </navigation>

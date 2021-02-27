@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/playFieldCreateFragment"
+        android:icon="@drawable/ic_baseline_brush_24"
+        android:menuCategory="secondary"
+        android:title="Create Play Field"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_baseline_settings_24"
-        android:iconTint="@color/black"
-        android:title="@string/settings"
         android:menuCategory="secondary"
+        android:title="@string/settings"
         app:showAsAction="ifRoom" />
+
 </menu>

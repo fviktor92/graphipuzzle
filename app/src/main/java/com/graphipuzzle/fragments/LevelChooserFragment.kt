@@ -12,7 +12,7 @@ import androidx.preference.PreferenceManager
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
 import com.graphipuzzle.databinding.FragmentLevelChooserBinding
-import com.graphipuzzle.read.PlayFieldDifficulty
+import com.graphipuzzle.read.LevelPack
 import com.graphipuzzle.read.ReadPlayField
 import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.serialization.encodeToString
@@ -43,7 +43,7 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 	{
 		super.onResume()
 		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, PlayFieldDifficulty.EASY, "easy_10_10_sailboat.json")
+			startLevelSetOnClickListener(view, LevelPack.VEHICLES, "easy_10_10_sailboat.json")
 		}
 		val continuePlayFieldJson = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString(PLAY_FIELD, "")!!
 		if (continuePlayFieldJson != "")
@@ -71,13 +71,13 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 
 	private fun startLevelSetOnClickListener(
 		view: View,
-		playFieldDifficulty: PlayFieldDifficulty,
+		levelPack: LevelPack,
 		playFieldFileName: String,
 	)
 	{
 		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
 		this.playFieldJson =
-			Json.encodeToString(PlayField(ReadPlayField(requireContext(), playFieldDifficulty, playFieldFileName).getPlayFieldData()))
+			Json.encodeToString(PlayField(ReadPlayField(requireContext(), levelPack, playFieldFileName).getPlayFieldData()))
 		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
 		view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
 	}

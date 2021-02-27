@@ -9,52 +9,44 @@
         android:layout_height="match_parent"
         tools:context=".fragments.LevelChooserFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/parent_constraint_layout"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <ImageView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/parent_constraint_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/logo"
-                android:src="@drawable/ic_graphipuzzle_logo"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                app:layout_constraintVertical_bias="0.4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/continue_game"
-                style="@style/AppTheme.ButtonPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Continue"
-                android:visibility="invisible"
-                android:layout_marginBottom="2dp"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintTop_toBottomOf="@id/logo"
-                app:layout_constraintBottom_toTopOf="@id/start_small_game"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/continue_game"
+                    style="@style/AppTheme.ButtonPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:gravity="center"
+                    android:text="Continue"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toTopOf="@id/start_small_game"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_small_game"
-                style="@style/AppTheme.ButtonSecondary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Small"
-                android:layout_marginTop="2dp"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/continue_game" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/start_small_game"
+                    style="@style/AppTheme.ButtonSecondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Small"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/continue_game"
+                    app:layout_constraintVertical_chainStyle="packed" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
     </FrameLayout>
 </layout>
