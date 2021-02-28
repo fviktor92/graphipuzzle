@@ -1,6 +1,6 @@
 package com.graphipuzzle.read
 
-enum class PlayFieldDifficulty(val fieldLevelName: String)
+enum class PlayFieldDifficulty(val difficulty: String)
 {
 	EASY("easy"),
 	MEDIUM("medium"),

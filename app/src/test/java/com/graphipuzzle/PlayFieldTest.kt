@@ -25,7 +25,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val smallPlayField = PlayField(smallPlayFieldData)
 		val actualSmallFieldColumns: ArrayList<ArrayList<Int>> =
@@ -76,7 +76,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.HARD,
-				"hard_15_15_dog_and_boy_playing_ball.json"
+				"hard_15_dog_and_boy_playing_ball.json"
 			).getPlayFieldData()
 		val bigPlayField = PlayField(bigPlayFieldData)
 		val actualBigFieldColumns: ArrayList<ArrayList<Int>> =
@@ -137,7 +137,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -160,7 +160,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -202,7 +202,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -286,7 +286,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -364,7 +364,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
@@ -406,7 +406,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
@@ -455,7 +455,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -469,7 +469,7 @@ class PlayFieldTest
 			ReadPlayField(
 				context,
 				PlayFieldDifficulty.EASY,
-				"easy_10_10_sailboat.json"
+				"easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 

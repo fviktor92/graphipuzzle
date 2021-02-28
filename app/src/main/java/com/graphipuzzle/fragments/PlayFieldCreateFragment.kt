@@ -1,9 +1,10 @@
 package com.graphipuzzle.fragments
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.data.PlayFieldData
 import com.graphipuzzle.data.TileData
@@ -18,7 +19,7 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
-		super.playField = PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_10_10.json").getPlayFieldData())
+		super.playField = PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_10.json").getPlayFieldData())
 	}
 
 	override fun onStart()
@@ -55,6 +56,12 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 		}
 
 		val playFieldData = PlayFieldData(playFieldName, playFieldDifficulty, tileValues)
-		println(playFieldData)
+		val UNDERSCORE_SEPARATOR = '_'
+		val fileName =
+			playFieldDifficulty.difficulty.toLowerCase() + UNDERSCORE_SEPARATOR + fieldSize + UNDERSCORE_SEPARATOR + playFieldName.toLowerCase()
+				.replace(' ', UNDERSCORE_SEPARATOR) + ".json"
+		requireContext().openFileOutput(fileName, Context.MODE_PRIVATE)
+			.use { it.write(Json.encodeToString(playFieldData).toByteArray()) }
+		Toast.makeText(requireContext(), "Successfully created: $fileName", Toast.LENGTH_SHORT)
 	}
 }
