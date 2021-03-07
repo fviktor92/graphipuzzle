@@ -1,5 +1,6 @@
 package com.graphipuzzle.fragments
 
+import android.R
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import com.graphipuzzle.read.ReadPlayField
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+
 class PlayFieldCreateFragment : PlayFieldFragment()
 {
 	override fun onCreate(savedInstanceState: Bundle?)
@@ -26,16 +28,17 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 	{
 		super.onStart()
 		super.fragmentPlayFieldBinding.coloredTilesCounterText.visibility = View.INVISIBLE
+		super.fragmentPlayFieldBinding.colorPickerButton.visibility = View.VISIBLE
 		super.fragmentPlayFieldBinding.createButton.visibility = View.VISIBLE
 		super.fragmentPlayFieldBinding.playFieldName.visibility = View.VISIBLE
 		super.fragmentPlayFieldBinding.difficulty.visibility = View.VISIBLE
 		super.fragmentPlayFieldBinding.difficulty.adapter = ArrayAdapter(
-			requireContext(), android.R.layout.simple_spinner_item, PlayFieldDifficulty.values()
+			requireContext(), R.layout.simple_spinner_item, PlayFieldDifficulty.values()
 		)
 		super.fragmentPlayFieldBinding.createButton.setOnClickListener { createPlayField() }
 	}
 
-	fun createPlayField()
+	private fun createPlayField()
 	{
 		val fieldSize = super.playField.getFieldSize()
 		val playFieldName = super.fragmentPlayFieldBinding.playFieldName.text.toString()
