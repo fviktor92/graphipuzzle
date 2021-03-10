@@ -41,8 +41,8 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 {
 	private val COLUMN_VALUE_NUMBER_SEPARATOR: String = "<br>"
 	private val ROW_VALUE_NUMBER_SEPARATOR: String = " "
-	private val ROW_TAG_PREFIX: String = "row_"
-	private val COLUMN_TAG_PREFIX: String = "column_"
+	protected val ROW_TAG_PREFIX: String = "row_"
+	protected val COLUMN_TAG_PREFIX: String = "column_"
 	private val BORDER_TAG: String = "border"
 
 	private var screenWidth: Int = 0
@@ -56,7 +56,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	private var downY: Float = 0.0f
 	private lateinit var touchedRowButtons: List<MaterialButton>
 	private lateinit var touchedColumnButtons: List<MaterialButton>
-	private var firstTouchedButtonColor: Int = 0
+	protected var firstTouchedButtonColor: Int = 0
 	private var currentColumn = 0
 	private var currentRow = 0
 
@@ -146,7 +146,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 
 	}
 
-	private fun loadPlayField()
+	protected fun loadPlayField()
 	{
 		// FIXME: Maybe this could be implemented prettier
 		// Displaying the loading fragment
@@ -556,7 +556,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		}
 	}
 
-	private fun performOnTileTouchActions(rowIndex: Int, columnIndex: Int)
+	protected open fun performOnTileTouchActions(rowIndex: Int, columnIndex: Int)
 	{
 		// Play a click sound
 		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.tile_paint_sound)
@@ -576,22 +576,28 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 	 * @param columnIndex The index of the column where the button is touched.
 	 * @param rowIndex The index of the column where the button is touched.
 	 */
-	private fun setFieldButtonColor(v: View, rowIndex: Int, columnIndex: Int)
+	protected open fun setFieldButtonColor(v: View, rowIndex: Int, columnIndex: Int)
 	{
 		val actualFieldButtonColor = v.backgroundTintList!!.getColorForState(
 			intArrayOf(android.R.attr.state_enabled),
 			0
+		)
+		val tileColorSwitchCheckedColor = fragmentPlayFieldBinding.tileColorSwitch.thumbTintList!!.getColorForState(
+			intArrayOf(android.R.attr.state_checked), Color.BLACK
+		)
+		val tileColorSwitchUncheckedColor = fragmentPlayFieldBinding.tileColorSwitch.thumbTintList!!.getColorForState(
+			intArrayOf(-android.R.attr.state_checked), Color.GRAY
 		)
 
 		if (this.fragmentPlayFieldBinding.tileColorSwitch.isChecked)
 		{
 			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.GRAY)
 			{
-				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
+				v.backgroundTintList = ColorStateList.valueOf(tileColorSwitchCheckedColor)
 				this.playField.setTileState(1, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.GRAY)
 			{
-				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.black))
+				v.backgroundTintList = ColorStateList.valueOf(tileColorSwitchCheckedColor)
 				this.playField.setTileState(1, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.BLACK && actualFieldButtonColor == Color.BLACK)
 			{
@@ -602,11 +608,11 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		{
 			if ((this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT) && actualFieldButtonColor != Color.BLACK)
 			{
-				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
+				v.backgroundTintList = ColorStateList.valueOf(tileColorSwitchUncheckedColor)
 				this.playField.setTileState(2, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.BLACK)
 			{
-				v.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray))
+				v.backgroundTintList = ColorStateList.valueOf(tileColorSwitchUncheckedColor)
 				this.playField.setTileState(2, rowIndex, columnIndex)
 			} else if (this.firstTouchedButtonColor == Color.GRAY && actualFieldButtonColor == Color.GRAY)
 			{
@@ -801,7 +807,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		}
 	}
 
-	private fun colorPlayFieldTiles()
+	protected open fun colorPlayFieldTiles()
 	{
 		for (row in 0 until this.playField.getFieldSize())
 		{
@@ -816,17 +822,15 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 					0
 				)
 
-				val newColor =
-					Color.parseColor(this.playField.getTileDatas()[row][col].hexColorCode)
+				var newColor: Int = Color.parseColor(this.playField.getTileDatas()[row][col].hexColorCode)
+
 				val colorAnimation =
 					ValueAnimator.ofObject(ArgbEvaluator(), originalColor, newColor)
 				colorAnimation.duration = 1000L
 
 				colorAnimation.addUpdateListener { animator ->
-					materialButton
-						.setBackgroundColor(animator.animatedValue as Int)
-					materialButton.strokeColor =
-						ColorStateList.valueOf(animator.animatedValue as Int)
+					materialButton.backgroundTintList = ColorStateList.valueOf(animator.animatedValue as Int)
+					materialButton.strokeColor = ColorStateList.valueOf(animator.animatedValue as Int)
 				}
 				colorAnimation.start()
 			}

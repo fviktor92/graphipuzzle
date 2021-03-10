@@ -1,0 +1,1646 @@
+{
+  "name": "",
+  "difficulty": "EASY",
+  "tileValues": [
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ],
+    [
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      },
+      {
+        "isPaintable": false,
+        "hexColorCode": ""
+      }
+    ]
+  ]
+}

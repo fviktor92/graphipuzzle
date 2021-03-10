@@ -8,4 +8,4 @@ import kotlinx.serialization.Serializable
  * @property hexColorCode The color code of the tile in HEX
  */
 @Serializable
-data class TileData(val isPaintable: Boolean, val hexColorCode: String)
+data class TileData(var isPaintable: Boolean, var hexColorCode: String)

@@ -30,13 +30,22 @@
                 android:id="@+id/play_field_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:hint="Enter name..."
                 android:textColor="@color/black"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/play_field_column_values_table"
-                app:layout_constraintEnd_toStartOf="@id/difficulty"
+                app:layout_constraintEnd_toStartOf="@id/fieldSize"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/fieldSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toTopOf="@+id/play_field_column_values_table"
+                app:layout_constraintEnd_toStartOf="@id/difficulty"
+                app:layout_constraintStart_toEndOf="@id/play_field_name"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatSpinner
@@ -45,10 +54,9 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/play_field_column_values_table"
-                app:layout_constraintEnd_toEndOf="@id/create_button"
-                app:layout_constraintStart_toEndOf="@id/play_field_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fieldSize"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/create_button"
@@ -57,9 +65,9 @@
                 android:text="Create"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/play_field_column_values_table"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/difficulty"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintEnd_toEndOf="@id/fieldSize"
+                app:layout_constraintStart_toStartOf="@id/fieldSize"
+                app:layout_constraintTop_toBottomOf="@id/fieldSize" />
 
             <TextView
                 android:id="@+id/colored_tiles_counter_text"
@@ -117,7 +125,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/play_field_table" />
+                app:layout_constraintTop_toBottomOf="@id/play_field_table"
+                app:thumbTint="@color/tile_color_switch_thumb_selector"
+                app:trackTint="@color/tile_color_switch_track_selector" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/next_level_button"
