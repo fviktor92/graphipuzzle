@@ -141,13 +141,7 @@
         <item name="android:checked">true</item>
         <item name="android:scaleX">2.5</item>
         <item name="android:scaleY">2.5</item>
-        <item name="android:theme">@style/tile_switch_thumb_style</item>
         <item name="track">@drawable/switch_track</item>
         <item name="android:thumb">@drawable/color_switch_thumb_24</item>
-    </style>
-
-    <style name="tile_switch_thumb_style">
-        <item name="colorSurface">#888888</item>
-        <item name="colorControlActivated">@color/black</item>
     </style>
 </resources>

@@ -52,6 +52,16 @@ class PlayField(private val playFieldData: PlayFieldData)
 		return this.tileDatas
 	}
 
+	fun setTileIsPaintable(row: Int, col: Int, isPaintable: Boolean)
+	{
+		this.tileDatas[row][col].isPaintable = isPaintable
+	}
+
+	fun setTileHexColorCode(row: Int, col: Int, hexColorCode: String)
+	{
+		this.tileDatas[row][col].hexColorCode = hexColorCode
+	}
+
 	fun getFieldSize(): Int
 	{
 		return this.fieldSize
