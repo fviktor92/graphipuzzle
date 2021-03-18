@@ -17,10 +17,9 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.data.PlayFieldData
+import com.graphipuzzle.data.TileData
 import com.graphipuzzle.read.FieldSize
-import com.graphipuzzle.read.LevelPack
 import com.graphipuzzle.read.PlayFieldDifficulty
-import com.graphipuzzle.read.ReadPlayField
 import com.graphipuzzle.util.SoundPoolUtil
 import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerDialog
@@ -35,7 +34,7 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
-		this.playField = PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_10.json").getPlayFieldData())
+		this.playField = PlayField(createEmptyPlayFieldData(10))
 	}
 
 	override fun onStart()
@@ -59,22 +58,19 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 				{
 					selectedItem.toInt() == 10 ->
 					{
-						this@PlayFieldCreateFragment.playField =
-							PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_10.json").getPlayFieldData())
+						this@PlayFieldCreateFragment.playField = PlayField(createEmptyPlayFieldData(10))
 						this@PlayFieldCreateFragment.fragmentPlayFieldBinding.playFieldTable.removeAllViews()
 						loadPlayField()
 					}
 					selectedItem.toInt() == 15 ->
 					{
-						this@PlayFieldCreateFragment.playField =
-							PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_15.json").getPlayFieldData())
+						this@PlayFieldCreateFragment.playField = PlayField(createEmptyPlayFieldData(15))
 						this@PlayFieldCreateFragment.fragmentPlayFieldBinding.playFieldTable.removeAllViews()
 						loadPlayField()
 					}
 					selectedItem.toInt() == 20 ->
 					{
-						this@PlayFieldCreateFragment.playField =
-							PlayField(ReadPlayField(requireActivity(), LevelPack.EMPTY, "empty_20.json").getPlayFieldData())
+						this@PlayFieldCreateFragment.playField = PlayField(createEmptyPlayFieldData(20))
 						this@PlayFieldCreateFragment.fragmentPlayFieldBinding.playFieldTable.removeAllViews()
 						loadPlayField()
 					}
@@ -103,6 +99,23 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 				this.fragmentPlayFieldBinding.colorPickerButton.visibility = View.VISIBLE
 			}
 		}
+	}
+
+	private fun createEmptyPlayFieldData(playfieldSize: Int): PlayFieldData
+	{
+		val tileValues: ArrayList<ArrayList<TileData>> = ArrayList(playfieldSize)
+
+		for (i in 0 until playfieldSize)
+		{
+			tileValues.add(ArrayList(playfieldSize))
+			for (j in 0 until playfieldSize)
+			{
+				val tileData = TileData(false, "")
+				tileValues[i].add(tileData)
+			}
+		}
+
+		return PlayFieldData("", PlayFieldDifficulty.EASY, tileValues)
 	}
 
 	private fun showColorPickerDialog()

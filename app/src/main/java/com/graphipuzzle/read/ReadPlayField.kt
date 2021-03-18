@@ -6,6 +6,8 @@ import com.graphipuzzle.data.PlayFieldData
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
+val LEVEL_PACKS_FOLDER_NAME = "level_packs"
+
 /**
  *
  * @param ctx The context where the resources are acquired from.
@@ -14,7 +16,6 @@ import kotlinx.serialization.json.Json
  */
 class ReadPlayField(ctx: Context, levelPack: LevelPack, fileName: String)
 {
-	private val LEVEL_PACKS_FOLDER_NAME = "level_packs"
 	private val playFieldData: PlayFieldData
 
 	init
@@ -33,7 +34,7 @@ class ReadPlayField(ctx: Context, levelPack: LevelPack, fileName: String)
 		val assetManager = ctx.resources.assets
 		// FIXME: replace path separator
 		val bufferedReader =
-			assetManager.open(LEVEL_PACKS_FOLDER_NAME + "/" + levelPack.levelPackName + "/" + fileName)
+			assetManager.open(LEVEL_PACKS_FOLDER_NAME + "/" + levelPack.levelPackFolderName + "/" + fileName)
 				.bufferedReader()
 		val resource = bufferedReader.readText()
 		bufferedReader.close()

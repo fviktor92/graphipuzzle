@@ -9,20 +9,21 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.graphipuzzle.PlayField
 import com.graphipuzzle.R
-import com.graphipuzzle.databinding.FragmentLevelChooserBinding
+import com.graphipuzzle.databinding.FragmentLevelPacksBinding
 import com.graphipuzzle.read.LevelPack
 import com.graphipuzzle.read.ReadPlayField
 import com.graphipuzzle.util.SoundPoolUtil
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-const val LEVEL_CHOOSER_FRAGMENT = "level_chooser_fragment"
+const val LEVEL_PACKS_FRAGMENT = "level_packs_fragment"
 
-class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
+class LevelPacksFragment : Fragment(R.layout.fragment_level_packs)
 {
-	private lateinit var levelChooserBinding: FragmentLevelChooserBinding
+	private lateinit var levelChooserBinding: FragmentLevelPacksBinding
 	private var playFieldJson: String = ""
 
 	override fun onCreateView(
@@ -30,11 +31,15 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 		savedInstanceState: Bundle?
 	): View?
 	{
-		levelChooserBinding =
-			DataBindingUtil.inflate(inflater, R.layout.fragment_level_chooser, container, false)
+		this.levelChooserBinding =
+			DataBindingUtil.inflate(inflater, R.layout.fragment_level_packs, container, false)
 
 		setHasOptionsMenu(true)
 
+		val levelPacksAdapter = LevelPacksAdapter(requireContext(), LevelPack.values())
+		this.levelChooserBinding.levelPacksRecyclerView.adapter = levelPacksAdapter
+		this.levelChooserBinding.levelPacksRecyclerView.layoutManager =
+			LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, true)
 		// Inflate the layout for this fragment
 		return levelChooserBinding.root
 	}
@@ -42,9 +47,6 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 	override fun onResume()
 	{
 		super.onResume()
-		this.levelChooserBinding.startSmallGame.setOnClickListener { view: View ->
-			startLevelSetOnClickListener(view, LevelPack.VEHICLES, "easy_10_poop.json")
-		}
 		val continuePlayFieldJson = PreferenceManager.getDefaultSharedPreferences(requireActivity()).getString(PLAY_FIELD, "")!!
 		if (continuePlayFieldJson != "")
 		{
@@ -53,7 +55,7 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 			this.levelChooserBinding.continueGame.visibility = View.VISIBLE
 			this.levelChooserBinding.continueGame.setOnClickListener { view: View ->
 				SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
-				view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
+				view.findNavController().navigate(R.id.action_levelPacksFragment_to_levelsFragment, bundle)
 			}
 		}
 	}
@@ -67,18 +69,5 @@ class LevelChooserFragment : Fragment(R.layout.fragment_level_chooser)
 	override fun onOptionsItemSelected(item: MenuItem): Boolean
 	{
 		return NavigationUI.onNavDestinationSelected(item!!, this.findNavController()) || super.onOptionsItemSelected(item)
-	}
-
-	private fun startLevelSetOnClickListener(
-		view: View,
-		levelPack: LevelPack,
-		playFieldFileName: String,
-	)
-	{
-		SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
-		this.playFieldJson =
-			Json.encodeToString(PlayField(ReadPlayField(requireContext(), levelPack, playFieldFileName).getPlayFieldData()))
-		val bundle = bundleOf(PLAY_FIELD to this.playFieldJson)
-		view.findNavController().navigate(R.id.action_levelChooserFragment_to_playFieldFragment, bundle)
 	}
 }

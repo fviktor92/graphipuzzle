@@ -1,33 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/levelChooserFragment">
+    app:startDestination="@id/levelPacksFragment">
 
     <fragment
-        android:id="@+id/levelChooserFragment"
-        android:name="com.graphipuzzle.fragments.LevelChooserFragment" >
+        android:id="@+id/levelPacksFragment"
+        android:name="com.graphipuzzle.fragments.LevelPacksFragment">
         <action
-            android:id="@+id/action_levelChooserFragment_to_playFieldFragment"
-            app:destination="@id/playFieldFragment" />
+            android:id="@+id/action_levelPacksFragment_to_levelsFragment"
+            app:destination="@id/levelsFragment" />
+        <action
+            android:id="@+id/action_levelPacksFragment_to_playFieldCreateFragment"
+            app:destination="@id/playFieldCreateFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/playFieldFragment"
-        android:name="com.graphipuzzle.fragments.PlayFieldFragment" >
+        android:name="com.graphipuzzle.fragments.PlayFieldFragment">
         <argument
             android:name="playField"
-            app:argType="string"/>
+            app:argType="string" />
         <action
-            android:id="@+id/action_playFieldFragment_to_levelChooserFragment"
-            app:destination="@id/levelChooserFragment" />
+            android:id="@+id/action_playFieldFragment_to_levelsFragment"
+            app:destination="@id/levelsFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.graphipuzzle.fragments.SettingsFragment" />
     <fragment
         android:id="@+id/playFieldCreateFragment"
-        android:name="com.graphipuzzle.fragments.PlayFieldCreateFragment"/>
+        android:name="com.graphipuzzle.fragments.PlayFieldCreateFragment" />
+    <fragment
+        android:id="@+id/levelsFragment"
+        android:name="com.graphipuzzle.fragments.LevelsFragment">
+        <argument
+            android:name="levelPack"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_levelsFragment_to_playFieldFragment"
+            app:destination="@id/playFieldFragment" />
+    </fragment>
 
 </navigation>

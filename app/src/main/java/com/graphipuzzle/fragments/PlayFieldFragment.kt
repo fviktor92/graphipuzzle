@@ -156,7 +156,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				childFragmentManager.commit {
 					setReorderingAllowed(true)
 					add(R.id.loading_fragment, LoadingFragment::class.java, bundle)
-					addToBackStack(LEVEL_CHOOSER_FRAGMENT)
+					addToBackStack(LEVEL_PACKS_FRAGMENT)
 				}
 				this@PlayFieldFragment.fragmentPlayFieldBinding.loadingFragment.visibility = View.VISIBLE
 				// Disabling user interaction with the UI while loading
@@ -753,7 +753,7 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 				this.fragmentPlayFieldBinding.nextLevelButton.visibility = View.VISIBLE
 				this.fragmentPlayFieldBinding.nextLevelButton.setOnClickListener { view: View ->
 					SoundPoolUtil.getInstance(requireContext()).playSound(R.raw.button_sound)
-					view.findNavController().navigate(R.id.action_playFieldFragment_to_levelChooserFragment)
+					view.findNavController().navigate(R.id.action_playFieldFragment_to_levelsFragment)
 				}
 
 				setEnabledDisabledRecursively(this.fragmentPlayFieldBinding.playFieldTable, false)
