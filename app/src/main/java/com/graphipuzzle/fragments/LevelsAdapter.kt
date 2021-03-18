@@ -23,7 +23,7 @@ class LevelsAdapter(context: Context, levelPack: LevelPack) :
 {
 	private val context: Context = context
 	private val levelPack: LevelPack = levelPack
-	private val levels: Array<String> = getListOfLevels()
+	private val levelFileNames: Array<String> = getLevelFileNames()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
 	{
@@ -37,25 +37,25 @@ class LevelsAdapter(context: Context, levelPack: LevelPack) :
 		holder.levelNumber.text = (position + 1).toString()
 		holder.levelImage.setImageResource(R.drawable.ic_launcher_background)
 		holder.itemView.setOnClickListener { view ->
-			startLevelSetOnClickListener(view, levels[position])
+			startLevelSetOnClickListener(view, position)
 		}
 	}
 
 	override fun getItemCount(): Int
 	{
-		return this.levels.size
+		return this.levelFileNames.size
 	}
 
-	private fun getListOfLevels(): Array<String>
+	private fun getLevelFileNames(): Array<String>
 	{
 		return this.context.resources.assets.list("$LEVEL_PACKS_FOLDER_NAME/${this.levelPack.levelPackFolderName}")!!
 	}
 
-	private fun startLevelSetOnClickListener(view: View, playFieldFileName: String)
+	private fun startLevelSetOnClickListener(view: View, position: Int)
 	{
 		SoundPoolUtil.getInstance(this.context).playSound(R.raw.button_sound)
 		val playFieldJson =
-			Json.encodeToString(PlayField(ReadPlayField(this.context, this.levelPack, playFieldFileName).getPlayFieldData()))
+			Json.encodeToString(PlayField(ReadPlayField(this.context, this.levelPack, this.levelFileNames[position]).getPlayFieldData()))
 		val bundle = bundleOf(PLAY_FIELD to playFieldJson)
 		view.findNavController().navigate(R.id.action_levelsFragment_to_playFieldFragment, bundle)
 	}

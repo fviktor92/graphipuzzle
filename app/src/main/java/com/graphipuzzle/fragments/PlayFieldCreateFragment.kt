@@ -145,6 +145,8 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 		})
 		builder.setNegativeButton("Cancel") { dialogInterface, i -> dialogInterface.dismiss() }
 		builder.attachAlphaSlideBar(false)
+		val colorPickerView = builder.colorPickerView
+		colorPickerView.flagView = CustomFlag(requireContext(), com.graphipuzzle.R.layout.flag_color_picker)
 		builder.show()
 	}
 

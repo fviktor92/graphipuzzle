@@ -2,6 +2,7 @@ package com.graphipuzzle
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
+import com.graphipuzzle.read.LevelPack
 import com.graphipuzzle.read.PlayFieldDifficulty
 import com.graphipuzzle.read.ReadPlayField
 import org.junit.Assert.assertArrayEquals
@@ -24,8 +25,8 @@ class PlayFieldTest
 		val smallPlayFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val smallPlayField = PlayField(smallPlayFieldData)
 		val actualSmallFieldColumns: ArrayList<ArrayList<Int>> =
@@ -70,74 +71,13 @@ class PlayFieldTest
 	}
 
 	@Test
-	fun getFieldValuesIsCorrect_BigField()
-	{
-		val bigPlayFieldData =
-			ReadPlayField(
-				context,
-				PlayFieldDifficulty.HARD,
-				"hard_15_dog_and_boy_playing_ball.json"
-			).getPlayFieldData()
-		val bigPlayField = PlayField(bigPlayFieldData)
-		val actualBigFieldColumns: ArrayList<ArrayList<Int>> =
-			bigPlayField.getFieldColumns()
-		val actualBigFieldRows: ArrayList<ArrayList<Int>> = bigPlayField.getFieldRows()
-		val expectedBigFieldColumns = arrayListOf(
-			arrayListOf(1, 2),
-			arrayListOf(1, 3),
-			arrayListOf(7, 1),
-			arrayListOf(7),
-			arrayListOf(2, 2, 3),
-			arrayListOf(4, 1),
-			arrayListOf(4, 1, 1),
-			arrayListOf(2, 1, 4),
-			arrayListOf(1, 1, 5),
-			arrayListOf(3, 1, 8),
-			arrayListOf(1, 2, 1, 3),
-			arrayListOf(2, 1, 1, 4),
-			arrayListOf(5, 5),
-			arrayListOf(2, 4, 3),
-			arrayListOf(3)
-		)
-		val expectedBigFieldRows = arrayListOf(
-			arrayListOf(2, 4),
-			arrayListOf(4, 1, 3),
-			arrayListOf(4, 1, 2),
-			arrayListOf(2, 1, 1, 1),
-			arrayListOf(1, 4),
-			arrayListOf(2, 1, 1),
-			arrayListOf(1, 3, 3, 1),
-			arrayListOf(3, 1, 1),
-			arrayListOf(4, 1, 1),
-			arrayListOf(3, 1, 4),
-			arrayListOf(1, 3, 5),
-			arrayListOf(1, 2, 7),
-			arrayListOf(2, 3, 4),
-			arrayListOf(1, 3, 3),
-			arrayListOf(2, 3, 1)
-		)
-
-		assertEquals(
-			expectedBigFieldColumns,
-			actualBigFieldColumns,
-			"Big field column values did not match"
-		)
-
-		assertEquals(
-			expectedBigFieldRows,
-			actualBigFieldRows,
-			"Big field rows values did not match"
-		)
-	}
-
-	@Test
 	fun setTileStateIsCorrect()
 	{
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -159,8 +99,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -201,8 +141,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -285,8 +225,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -363,8 +303,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
@@ -405,8 +345,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 		val initialMatchingGroups: Array<IntArray> = Array(playField.getFieldSize()) {
@@ -454,8 +394,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
@@ -468,8 +408,8 @@ class PlayFieldTest
 		val playFieldData =
 			ReadPlayField(
 				context,
-				PlayFieldDifficulty.EASY,
-				"easy_10_sailboat.json"
+				LevelPack.VEHICLES,
+				"0_easy_10_sailboat.json"
 			).getPlayFieldData()
 		val playField = PlayField(playFieldData)
 
