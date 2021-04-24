@@ -682,16 +682,18 @@ open class PlayFieldFragment : Fragment(R.layout.fragment_play_field)
 		for (i in textArray.indices)
 		{
 			val groupState = groupStates[i]
-			// If the number of black painted tiles is more than the expected
+			// If the number of black painted tiles is more than the expected, keep it original
 			if (tileStates.count { tile -> tile == 1 } > fieldValues.sum())
 			{
 				newText = textArray.joinToString(separator)
 				break
+			// Paint the number gray if the group matches
 			} else if (fieldValues.size > 0 && groupState == fieldValues[i])
 			{
 				var recoloredGroup = "<font color=#D3D3D3>" + textArray[i] + "</font>"
 				textArray[i] = recoloredGroup
 				newText = textArray.joinToString(separator)
+			// Paint it black if the group does not match
 			} else if (fieldValues.size > 0 && groupState != fieldValues[i])
 			{
 				var recoloredGroup = "<font color=#000000>" + textArray[i] + "</font>"

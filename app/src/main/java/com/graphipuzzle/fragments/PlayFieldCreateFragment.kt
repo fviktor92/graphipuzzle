@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.material.button.MaterialButton
 import com.graphipuzzle.PlayField
+import com.graphipuzzle.PlayFieldSolver
 import com.graphipuzzle.data.PlayFieldData
 import com.graphipuzzle.data.TileData
 import com.graphipuzzle.read.FieldSize
@@ -157,7 +158,9 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 		val playFieldName = this.fragmentPlayFieldBinding.playFieldName.text.toString()
 		val playFieldDifficulty = this.fragmentPlayFieldBinding.difficulty.selectedItem.toString()
 		val tileDatas = this.playField.getTileDatas()
+		val isSolveable = PlayFieldSolver().isSolveable(this.playField.getRowGroupStates(), this.playField.getColumnGroupStates())
 		var playFieldData: PlayFieldData
+
 
 		if (playFieldName == "")
 		{
@@ -173,11 +176,9 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 		{
 			alertDialog.setMessage("All tiles must be painted!")
 			alertDialog.show()
-		} else if (tileDatas.flatten()
-				.all { tileData -> !tileData.isPaintable }
-		) // TODO: IMPLEMENT AN ALGORITHM THAT CHECKS IF THE PLAY FIELD IS SOLVEABLE
+		} else if (!isSolveable && tileDatas.flatten().all { tileData -> !tileData.isPaintable })
 		{
-			alertDialog.setMessage("The play field must have paintable tiles!")
+			alertDialog.setMessage("This play field is not solveable!")
 			alertDialog.show()
 		} else
 		{
@@ -213,11 +214,13 @@ class PlayFieldCreateFragment : PlayFieldFragment()
 			if (this.firstTouchedButtonColor == Color.WHITE || firstTouchedButtonColor == Color.TRANSPARENT)
 			{
 				v.backgroundTintList = ColorStateList.valueOf(tileColorSwitchCheckedColor)
+				this.playField.setTileState(1, rowIndex, columnIndex)
 				this.playField.setTileIsPaintable(rowIndex, columnIndex, true)
 			} else if (this.firstTouchedButtonColor == Color.BLACK && actualFieldButtonColor == Color.BLACK)
 			{
 				v.backgroundTintList =
 					ColorStateList.valueOf(ContextCompat.getColor(requireContext(), com.graphipuzzle.R.color.white))
+				this.playField.setTileState(0, rowIndex, columnIndex)
 				this.playField.setTileIsPaintable(rowIndex, columnIndex, false)
 			}
 		} else

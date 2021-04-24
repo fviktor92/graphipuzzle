@@ -368,7 +368,9 @@ class PlayField(private val playFieldData: PlayFieldData)
 				afterGroupLength >= (nextGroupsInArray.sum() + nextGroupsInArray.size)
 
 			// If it's the first group and there is enough space after the group to fit all the next groups from the array
-			if ((groupSize == expectedGroupsInArray[i]) && (i == 0) && actualGroupsInArray[0] == 0 && nextGroupsCanFit)
+			if ((groupSize == expectedGroupsInArray[i]) && (i == 0)
+				// FIXME: Kiszámolni itt az előtte és utána lévő szürke négyzetek számát, hogy biztos elférnek-e a groupok
+				&& actualGroupsInArray[0] == 0 && nextGroupsCanFit)
 			{
 				groupIndex = i
 				break@loop
